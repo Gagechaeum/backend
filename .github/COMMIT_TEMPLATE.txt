@@ -1,0 +1,6 @@
+# <Prefix>: <설명> (마침표 없이 50자 이내)
+#
+# 사용 가능한 Prefix: Feat, Fix, Docs, Style, Refactor, Test, Chore, CI, CD, Per
+#
+# 예시:
+# Feat: 마이페이지에 대출 상품 추천 기능 추가
