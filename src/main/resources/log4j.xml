@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%-5level: %c - %m%n"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <Logger name="org.springframework.cache" level="debug"/>
+    <Logger name="org.springframework.core" level="info"/>
+    <Logger name="org.springframework.beans" level="info"/>
+    <Logger name="org.springframework.context" level="info"/>
+    <Logger name="org.springframework.web" level="info"/>
+
+    <Logger name="com.gagechaeum.backend" level="info" additivity="false">
+      <AppenderRef ref="Console"/>
+    </Logger>
+
+    <Logger name="jdbc.audit" level="warn"/>
+    <Logger name="jdbc.resultset" level="warn"/>
+    <Logger name="jdbc.connection" level="warn"/>
+    <Logger name="jdbc.sqlonly" level="info"/>
+
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>
