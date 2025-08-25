@@ -3,15 +3,15 @@
 commit_msg_file=$1
 commit_msg=$(head -n1 "$commit_msg_file")
 
-# 새로운 커밋 메시지 형식: <Prefix>: <설명> (마침표 없이 50자 이내)
+# 새로운 커밋 메시지 형식: CCS-<숫자> <Prefix>: <설명> (마침표 없이 50자 이내)
 # 모든 Prefix는 첫 글자가 대문자입니다.
-prefix_regex="^(Feat|Fix|Docs|Style|Refactor|Test|Chore|CI|CD|Perf): [^.]{1,50}$"
+prefix_regex="^CCS-[0-9]+ (Feat|Fix|Docs|Style|Refactor|Test|Chore|CI|CD|Perf): [^.]{1,50}$"
 
 if ! echo "$commit_msg" | grep -qE "$prefix_regex"; then
   echo "\033[0;31m✖ 커밋 메시지 형식이 잘못되었습니다.\033[0m"
   echo ""
-  echo "형식) <Prefix>: <설명>"
-  echo "예시) Feat: 사용자 로그인 기능 구현"
+  echo "형식) CCS-<숫자> <Prefix>: <설명>"
+  echo "예시) CCS-5 Feat: 사용자 로그인 기능 구현"
   echo ""
   echo "사용 가능한 Prefix: Feat, Fix, Docs, Style, Refactor, Test, Chore, CI, CD, Perf"
   echo "설명은 50자 이내이며 마침표로 끝나면 안 됩니다."
