@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gagechaeum.backend.recommendation.mapper.RecommendationMapper">
+
+    <select id="findRecommendedPoliciesByUserId" resultType="com.gagechaeum.backend.recommendation.domain.Policy" parameterType="long">
+        SELECT
+            p.policy_id AS policyId,
+            p.policy_name AS policyName,
+            p.policy_summary AS policySummary,
+            p.department_name AS departmentName,
+            p.begin_date AS beginDate,
+            p.end_date AS endDate,
+            p.bookmark_count AS bookmarkCount
+        FROM
+            policies p
+                JOIN
+            Untitled5 ui ON p.user_id = ui.user_id
+        WHERE
+            ui.user_id = #{userId}
+          AND (
+            p.support_target LIKE CONCAT('%', (SELECT name FROM regions WHERE region_id = ui.region_id), '%')
+                OR p.support_target LIKE '%전국%'
+            )
+        ORDER BY
+            p.end_date ASC
+    </select>
+
+</mapper>
