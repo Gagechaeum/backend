@@ -9,17 +9,15 @@
             p.policy_summary AS policySummary,
             p.department_name AS departmentName,
             p.begin_date AS beginDate,
-            p.end_date AS endDate,
-            p.bookmark_count AS bookmarkCount
+            p.end_date AS endDate
         FROM
-            policies p
-                JOIN
-            Untitled5 ui ON p.user_id = ui.user_id
+            policies p, business_info bi
         WHERE
-            ui.user_id = #{userId}
+            bi.user_id = #{userId}
           AND (
-            p.support_target LIKE CONCAT('%', (SELECT name FROM regions WHERE region_id = ui.region_id), '%')
-                OR p.support_target LIKE '%전국%'
+            (p.region_id IS NULL AND p.industry_id IS NULL) -- 전국/전업종 대상인 경우 (기존의 support_target 대체)
+                OR p.region_id = bi.region_id      -- 정책의 지역과 사용자의 지역이 일치하는 경우
+                OR p.industry_id = bi.industry_id  -- 정책의 업종과 사용자의 업종이 일치하는 경우
             )
         ORDER BY
             p.end_date ASC
