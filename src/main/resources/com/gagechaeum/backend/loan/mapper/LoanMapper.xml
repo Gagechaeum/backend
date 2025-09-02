@@ -22,9 +22,9 @@
                 INNER JOIN business_info bi ON bi.user_id = #{userId}
                 LEFT JOIN loan_scrap_counts lsc ON l.loan_id = lsc.loan_id
         WHERE
-            (l.region_id IS NULL AND l.industry_id IS NULL)
-           OR l.region_id = bi.region_id
-           OR l.industry_id = bi.industry_id
+            (l.region_id IS NULL OR l.region_id = bi.region_id)
+          AND
+            (l.industry_id IS NULL OR l.industry_id = bi.industry_id)
         ORDER BY
             bookmarkCount DESC, l.basic_rate ASC -- 즐겨찾기 많은 순, 같다면 금리 낮은 순
     </select>
