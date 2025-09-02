@@ -49,3 +49,5 @@ bin/
 *.class
 *.tmp
 *.swp
+
+*.properties
