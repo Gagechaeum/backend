@@ -5,22 +5,28 @@
     <select id="findRecommendedLoansByUserId" resultType="com.gagechaeum.backend.loan.domain.Loan" parameterType="long">
         SELECT
             l.loan_id AS loanId,
-            l.loan_name AS loanName,
-            l.loan_summary AS loanSummary,
-            l.organization_name AS organizationName,
-            l.interest_rate AS interestRate,
-            l.loan_limit AS loanLimit
+            l.industry_id AS industryId,
+            l.region_id AS regionId,
+            l.company_name AS companyName,
+            l.product_name AS productName,
+            l.join_way AS joinWay,
+            l.begin_date AS beginDate,
+            l.end_date AS endDate,
+            l.product_page_url AS productPageUrl,
+            l.min_limit AS minLimit,
+            l.max_limit AS maxLimit,
+            l.basic_rate AS basicRate,
+            COALESCE(lsc.scrap_count, 0) AS bookmarkCount
         FROM
-            loans l, business_info bi
+            loans l
+                INNER JOIN business_info bi ON bi.user_id = #{userId}
+                LEFT JOIN loan_scrap_counts lsc ON l.loan_id = lsc.loan_id
         WHERE
-            bi.user_id = #{userId}
-          AND (
             (l.region_id IS NULL AND l.industry_id IS NULL)
-                OR l.region_id = bi.region_id
-                OR l.industry_id = bi.industry_id
-            )
+           OR l.region_id = bi.region_id
+           OR l.industry_id = bi.industry_id
         ORDER BY
-            l.interest_rate ASC
+            bookmarkCount DESC, l.basic_rate ASC -- 즐겨찾기 많은 순, 같다면 금리 낮은 순
     </select>
 
 </mapper>

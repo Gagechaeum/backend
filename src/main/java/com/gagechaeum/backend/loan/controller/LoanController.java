@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/recommendations")
+@RequestMapping("/api/loans")
 @RequiredArgsConstructor
 public class LoanController {
     private final LoanService loanService;
 
-    @GetMapping("/loans")
+    @GetMapping("/recommendation")
     public CustomResponse<LoanRecommendationResponseDTO> recommendLoans(
             @RequestParam Long userId
     ) {
