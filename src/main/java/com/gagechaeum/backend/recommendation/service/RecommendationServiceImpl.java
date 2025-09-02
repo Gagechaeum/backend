@@ -17,7 +17,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     private final RecommendationMapper recommendationMapper;
 
-    @Override // 인터페이스의 메소드를 구현한다는 의미
+    @Override
     @Transactional(readOnly = true)
     public PolicyRecommendationResponseDTO getRecommendedPolicies(Long userId) {
         List<Policy> policies = recommendationMapper.findRecommendedPoliciesByUserId(userId);
