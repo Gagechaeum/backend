@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.report.mapper;
 
+import com.gagechaeum.backend.report.domain.PolicySearchResult;
 import com.gagechaeum.backend.report.domain.Repayment;
 import com.gagechaeum.backend.report.domain.UserLoan;
 import com.gagechaeum.backend.report.domain.UserPolicy;
@@ -18,4 +19,7 @@ public interface ReportMapper {
 
     // 여러 대출 ID에 해당하는 상환 내역 조회
     List<Repayment> findRepaymentsByUserLoanIds(@Param("userLoanIds") List<Long> userLoanIds);
+
+    // 정책 이름으로 정책 검색
+    List<PolicySearchResult> searchPoliciesByName(@Param("keyword") String keyword);
 }

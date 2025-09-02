@@ -1,9 +1,11 @@
 package com.gagechaeum.backend.report.service;
 
+import com.gagechaeum.backend.report.domain.PolicySearchResult;
 import com.gagechaeum.backend.report.domain.Repayment;
 import com.gagechaeum.backend.report.domain.UserLoan;
 import com.gagechaeum.backend.report.domain.UserPolicy;
 import com.gagechaeum.backend.report.dto.response.DashboardResponseDTO;
+import com.gagechaeum.backend.report.dto.response.PolicySearchResponseDTO;
 import com.gagechaeum.backend.report.mapper.ReportMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,18 @@ import java.util.stream.Stream;
 public class ReportServiceImpl implements ReportService {
 
     private final ReportMapper reportMapper;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PolicySearchResponseDTO> searchPolicies(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<PolicySearchResult> searchResults = reportMapper.searchPoliciesByName(keyword);
+        return searchResults.stream()
+                .map(PolicySearchResponseDTO::from)
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional(readOnly = true)
