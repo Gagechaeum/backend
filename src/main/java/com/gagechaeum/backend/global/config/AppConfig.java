@@ -71,6 +71,10 @@ public class AppConfig {
         sqlSessionFactory.setConfigLocation(
             applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
         sqlSessionFactory.setDataSource(dataSource());
+
+        sqlSessionFactory.setMapperLocations(
+                applicationContext.getResources("classpath:/com/gagechaeum/backend/**/*.xml")
+        );
         return sqlSessionFactory.getObject();
     }
 

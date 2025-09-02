@@ -1,0 +1,31 @@
+package com.gagechaeum.backend.policy.service;
+
+import com.gagechaeum.backend.policy.domain.Policy;
+import com.gagechaeum.backend.policy.dto.response.PolicyInfoDTO;
+import com.gagechaeum.backend.policy.dto.response.PolicyRecommendationResponseDTO;
+import com.gagechaeum.backend.policy.mapper.PolicyMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class PolicyServiceImpl implements PolicyService {
+
+    private final PolicyMapper policyMapper;
+
+    @Override
+    @Transactional(readOnly = true)
+    public PolicyRecommendationResponseDTO getRecommendedPolicies(Long userId) {
+        List<Policy> policies = policyMapper.findRecommendedPoliciesByUserId(userId);
+
+        List<PolicyInfoDTO> policyInfos = policies.stream()
+                .map(PolicyInfoDTO::from)
+                .collect(Collectors.toList());
+
+        return PolicyRecommendationResponseDTO.from(policyInfos);
+    }
+}
