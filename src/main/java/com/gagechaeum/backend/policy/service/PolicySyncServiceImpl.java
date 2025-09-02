@@ -74,8 +74,8 @@ public class PolicySyncServiceImpl implements PolicySyncService {
 
         policy.setPolicyName(getOrDefault(dto.getServiceName(), "정책 이름 정보 없음"));
         policy.setPolicySummary(getOrDefault(dto.getServiceSummary(), "요약 정보 없음"));
-        policy.setDepartmentName(getOrDefault(dto.getDepartmentName(), "소관 기관 정보 없음"));
-        policy.setSupervisingOrganizationName(getOrDefault(dto.getDepartmentName(), "소관 기관 정보 없음"));
+        policy.setDepartmentName(getOrDefault(dto.getDepartmentName(), "부서 정보 없음"));
+        policy.setSupervisingOrganizationName(getOrDefault(dto.getOrganizationName(), "소관 기관 정보 없음"));
         policy.setAnnouncementUrl(getOrDefault(dto.getDetailUrl(), "#"));
         policy.setSupportDetail(getOrDefault(dto.getSupportContent(), "지원 내용 정보 없음"));
         policy.setApplicationPeriod(getOrDefault(dto.getApplicationPeriod(), "신청 기간 정보 없음"));

@@ -52,4 +52,7 @@ public class Gov24ApiServiceDto {
 
     @JsonProperty("지원대상")
     private String supportTarget;
+
+    @JsonProperty("소관기관명")
+    private String organizationName;
 }
