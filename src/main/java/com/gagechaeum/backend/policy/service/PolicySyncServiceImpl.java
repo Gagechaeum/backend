@@ -71,7 +71,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
         if (dto.getServiceId() != null && !dto.getServiceId().isBlank()) {
             policy.setPolicyId(dto.getServiceId());
         }
-        // --- getOrDefault 적용 ---
+
         policy.setPolicyName(getOrDefault(dto.getServiceName(), "정책 이름 정보 없음"));
         policy.setPolicySummary(getOrDefault(dto.getServiceSummary(), "요약 정보 없음"));
         policy.setDepartmentName(getOrDefault(dto.getDepartmentName(), "소관 기관 정보 없음"));
@@ -94,8 +94,6 @@ public class PolicySyncServiceImpl implements PolicySyncService {
         LocalDate[] dates = DateParserUtil.parseDateRange(dto.getApplicationPeriod());
         policy.setBeginDate(dates[0]);
         policy.setEndDate(dates[1]);
-
-        // ERD에 맞는 다른 필드들도 DTO에서 값을 가져와 매핑...
 
         return policy;
     }
