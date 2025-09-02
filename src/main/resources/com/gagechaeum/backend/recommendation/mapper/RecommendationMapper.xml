@@ -9,18 +9,18 @@
             p.policy_summary AS policySummary,
             p.department_name AS departmentName,
             p.begin_date AS beginDate,
-            p.end_date AS endDate
-        FROM policies p
-                 CROSS JOIN business_info bi
+            p.end_date AS endDate,
+            COALESCE(psc.scrap_count, 0) AS bookmarkCount
+        FROM
+            policies p
+                INNER JOIN business_info bi ON bi.user_id = #{userId}
+                LEFT JOIN policy_scrap_counts psc ON p.policy_id = psc.policy_id
         WHERE
-            bi.user_id = #{userId}
-          AND (
-            (p.region_id IS NULL AND p.industry_id IS NULL) -- 전국/전업종 대상인 경우 (기존의 support_target 대체)
-                OR p.region_id = bi.region_id      -- 정책의 지역과 사용자의 지역이 일치하는 경우
-                OR p.industry_id = bi.industry_id  -- 정책의 업종과 사용자의 업종이 일치하는 경우
-            )
+            (p.region_id IS NULL AND p.industry_id IS NULL)
+           OR p.region_id = bi.region_id
+           OR p.industry_id = bi.industry_id
         ORDER BY
-            p.end_date ASC
+            bookmarkCount DESC, p.end_date ASC
     </select>
 
 </mapper>
