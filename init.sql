@@ -274,6 +274,7 @@ CREATE TABLE required_documents (
 CREATE TABLE uploaded_documents (
 	uploaded_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	document_id	BIGINT	NOT NULL,
+	document_name VARCHAR(255) NOT NULL,
 	issued_at	DATE	NOT NULL,
 	file_url	VARCHAR(255)	NOT NULL,
 	CONSTRAINT fk_uploaded_documents_document_id FOREIGN KEY (document_id)
