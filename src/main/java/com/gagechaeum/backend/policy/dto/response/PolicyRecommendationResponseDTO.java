@@ -1,4 +1,4 @@
-package com.gagechaeum.backend.recommendation.dto.response;
+package com.gagechaeum.backend.policy.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

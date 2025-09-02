@@ -1,9 +1,9 @@
-package com.gagechaeum.backend.recommendation.service;
+package com.gagechaeum.backend.policy.service;
 
-import com.gagechaeum.backend.recommendation.domain.Policy;
-import com.gagechaeum.backend.recommendation.dto.response.PolicyInfoDTO;
-import com.gagechaeum.backend.recommendation.dto.response.PolicyRecommendationResponseDTO;
-import com.gagechaeum.backend.recommendation.mapper.RecommendationMapper;
+import com.gagechaeum.backend.policy.domain.Policy;
+import com.gagechaeum.backend.policy.dto.response.PolicyInfoDTO;
+import com.gagechaeum.backend.policy.dto.response.PolicyRecommendationResponseDTO;
+import com.gagechaeum.backend.policy.mapper.PolicyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RecommendationServiceImpl implements RecommendationService {
+public class PolicyServiceImpl implements PolicyService {
 
-    private final RecommendationMapper recommendationMapper;
+    private final PolicyMapper policyMapper;
 
     @Override
     @Transactional(readOnly = true)
     public PolicyRecommendationResponseDTO getRecommendedPolicies(Long userId) {
-        List<Policy> policies = recommendationMapper.findRecommendedPoliciesByUserId(userId);
+        List<Policy> policies = policyMapper.findRecommendedPoliciesByUserId(userId);
 
         List<PolicyInfoDTO> policyInfos = policies.stream()
                 .map(PolicyInfoDTO::from)

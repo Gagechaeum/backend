@@ -1,4 +1,4 @@
-package com.gagechaeum.backend.recommendation.domain;
+package com.gagechaeum.backend.policy.domain;
 
 import lombok.Getter;
 import java.time.LocalDate;
