@@ -18,7 +18,7 @@ CREATE TABLE users (
 	social_id	VARCHAR(255)	NOT NULL	COMMENT '소셜 계정',
 	deleted_at	DATETIME	NULL,
 	notification	BOOLEAN	NOT NULL	DEFAULT true,
-	profile_image_url	VARCHAR(255)	NULL
+	profile_image_key	VARCHAR(255)	NULL
 );
 
 -- 지역
@@ -275,7 +275,7 @@ CREATE TABLE uploaded_documents (
 	uploaded_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	document_id	BIGINT	NOT NULL,
 	issued_at	DATE	NOT NULL,
-	file_url	VARCHAR(255)	NOT NULL,
+	file_key	VARCHAR(255)	NOT NULL,
 	CONSTRAINT fk_uploaded_documents_document_id FOREIGN KEY (document_id)
 		REFERENCES documents (document_id)
 		ON DELETE CASCADE
@@ -286,12 +286,20 @@ CREATE TABLE chat_rooms (
 	room_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	industry_id	BIGINT	NULL,
 	region_id	BIGINT	NULL,
+	loan_id	BIGINT	NULL,
+	policy_id	VARCHAR(255)	NULL,
 	room_type	VARCHAR(255)	NOT NULL	COMMENT '"업종", "지역"',
 	CONSTRAINT fk_chat_rooms_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE,
 	CONSTRAINT fk_chat_rooms_region_id FOREIGN KEY (region_id)
 		REFERENCES regions (region_id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_chat_rooms_policy_id FOREIGN KEY (policy_id)
+		REFERENCES policies (policy_id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_chat_rooms_loan_id FOREIGN KEY (loan_id)
+		REFERENCES loans (loan_id)
 		ON DELETE CASCADE
 );
 
@@ -312,7 +320,7 @@ CREATE TABLE chat_messages (
 CREATE TABLE chat_attachments (
 	attachment_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	message_id	BIGINT	NOT NULL,
-	file_url	VARCHAR(255)	NOT NULL,
+	file_key	VARCHAR(255)	NOT NULL,
 	file_type	VARCHAR(255)	NOT NULL	COMMENT '"IMAGE", "VIDEO", "AUDIO", "PDF", "DOCX", ...',
 	file_name	VARCHAR(255)	NOT NULL,
 	file_size	BIGINT	NOT NULL,
