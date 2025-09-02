@@ -5,9 +5,10 @@ import lombok.Builder;
 
 @Builder
 public class UserDocument {
-	private Long userId;		// 사용자 ID
-	private Long uploadedId;	// 업로드된 서류 ID
-	private Long documentId;	// 업로드할 서류 종류 ID
-	private Date issuedAt;		// 서류 발급일
-	private String fileUrl;		// S3 URL
+	private Long userId;			// 사용자 ID
+	private Long uploadedId;		// 업로드된 서류 ID
+	private Long documentId;		// 업로드할 서류 종류 ID
+	private String documentName;	// 서류 이름
+	private Date issuedAt;			// 서류 발급일
+	private String fileUrl;			// S3 URL
 }
