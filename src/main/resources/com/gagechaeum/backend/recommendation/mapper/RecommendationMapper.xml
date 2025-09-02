@@ -10,8 +10,8 @@
             p.department_name AS departmentName,
             p.begin_date AS beginDate,
             p.end_date AS endDate
-        FROM
-            policies p, business_info bi
+        FROM policies p
+                 CROSS JOIN business_info bi
         WHERE
             bi.user_id = #{userId}
           AND (
