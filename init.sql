@@ -159,7 +159,7 @@ CREATE TABLE loan_scrap_counts (
 
 -- 사용자 정책
 CREATE TABLE user_policies (
-	user_policy_id	VARCHAR(255)	AUTO_INCREMENT PRIMARY KEY,
+	user_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	policy_id	VARCHAR(255)	NULL,
 	created_at	DATETIME	NOT NULL,
@@ -224,7 +224,7 @@ CREATE TABLE repayments (
 
 -- 즐겨찾기
 CREATE TABLE user_policy_scraps (
-	scrap_policy_id	VARCHAR(255)	AUTO_INCREMENT PRIMARY KEY,
+	scrap_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	policy_id	VARCHAR(255)	NOT NULL,
 	CONSTRAINT fk_user_policy_scraps_user_id FOREIGN KEY (user_id)
