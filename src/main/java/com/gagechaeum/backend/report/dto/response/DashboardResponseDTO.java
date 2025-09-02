@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class DashboardResponse {
+public class DashboardResponseDTO {
 
     private Summary summary;
     private List<Schedule> schedule;

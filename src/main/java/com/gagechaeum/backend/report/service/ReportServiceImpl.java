@@ -3,7 +3,7 @@ package com.gagechaeum.backend.report.service;
 import com.gagechaeum.backend.report.domain.Repayment;
 import com.gagechaeum.backend.report.domain.UserLoan;
 import com.gagechaeum.backend.report.domain.UserPolicy;
-import com.gagechaeum.backend.report.dto.response.DashboardResponse;
+import com.gagechaeum.backend.report.dto.response.DashboardResponseDTO;
 import com.gagechaeum.backend.report.mapper.ReportMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Transactional(readOnly = true)
-    public DashboardResponse getDashboardData(Long userId) {
+    public DashboardResponseDTO getDashboardData(Long userId) {
         // --- 1. 데이터 조회 ---
         List<UserPolicy> userPolicies = reportMapper.findUserPoliciesByUserId(userId);
 
@@ -56,13 +56,13 @@ public class ReportServiceImpl implements ReportService {
         // --- 2. 데이터 가공 ---
         LocalDate now = LocalDate.now();
 
-        DashboardResponse.Summary summary = calculateSummary(userPolicies, repayments, now);
-        List<DashboardResponse.Schedule> schedule = createSchedule(userPolicies, userLoans, now);
-        List<DashboardResponse.CashFlow> cashFlow = createCashFlow(userPolicies, repayments, now);
-        List<DashboardResponse.AllItem> allItems = createAllItems(userPolicies, userLoans);
+        DashboardResponseDTO.Summary summary = calculateSummary(userPolicies, repayments, now);
+        List<DashboardResponseDTO.Schedule> schedule = createSchedule(userPolicies, userLoans, now);
+        List<DashboardResponseDTO.CashFlow> cashFlow = createCashFlow(userPolicies, repayments, now);
+        List<DashboardResponseDTO.AllItem> allItems = createAllItems(userPolicies, userLoans);
 
         // --- 3. 최종 DTO 조립 및 반환 ---
-        return DashboardResponse.builder()
+        return DashboardResponseDTO.builder()
                 .summary(summary)
                 .schedule(schedule)
                 .cashFlow(cashFlow)
@@ -72,7 +72,7 @@ public class ReportServiceImpl implements ReportService {
 
     // --- 섹션별 계산 메서드 (이하 로직은 이전과 거의 동일) ---
 
-    private DashboardResponse.Summary calculateSummary(List<UserPolicy> policies, List<Repayment> repayments, LocalDate now) {
+    private DashboardResponseDTO.Summary calculateSummary(List<UserPolicy> policies, List<Repayment> repayments, LocalDate now) {
         YearMonth currentMonth = YearMonth.from(now);
 
         long benefit = policies.stream()
@@ -85,27 +85,27 @@ public class ReportServiceImpl implements ReportService {
                 .mapToLong(Repayment::getAmount)
                 .sum();
 
-        return DashboardResponse.Summary.builder()
+        return DashboardResponseDTO.Summary.builder()
                 .totalBenefitAmount(benefit)
                 .totalRepaymentAmount(repayment)
                 .build();
     }
 
-    private List<DashboardResponse.Schedule> createSchedule(List<UserPolicy> policies, List<UserLoan> loans, LocalDate now) {
+    private List<DashboardResponseDTO.Schedule> createSchedule(List<UserPolicy> policies, List<UserLoan> loans, LocalDate now) {
         LocalDate twoWeeksLater = now.plusWeeks(2);
 
-        Stream<DashboardResponse.Schedule> benefitStream = policies.stream()
+        Stream<DashboardResponseDTO.Schedule> benefitStream = policies.stream()
                 .filter(p -> p.getDepositDate() != null && !p.getDepositDate().isBefore(now) && p.getDepositDate().isBefore(twoWeeksLater))
-                .map(p -> DashboardResponse.Schedule.builder()
+                .map(p -> DashboardResponseDTO.Schedule.builder()
                         .type("BENEFIT")
                         .name(p.getPolicyName())
                         .date(p.getDepositDate())
                         .amount(p.getApprovedAmount())
                         .build());
 
-        Stream<DashboardResponse.Schedule> repaymentStream = loans.stream()
+        Stream<DashboardResponseDTO.Schedule> repaymentStream = loans.stream()
                 .filter(l -> l.getNextRepayDate() != null && !l.getNextRepayDate().isBefore(now) && l.getNextRepayDate().isBefore(twoWeeksLater))
-                .map(l -> DashboardResponse.Schedule.builder()
+                .map(l -> DashboardResponseDTO.Schedule.builder()
                         .type("REPAYMENT")
                         .name(l.getProductName())
                         .date(l.getNextRepayDate())
@@ -113,12 +113,12 @@ public class ReportServiceImpl implements ReportService {
                         .build());
 
         return Stream.concat(benefitStream, repaymentStream)
-                .sorted(Comparator.comparing(DashboardResponse.Schedule::getDate))
+                .sorted(Comparator.comparing(DashboardResponseDTO.Schedule::getDate))
                 .collect(Collectors.toList());
     }
 
-    private List<DashboardResponse.CashFlow> createCashFlow(List<UserPolicy> policies, List<Repayment> repayments, LocalDate now) {
-        List<DashboardResponse.CashFlow> cashFlowList = new ArrayList<>();
+    private List<DashboardResponseDTO.CashFlow> createCashFlow(List<UserPolicy> policies, List<Repayment> repayments, LocalDate now) {
+        List<DashboardResponseDTO.CashFlow> cashFlowList = new ArrayList<>();
         YearMonth startMonth = YearMonth.from(now).minusMonths(5);
 
         Map<YearMonth, Long> monthlyBenefits = policies.stream()
@@ -134,7 +134,7 @@ public class ReportServiceImpl implements ReportService {
             long benefit = monthlyBenefits.getOrDefault(currentMonth, 0L);
             long repayment = monthlyRepayments.getOrDefault(currentMonth, 0L);
 
-            cashFlowList.add(DashboardResponse.CashFlow.builder()
+            cashFlowList.add(DashboardResponseDTO.CashFlow.builder()
                     .month(String.valueOf(currentMonth.getMonthValue()))
                     .benefit(benefit)
                     .repayment(repayment)
@@ -143,17 +143,17 @@ public class ReportServiceImpl implements ReportService {
         return cashFlowList;
     }
 
-    private List<DashboardResponse.AllItem> createAllItems(List<UserPolicy> policies, List<UserLoan> loans) {
+    private List<DashboardResponseDTO.AllItem> createAllItems(List<UserPolicy> policies, List<UserLoan> loans) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-        Stream<DashboardResponse.AllItem> policyStream = policies.stream()
+        Stream<DashboardResponseDTO.AllItem> policyStream = policies.stream()
                 .map(p -> {
-                    DashboardResponse.Details details = DashboardResponse.Details.builder()
+                    DashboardResponseDTO.Details details = DashboardResponseDTO.Details.builder()
                             .paymentDateInfo(p.getDepositDate() != null ? "매월 " + p.getDepositDate().getDayOfMonth() + "일" : "지급일 정보 없음")
                             .totalBenefitAmount(p.getApprovedAmount() * 12) // 총 지원금 계산 로직 필요
                             .build();
 
-                    return DashboardResponse.AllItem.builder()
+                    return DashboardResponseDTO.AllItem.builder()
                             .type("POLICY")
                             .itemId(p.getUserPolicyId())
                             .name(p.getPolicyName())
@@ -165,18 +165,18 @@ public class ReportServiceImpl implements ReportService {
                             .build();
                 });
 
-        Stream<DashboardResponse.AllItem> loanStream = loans.stream()
+        Stream<DashboardResponseDTO.AllItem> loanStream = loans.stream()
                 .map(l -> {
                     BigDecimal repaymentRate = BigDecimal.ONE
                             .subtract(new BigDecimal(l.getBalanceAmount()).divide(new BigDecimal(l.getLoanPrincipal()), 4, RoundingMode.HALF_UP));
 
-                    DashboardResponse.Details details = DashboardResponse.Details.builder()
+                    DashboardResponseDTO.Details details = DashboardResponseDTO.Details.builder()
                             .repaymentMethod(l.getRepayMethod())
                             .repaymentRate(repaymentRate)
                             .interestRate(l.getLastOfferedRate())
                             .build();
 
-                    return DashboardResponse.AllItem.builder()
+                    return DashboardResponseDTO.AllItem.builder()
                             .type("LOAN")
                             .itemId(l.getUserLoanId())
                             .name(l.getProductName())
@@ -189,7 +189,7 @@ public class ReportServiceImpl implements ReportService {
                 });
 
         return Stream.concat(policyStream, loanStream)
-                .sorted(Comparator.comparing(DashboardResponse.AllItem::getItemId))
+                .sorted(Comparator.comparing(DashboardResponseDTO.AllItem::getItemId))
                 .collect(Collectors.toList());
     }
 
