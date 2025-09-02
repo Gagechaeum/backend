@@ -4,62 +4,77 @@
 
     <!-- 정책/대출 통합 검색 쿼리 -->
     <select id="findGlobalResultsByKeyword" resultType="com.gagechaeum.backend.search.domain.SearchResult">
-        SELECT
-            'POLICY' AS type,
-            p.policy_id AS id,
-            p.policy_name AS name,
-            i.name AS industryName
-        FROM
-            policies p
-        LEFT JOIN
-            industry i ON p.industry_id = i.industry_id
-        WHERE
-            p.policy_name LIKE CONCAT('%', #{keyword}, '%')
-           OR p.policy_summary LIKE CONCAT('%', #{keyword}, '%')
+        <choose>
+            <when test="keyword != null and keyword != ''">
+                SELECT
+                'POLICY' AS type,
+                p.policy_id AS id,
+                p.policy_name AS name,
+                i.name AS industryName
+                FROM
+                policies p
+                LEFT JOIN
+                industry i ON p.industry_id = i.industry_id
+                WHERE
+                p.policy_name LIKE CONCAT('%', #{keyword}, '%')
+                OR p.policy_summary LIKE CONCAT('%', #{keyword}, '%')
 
-        UNION ALL
+                UNION ALL
 
-        SELECT
-            'LOAN' AS type,
-            l.loan_id AS id,
-            l.product_name AS name,
-            i.name AS industryName
-        FROM
-            loans l
-        LEFT JOIN
-            industry i ON l.industry_id = i.industry_id
-        WHERE
-            l.product_name LIKE CONCAT('%', #{keyword}, '%')
-           OR l.company_name LIKE CONCAT('%', #{keyword}, '%')
+                SELECT
+                'LOAN' AS type,
+                l.loan_id AS id,
+                l.product_name AS name,
+                i.name AS industryName
+                FROM
+                loans l
+                LEFT JOIN
+                industry i ON l.industry_id = i.industry_id
+                WHERE
+                l.product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR l.company_name LIKE CONCAT('%', #{keyword}, '%')
 
-        ORDER BY
-            name ASC -- 기본 정렬 기준 (추후 관련도순 등으로 변경 가능)
-            LIMIT #{size} OFFSET #{offset}
+                ORDER BY
+                name ASC
+                LIMIT #{size} OFFSET #{offset}
+            </when>
+            <otherwise>
+                SELECT NULL AS type, NULL AS id, NULL AS name, NULL AS industryName
+                WHERE 1 = 0
+            </otherwise>
+        </choose>
     </select>
 
     <!-- 통합 검색 결과의 전체 개수 카운트 쿼리 -->
     <select id="countGlobalResultsByKeyword" resultType="long">
-        SELECT
-            SUM(count)
-        FROM (
-                 SELECT
-                     COUNT(*) AS count
-                 FROM
-                     policies
-                 WHERE
-                     policy_name LIKE CONCAT('%', #{keyword}, '%')
-                    OR policy_summary LIKE CONCAT('%', #{keyword}, '%')
+        <choose>
+            <when test="keyword != null and keyword != ''">
+                SELECT
+                SUM(count)
+                FROM (
+                SELECT
+                COUNT(*) AS count
+                FROM
+                policies
+                WHERE
+                policy_name LIKE CONCAT('%', #{keyword}, '%')
+                OR policy_summary LIKE CONCAT('%', #{keyword}, '%')
 
-                 UNION ALL
+                UNION ALL
 
-                 SELECT
-                     COUNT(*) AS count
-                 FROM
-                     loans
-                 WHERE
-                     product_name LIKE CONCAT('%', #{keyword}, '%')
-                    OR company_name LIKE CONCAT('%', #{keyword}, '%')
-             ) AS total_counts
+                SELECT
+                COUNT(*) AS count
+                FROM
+                loans
+                WHERE
+                product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR company_name LIKE CONCAT('%', #{keyword}, '%')
+                ) AS total_counts
+            </when>
+            <otherwise>
+                SELECT 0
+            </otherwise>
+        </choose>
     </select>
 
 </mapper>
