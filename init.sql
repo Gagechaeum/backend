@@ -66,16 +66,16 @@ CREATE TABLE business_info (
 
 -- 정책
 CREATE TABLE policies (
-	policy_id	BIGINT	PRIMARY KEY	COMMENT '공고의 서비스ID',
+	policy_id	VARCHAR(255) PRIMARY KEY	COMMENT '공고의 서비스ID',
 	industry_id	BIGINT	NULL,
 	region_id	BIGINT	NULL	COMMENT '법정동 코드',
 	department_name	VARCHAR(255)	NOT NULL,
 	user_type	VARCHAR(255)	NOT NULL	COMMENT '"법인/시설/단체", "개인", ...',
 	announcement_url	VARCHAR(255)	NOT NULL,
 	policy_name	VARCHAR(255)	NOT NULL,
-	policy_summary	VARCHAR(255)	NOT NULL,
+	policy_summary	TEXT	NOT NULL,
 	policy_field	VARCHAR(255)	NOT NULL	COMMENT '"생활안정", "고용·창업", ...',
-	selection_criteria	VARCHAR(255)	NOT NULL,
+	selection_criteria	TEXT	NOT NULL,
 	supervising_organization_name	VARCHAR(255)	NOT NULL,
 	receiving_organization_name	VARCHAR(255)	NULL,
 	notice_date	DATETIME	NOT NULL,
@@ -84,9 +84,9 @@ CREATE TABLE policies (
 	begin_date	DATE	NULL,
 	end_date	DATE	NULL,
 	application_method	VARCHAR(255)	NOT NULL,
-	contact	VARCHAR(255)	NOT NULL,
-	support_detail	VARCHAR(255)	NOT NULL,
-	support_target	VARCHAR(255)	NOT NULL,
+	contact	TEXT	NOT NULL,
+	support_detail	TEXT	NOT NULL,
+	support_target	TEXT	NOT NULL,
 	CONSTRAINT fk_policies_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id),
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
@@ -95,7 +95,7 @@ CREATE TABLE policies (
 
 CREATE TABLE policy_scrap_counts (
 	policy_scrap_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
-	policy_id	BIGINT	NOT NULL	COMMENT '공고의 서비스ID',
+	policy_id	VARCHAR(255)	NOT NULL	COMMENT '공고의 서비스ID',
 	industry_id	BIGINT	NOT NULL,
 	scrap_count	BIGINT	NOT NULL	DEFAULT 0,
 	CONSTRAINT fk_policy_scrap_counts_policy_id FOREIGN KEY (policy_id)
@@ -161,7 +161,7 @@ CREATE TABLE loan_scrap_counts (
 CREATE TABLE user_policies (
 	user_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
-	policy_id	BIGINT	NULL,
+	policy_id	VARCHAR(255)	NULL,
 	created_at	DATETIME	NOT NULL,
 	status	VARCHAR(255)	NOT NULL,
 	approved_amount	INT	NULL,
@@ -226,7 +226,7 @@ CREATE TABLE repayments (
 CREATE TABLE user_policy_scraps (
 	scrap_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
-	policy_id	BIGINT	NOT NULL,
+	policy_id	VARCHAR(255)	NOT NULL,
 	CONSTRAINT fk_user_policy_scraps_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
@@ -258,7 +258,7 @@ CREATE TABLE documents (
 CREATE TABLE required_documents (
 	required_document_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	document_id	BIGINT	NOT NULL,
-	policy_id	BIGINT	NULL,
+	policy_id	VARCHAR(255)	NULL,
 	loan_id	BIGINT	NULL,
 	CONSTRAINT fk_required_documents_document_id FOREIGN KEY (document_id)
 		REFERENCES documents (document_id)
