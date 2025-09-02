@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gagechaeum.backend.loan.mapper.LoanMapper">
+
+    <select id="findRecommendedLoansByUserId" resultType="com.gagechaeum.backend.loan.domain.Loan" parameterType="long">
+        SELECT
+            l.loan_id AS loanId,
+            l.loan_name AS loanName,
+            l.loan_summary AS loanSummary,
+            l.organization_name AS organizationName,
+            l.interest_rate AS interestRate,
+            l.loan_limit AS loanLimit
+        FROM
+            loans l, business_info bi
+        WHERE
+            bi.user_id = #{userId}
+          AND (
+            (l.region_id IS NULL AND l.industry_id IS NULL)
+                OR l.region_id = bi.region_id
+                OR l.industry_id = bi.industry_id
+            )
+        ORDER BY
+            l.interest_rate ASC
+    </select>
+
+</mapper>
