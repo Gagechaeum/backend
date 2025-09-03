@@ -92,6 +92,10 @@ CREATE TABLE policies (
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
 		REFERENCES regions (region_id)
 );
+ALTER TABLE policies
+	MODIFY COLUMN selection_criteria TEXT NULL;
+ALTER TABLE policies
+	MODIFY COLUMN contact TEXT NULL;
 
 CREATE TABLE policy_bookmark_counts (
 	policy_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,

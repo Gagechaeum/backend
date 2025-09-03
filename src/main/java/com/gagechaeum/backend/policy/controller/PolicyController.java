@@ -8,6 +8,7 @@ import com.gagechaeum.backend.policy.service.PolicySyncService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,5 +34,11 @@ public class PolicyController {
     public ResponseEntity<String> syncPolicies() {
         policySyncService.syncPoliciesFromGov24Api();
         return ResponseEntity.ok("Policy synchronization started.");
+    }
+    
+    @GetMapping("/{policy_id}")
+    public CustomResponse<Object> getPolicyDetails(@PathVariable("policy_id") String policyId) {
+        Object response = policyService.getPolicyDetails(policyId);
+        return CustomResponse.success(ResponseCode.SUCCESS, response);
     }
 }
