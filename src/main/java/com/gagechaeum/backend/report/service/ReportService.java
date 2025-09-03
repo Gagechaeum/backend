@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.report.service;
 
+import com.gagechaeum.backend.report.dto.request.UserPolicyCreateRequestDTO;
 import com.gagechaeum.backend.report.dto.response.DashboardResponseDTO;
 import com.gagechaeum.backend.report.dto.response.PolicySearchResponseDTO;
 
@@ -9,4 +10,6 @@ public interface ReportService {
     DashboardResponseDTO getDashboardData(Long userId);
 
     List<PolicySearchResponseDTO> searchPolicies(String keyword);
+
+    void createUserPolicy(Long userId, UserPolicyCreateRequestDTO requestDTO);
 }

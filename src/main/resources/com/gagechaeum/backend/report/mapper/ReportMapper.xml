@@ -6,12 +6,14 @@
     <!-- UserPolicy 도메인 객체 매핑 -->
     <resultMap id="userPolicyResultMap" type="com.gagechaeum.backend.report.domain.UserPolicy">
         <id property="userPolicyId" column="user_policy_id"/>
-        <result property="status" column="status"/>
-        <result property="approvedAmount" column="approved_amount"/>
-        <result property="depositDate" column="deposit_date"/>
+        <result property="userId" column="user_id"/>
+        <result property="policyId" column="policy_id"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="firstPaymentDate" column="first_payment_date"/>
+        <result property="monthlyAmount" column="monthly_amount"/>
+        <result property="totalAmount" column="total_amount"/>
         <result property="policyName" column="policy_name"/>
-        <result property="policyBeginDate" column="begin_date"/>
-        <result property="policyEndDate" column="end_date"/>
     </resultMap>
 
     <!-- UserLoan 도메인 객체 매핑 -->
@@ -46,12 +48,14 @@
     <select id="findUserPoliciesByUserId" parameterType="long" resultMap="userPolicyResultMap">
         SELECT
             up.user_policy_id,
-            up.status,
-            up.approved_amount,
-            up.deposit_date,
-            p.policy_name,
-            p.begin_date,
-            p.end_date
+            up.user_id,
+            up.policy_id,
+            up.start_date,
+            up.end_date,
+            up.first_payment_date,
+            up.monthly_amount,
+            up.total_amount,
+            p.policy_name
         FROM
             user_policies up
                 LEFT JOIN
@@ -106,5 +110,10 @@
         ORDER BY
             policy_name ASC
     </select>
+
+    <insert id="insertUserPolicy" parameterType="com.gagechaeum.backend.report.domain.UserPolicy">
+         INSERT INTO user_policies (user_id, policy_id, start_date, end_date, first_payment_date, monthly_amount, total_amount)
+        VALUES (#{userId}, #{policyId}, #{startDate}, #{endDate}, #{firstPaymentDate}, #{monthlyAmount}, #{totalAmount})
+    </insert>
 
 </mapper>
