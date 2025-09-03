@@ -18,8 +18,9 @@ public class UserDocumentServiceImpl implements UserDocumentService {
     
     @Override
     public void uploadUserDocument(
-        UserDocumentUploadRequestDto requestDto,
-        CustomUser user
+        UserDocumentUploadRequestDto requestDto
+//        UserDocumentUploadRequestDto requestDto,
+//        CustomUser user
     ) throws IOException {
         if (requestDto.getFile() == null ||
             requestDto.getFile().isEmpty() ||
@@ -30,15 +31,19 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             throw new IllegalArgumentException("파일과 메타데이터는 필수값이며, 빈 파일은 허용되지 않습니다.");
         }
         
+        Long userId = 1L;
+        
         String key = "userDocuments/" +
-            user.getId() + "/" +
+            userId + "/" +
+//            user.getId() + "/" +
             requestDto.getDocumentId() + "/" +
             requestDto.getDocumentName();
         String s3Url = s3ClientUtil.uploadFile(requestDto.getFile(), key);
         
         UserDocument userDocument = UserDocument.
             builder().
-            userId(user.getId()).
+            userId(userId).
+//            userId(user.getId()).
             documentId(requestDto.getDocumentId()).
             issuedAt(requestDto.getIssuedAt()).
             fileUrl(s3Url).

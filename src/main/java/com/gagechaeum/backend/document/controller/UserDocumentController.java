@@ -8,6 +8,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,17 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/me/documents")
+@RequestMapping("/api/me/documents, consumes = MediaType.MULTIPART_FORM_DATA_VALUE")
 @RequiredArgsConstructor
 public class UserDocumentController {
 	private final UserDocumentService userDocumentService;
 	
 	@PostMapping("")
 	public CustomResponse<Object> uploadUserDocument(
-		@RequestBody UserDocumentUploadRequestDto requestDto,
-		@AuthenticationPrincipal CustomUser user
+		@ModelAttribute UserDocumentUploadRequestDto requestDto
+//		@ModelAttribute UserDocumentUploadRequestDto requestDto,
+//		@AuthenticationPrincipal CustomUser user
 	) throws IOException {
-		userDocumentService.uploadUserDocument(requestDto, user);
+//		userDocumentService.uploadUserDocument(requestDto, user);
+		userDocumentService.uploadUserDocument(requestDto);
 		return CustomResponse.success(ResponseCode.SUCCESS);
 	}
 }

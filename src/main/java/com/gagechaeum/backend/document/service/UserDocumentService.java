@@ -5,7 +5,8 @@ import java.io.IOException;
 
 public interface UserDocumentService {
 	void uploadUserDocument(
-		UserDocumentUploadRequestDto requestDto,
-		CustomUser user
+		UserDocumentUploadRequestDto requestDto
+//		UserDocumentUploadRequestDto requestDto,
+//		CustomUser user
 	) throws IOException;
 }
