@@ -1,5 +1,8 @@
 package com.gagechaeum.backend.user.dto;
 
+import com.gagechaeum.backend.user.domain.User;
+import com.gagechaeum.backend.user.exception.signup.PasswordMismatchException;
+import com.gagechaeum.backend.user.exception.signup.ValidationFailedException;
 import lombok.Data;
 
 
@@ -8,12 +11,14 @@ public class UserJoinRequestDTO {
     private String email;
     private String password;
     private String passwordConfirm;
+    private String nickname;
+    private String phone;
 
     public void validate() {
         // 이메일 형식 검사
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         if (!email.matches(emailRegex)) {
-            throw new InvalidEmailFormatException();
+            throw new ValidationFailedException();
         }
 
         // 비밀번호 확인
@@ -24,7 +29,7 @@ public class UserJoinRequestDTO {
         // 비밀번호 형식 검사
         String pwRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,}$";
         if (!password.matches(pwRegex)) {
-            throw new InvalidPasswordFormatException();
+            throw new ValidationFailedException();
         }
     }
 

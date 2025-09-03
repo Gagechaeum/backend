@@ -1,4 +1,4 @@
-package org.scoula.security.config;
+package com.gagechaeum.backend.security.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -15,8 +15,8 @@ public class SecurityInitializer extends AbstractSecurityWebApplicationInitializ
         return filter;
     }
 
-    @Override
-    protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
-        insertFilters(servletContext, encodingFilter(), new MultipartFilter());
-    }
+//    @Override
+//    protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
+//        insertFilters(servletContext, encodingFilter(), new MultipartFilter());
+//    }
 }

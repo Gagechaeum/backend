@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gagechaeum.backend.security.account.mapper.UserDetailsMapper">
+
+
+    <resultMap id="userResultMap" type="com.gagechaeum.backend.user.domain.User">
+        <id property="userId" column="user_id"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="nick" column="nickname"/> <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="social" column="social"/>
+        <result property="socialId" column="social_id"/>
+        <result property="deletedAt" column="deleted_at"/>
+        <result property="isVerified" column="is_verified"/>
+    </resultMap>
+
+    <select id="get" resultType="com.gagechaeum.backend.user.domain.User">
+        SELECT * FROM users where email=#{email}
+    </select>
+
+</mapper>

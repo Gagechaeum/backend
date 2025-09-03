@@ -1,8 +1,10 @@
 package com.gagechaeum.backend.user.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import java.time.LocalDateTime;
 
+@Data
 @Getter
 public class User {
     private Long userId;
