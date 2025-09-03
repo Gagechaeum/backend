@@ -4,16 +4,19 @@ import com.gagechaeum.backend.common.util.S3ClientUtil;
 import com.gagechaeum.backend.document.domain.UserDocument;
 import com.gagechaeum.backend.document.dto.UserDocumentDownloadResponseDto;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
+import com.gagechaeum.backend.document.dto.response.UserDocumentResponseDTO;
 import com.gagechaeum.backend.document.mapper.UserDocumentMapper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -21,7 +24,18 @@ import org.springframework.stereotype.Service;
 public class UserDocumentServiceImpl implements UserDocumentService {
     private final UserDocumentMapper userDocumentMapper;
     private final S3ClientUtil s3ClientUtil;
-    
+
+    // 내 서류 목록 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserDocumentResponseDTO> getUserDocuments(Long userId) {
+        // userDocumentMapper에 findUserDocumentsByUserId 메소드를 만들어야 합니다.
+        List<UserDocument> userDocuments = userDocumentMapper.findUserDocumentsByUserId(userId);
+        return userDocuments.stream()
+                .map(UserDocumentResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public void uploadUserDocument(
         UserDocumentUploadRequestDto requestDto
