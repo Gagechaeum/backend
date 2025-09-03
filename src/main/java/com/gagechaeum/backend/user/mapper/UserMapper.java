@@ -15,10 +15,6 @@ public interface UserMapper {
     void resetPassword(User user);
     void insertUserChallengeSummary(@Param("userId") Long userId);
     void updateIsActive(@Param("id") Long id);
-    Boolean getIsPin(Long userId);
-
-    void updatePin(User user);
-    String getPin(@Param("userId") Long userId);
 
     // 이메일 인증
     void updateIsVerifiedByEmail(@Param("email") String email, @Param("isVerified") boolean isVerified);

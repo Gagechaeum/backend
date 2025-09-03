@@ -2,9 +2,12 @@ package com.gagechaeum.backend.user.service;
 
 import com.gagechaeum.backend.common.mail.MailService;
 import com.gagechaeum.backend.common.redis.RedisService;
+import com.gagechaeum.backend.global.exception.BusinessException;
+import com.gagechaeum.backend.global.exception.ErrorCode;
 import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
 import com.gagechaeum.backend.security.util.JwtUtil;
 import com.gagechaeum.backend.user.domain.User;
+import com.gagechaeum.backend.user.dto.PasswordChangeDTO;
 import com.gagechaeum.backend.user.dto.TokenResponseDTO;
 import com.gagechaeum.backend.user.dto.UserJoinRequestDTO;
 import com.gagechaeum.backend.user.dto.UserResponseDTO;
@@ -235,9 +238,39 @@ public class UserServiceImpl implements UserService {
         User u = userMapper.findByEmail(email);
         if (u == null) throw new UserNotFoundException();
         String temp = UUID.randomUUID().toString().substring(0,8); // 임시 비밀번호 생성
+        mailService.sendVerificationCode(email, temp);
         u.setPassword(encoder.encode(temp)); // 암호화
         userMapper.updatePassword(u); // DB에 저장
-        return temp;  // TODO: 이메일 발송으로 대체
+        return temp;
+    }
+
+    @Override
+    public String changePassword(String email, PasswordChangeDTO pwdChangeDTO) {
+        // 1. 사용자 정보 조회
+        User user = userMapper.findByEmail(email);
+        if (user == null) {
+            // 이메일이 DB에 없는 경우는 거의 없겠지만, 방어적으로 코딩
+            throw new UserNotFoundException();
+        }
+
+        // 현재 비밀번호 일치 여부 확인
+        if (!encoder.matches(pwdChangeDTO.getOldPassword(), user.getPassword())) {
+            throw new InvalidPasswordException(); // "비밀번호가 일치하지 않습니다."
+        }
+
+        // 새 비밀번호와 확인용 비밀번호가 일치하는지 확인
+        if (!pwdChangeDTO.getNewPassword().equals(pwdChangeDTO.getConfirmPassword())) {
+            // INVALID_PASSWORD의 메시지("비밀번호가 일치하지 않습니다.")를 재사용
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        String encodedNewPassword = encoder.encode(pwdChangeDTO.getNewPassword());
+        user.setPassword(encodedNewPassword); // User 객체에 setter가 필요합니다.
+        userMapper.updatePassword(user);
+
+        log.info("✔️ 비밀번호 변경 완료: {}", email);
+
+        return "비밀번호가 성공적으로 변경되었습니다.";
     }
 
 

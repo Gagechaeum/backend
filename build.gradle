@@ -41,8 +41,16 @@ dependencies {
     implementation ("org.springframework:spring-context:${springVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
+
     implementation "org.springframework:spring-webmvc:${springVersion}"
     implementation 'javax.inject:javax.inject:1'
+
+    // JavaMailSender 지원 (메일 기능)
+    implementation "org.springframework:spring-context-support:${springVersion}"
+
+    // Javax Mail & Activation (Spring 5.x는 javax.* 라인 사용)
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+    implementation 'com.sun.activation:javax.activation:1.2.0'
 
     // AOP
     runtimeOnly 'org.aspectj:aspectjrt:1.9.20'

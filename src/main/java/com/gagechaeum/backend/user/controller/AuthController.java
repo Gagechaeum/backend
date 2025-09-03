@@ -4,6 +4,7 @@ import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.global.exception.BusinessException;
 import com.gagechaeum.backend.global.exception.ErrorCode;
+import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
 import com.gagechaeum.backend.security.util.CookieUtil;
 import com.gagechaeum.backend.user.dto.TokenResponseDTO;
 import com.gagechaeum.backend.user.service.UserService;

@@ -20,7 +20,10 @@ public enum ResponseCode {
     // --- 이메일 인증 관련 성공 코드 ---
     EMAIL_VERIFICATION_REQUEST_SUCCESS(HttpStatus.OK, "인증 코드가 이메일로 발송되었습니다."),
     EMAIL_VERIFICATION_CONFIRM_SUCCESS(HttpStatus.OK, "이메일 인증이 완료되었습니다."),
-    EMAIL_VERIFICATION_STATUS_SUCCESS(HttpStatus.OK, "이메일 인증 상태 확인에 성공했습니다.");
+    EMAIL_VERIFICATION_STATUS_SUCCESS(HttpStatus.OK, "이메일 인증 상태 확인에 성공했습니다."),
+    TOKEN_REISSUE_SUCCESS(HttpStatus.OK,"토큰 재발급에 성공했습니다." ),
+    LOGOUT_SUCCESS(HttpStatus.OK,"로그아웃에 성공했습니다." );
+
 
 
     private final HttpStatus httpStatus;

@@ -18,10 +18,6 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
-    // ## 권한 정보 (수정 제안) ##
-    // 현재는 'ROLE_USER'로 고정되어 있습니다.
-    // 향후 User 객체에 role 필드가 추가되면, 그 값을 동적으로 읽어오도록 수정해야 합니다.
-    // 예: return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
@@ -56,8 +52,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // [중요] 기존 user.getDeletedAt() != null 논리는 반대로 되어 있어 수정했습니다.
-        boolean isNotDeleted = user.getDeletedAt() == null;
-        return isNotDeleted && user.getIsVerified();
+       return user.getDeletedAt() == null;
+    }
+
+    public Long getUserId() {
+        return user.getUserId();
     }
 }
