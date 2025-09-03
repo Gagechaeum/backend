@@ -273,10 +273,14 @@ CREATE TABLE required_documents (
 
 CREATE TABLE user_documents (
 	user_document_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+	user_id	BIGINT NOT NULL,
 	document_id	BIGINT	NOT NULL,
 	document_name VARCHAR(255) NOT NULL,
 	issued_at	DATE	NOT NULL,
 	file_url	VARCHAR(255)	NOT NULL,
+	CONSTRAINT fk_user_documents_user_id FOREIGN KEY (user_id)
+		REFERENCES users (user_id)
+		ON DELETE CASCADE,
 	CONSTRAINT fk_user_documents_document_id FOREIGN KEY (document_id)
 		REFERENCES documents (document_id)
 		ON DELETE CASCADE
