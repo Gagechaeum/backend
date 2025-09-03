@@ -1,0 +1,11 @@
+package com.gagechaeum.backend.reference.dto;
+
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class ReferenceTypeListResponseDto {
+	private List<ReferenceTypeDto> list;
+}
