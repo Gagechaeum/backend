@@ -18,9 +18,9 @@
     WHERE user_id = #{userId} AND user_document_id = #{userDocumentId}
   </select>
 
-  <delete id="deleteByUserDocumentId">
+  <delete id="deleteById" parameterType="UserDocument">
     DELETE
     FROM user_documents
-    WHERE user_document_id = #{userDocumentId}
+    WHERE user_id = #{userId} AND user_document_id = #{userDocumentId}
   </delete>
 </mapper>

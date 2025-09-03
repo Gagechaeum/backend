@@ -70,7 +70,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             try {
                 if (fileUrl != null) {
                     s3ClientUtil.deleteFile(fileUrl);
-                    userDocumentMapper.deleteByUserDocumentId(userDocumentId);
+                    userDocumentMapper.deleteById(userDocument);
                 }
             } catch (Exception e) {
                 throw new RuntimeException("파일 삭제 중 오류가 발생했습니다.");
