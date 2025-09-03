@@ -11,5 +11,6 @@
         <package name="com.gagechaeum.backend.reference.domain"/>
         <package name="com.gagechaeum.backend.reference.dto"/>
         <package name="com.gagechaeum.backend.loan.dto"/>
+        <package name="com.gagechaeum.backend.policy.domain"/>
     </typeAliases>
 </configuration>
