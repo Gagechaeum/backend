@@ -7,6 +7,7 @@ import com.gagechaeum.backend.document.service.UserDocumentService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/me/documents, consumes = MediaType.MULTIPART_FORM_DATA_VALUE")
+@RequestMapping(value = "/api/me/documents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 @RequiredArgsConstructor
 public class UserDocumentController {
 	private final UserDocumentService userDocumentService;
