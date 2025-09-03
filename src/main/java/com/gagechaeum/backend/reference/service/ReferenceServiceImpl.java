@@ -33,20 +33,23 @@ public class ReferenceServiceImpl implements ReferenceService {
 		Map<Long, RegionTypeDto> regionMap = new HashMap<>();
 		List<RegionTypeDto> topLevelRegions = new ArrayList<>();
 		
-		for (Region region : allRegions)
+		for (Region region : allRegions) {
 			regionMap.put(region.getRegionId(), RegionTypeDto.fromVo(region));
+		}
 		
 		for (Region region : allRegions) {
 			if (region.getSuperId() != null) {
 				RegionTypeDto parent = regionMap.get(region.getSuperId());
 				if (parent != null) {
-					if (parent.getChildren() == null)
+					if (parent.getChildren() == null) {
 						parent.setChildren(new ArrayList<>());
+					}
 					parent.getChildren().add(regionMap.get(region.getRegionId()));
 				}
 			}
-			else
+			else {
 				topLevelRegions.add(regionMap.get(region.getRegionId()));
+			}
 		}
 		
 		return new RegionTypeListResponseDto(topLevelRegions);
