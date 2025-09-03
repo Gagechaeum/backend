@@ -29,4 +29,18 @@
             bookmarkCount DESC, l.basic_rate ASC -- 즐겨찾기 많은 순, 같다면 금리 낮은 순
     </select>
 
+    <select id="getLoanById" resultType="LoanDetailResponseDto">
+        SELECT *
+        FROM loans
+        WHERE loan_id = #{loanId}
+    </select>
+
+    <select id="getRatesByLoanId" resultType="RateDto">
+        SELECT
+            rate_id, rate_type, average_rate,
+            rate_range1, rate_range2, rate_range3, rate_range4,
+            rate_range5, rate_range6, rate_range7, rate_range8
+        FROM rates
+        WHERE loan_id = #{loanId}
+    </select>
 </mapper>

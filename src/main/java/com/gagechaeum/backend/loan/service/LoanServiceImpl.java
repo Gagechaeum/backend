@@ -1,6 +1,7 @@
 package com.gagechaeum.backend.loan.service;
 
 import com.gagechaeum.backend.loan.domain.Loan;
+import com.gagechaeum.backend.loan.dto.response.LoanDetailResponseDto;
 import com.gagechaeum.backend.loan.dto.response.LoanInfoDTO;
 import com.gagechaeum.backend.loan.dto.response.LoanRecommendationResponseDTO;
 import com.gagechaeum.backend.loan.mapper.LoanMapper;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +29,16 @@ public class LoanServiceImpl implements LoanService {
                 .collect(Collectors.toList());
 
         return LoanRecommendationResponseDTO.from(loanInfos);
+    }
+    
+    @Override
+    public LoanDetailResponseDto getLoanDetails(@PathVariable("loan_id") Long loanId) {
+        LoanDetailResponseDto responseDto = loanMapper.getLoanById(loanId);
+        if (responseDto == null) {
+            throw new IllegalArgumentException("대출 상품이 존재하지 않습니다.");
+        }
+        
+        responseDto.setRateByCredit(loanMapper.getRatesByLoanId(loanId));
+        return responseDto;
     }
 }
