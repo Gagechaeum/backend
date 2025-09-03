@@ -82,7 +82,7 @@ public class ReportServiceImpl implements ReportService {
                 .build();
     }
 
-    // --- 섹션별 계산 메서드 (이하 로직은 이전과 거의 동일) ---
+    // --- 섹션별 계산 메서드 ---
 
     private DashboardResponseDTO.Summary calculateSummary(List<UserPolicy> policies, List<Repayment> repayments, LocalDate now) {
         YearMonth currentMonth = YearMonth.from(now);
@@ -118,22 +118,38 @@ public class ReportServiceImpl implements ReportService {
         Stream<DashboardResponseDTO.Schedule> repaymentStream = loans.stream()
                 .filter(l -> l.getNextRepayDate() != null && !l.getNextRepayDate().isBefore(now) && l.getNextRepayDate().isBefore(twoWeeksLater))
                 .map(l -> {
-                    long amount = 0;
+                    long principalAmount = 0; // 상환 원금
+                    long interestAmount = 0;  // 납부 이자
+
+                    // 1. 매월 납부할 이자 계산 (공통)
+                    if (l.getBalanceAmount() > 0 && l.getLastOfferedRate() != null && l.getLastOfferedRate().compareTo(BigDecimal.ZERO) > 0) {
+                        BigDecimal monthlyInterest = new BigDecimal(l.getBalanceAmount())
+                                .multiply(l.getLastOfferedRate())
+                                .divide(new BigDecimal("1200"), 0, RoundingMode.DOWN); // (잔액 * 연이율/100) / 12
+                        interestAmount = monthlyInterest.longValue();
+                    }
+
+                    // 2. 상환 방식에 따른 원금 계산
                     if ("원금균등분할상환".equals(l.getRepayMethod())) {
                         long monthsBetween = ChronoUnit.MONTHS.between(l.getIssueDate(), l.getExpiryDate());
                         if (monthsBetween > 0) {
-                            amount = l.getLoanPrincipal() / monthsBetween;
+                            principalAmount = l.getLoanPrincipal() / monthsBetween;
                         }
                     } else if ("만기일시상환".equals(l.getRepayMethod())) {
-                        if (l.getExpiryDate().isBefore(twoWeeksLater)) {
-                            amount = l.getBalanceAmount();
+                        // 다음 상환일이 만기일과 같다면 원금 전체를 상환
+                        if (l.getNextRepayDate().isEqual(l.getExpiryDate())) {
+                            principalAmount = l.getBalanceAmount();
                         }
                     }
+
+                    // 3. 최종 납부 금액 = 원금 + 이자
+                    long totalAmount = principalAmount + interestAmount;
+
                     return DashboardResponseDTO.Schedule.builder()
                             .type("REPAYMENT")
                             .name(l.getProductName())
                             .date(l.getNextRepayDate())
-                            .amount(amount)
+                            .amount(totalAmount)
                             .build();
                 });
 
@@ -175,7 +191,7 @@ public class ReportServiceImpl implements ReportService {
                 .map(p -> {
                     DashboardResponseDTO.Details details = DashboardResponseDTO.Details.builder()
                             .paymentDateInfo(p.getFirstPaymentDate() != null ? "매월 " + p.getFirstPaymentDate().getDayOfMonth() + "일" : "지급일 정보 없음")
-                            .totalBenefitAmount(p.getTotalAmount().longValue()) // 총 지원금 계산 로직 필요
+                            .totalBenefitAmount(p.getTotalAmount().longValue())
                             .build();
 
                     return DashboardResponseDTO.AllItem.builder()
@@ -192,8 +208,14 @@ public class ReportServiceImpl implements ReportService {
 
         Stream<DashboardResponseDTO.AllItem> loanStream = loans.stream()
                 .map(l -> {
-                    BigDecimal repaymentRate = BigDecimal.ONE
-                            .subtract(new BigDecimal(l.getBalanceAmount()).divide(new BigDecimal(l.getLoanPrincipal()), 4, RoundingMode.HALF_UP));
+                    BigDecimal repaymentRate;
+                    if (l.getLoanPrincipal() > 0) {
+                        repaymentRate = BigDecimal.ONE
+                                .subtract(new BigDecimal(l.getBalanceAmount()).divide(new BigDecimal(l.getLoanPrincipal()), 4, RoundingMode.HALF_UP));
+                    } else {
+                        repaymentRate = BigDecimal.ZERO;
+                    }
+
 
                     DashboardResponseDTO.Details details = DashboardResponseDTO.Details.builder()
                             .repaymentMethod(l.getRepayMethod())
@@ -217,6 +239,4 @@ public class ReportServiceImpl implements ReportService {
                 .sorted(Comparator.comparing(DashboardResponseDTO.AllItem::getItemId))
                 .collect(Collectors.toList());
     }
-
-    
 }
