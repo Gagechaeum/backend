@@ -67,9 +67,13 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             
             String fileUrl = userDocumentMapper.getFileUrlById(userDocument);
             
-            if (fileUrl != null) {
-                s3ClientUtil.deleteFile(fileUrl);
-                userDocumentMapper.deleteByUserDocumentId(userDocumentId);
+            try {
+                if (fileUrl != null) {
+                    s3ClientUtil.deleteFile(fileUrl);
+                    userDocumentMapper.deleteByUserDocumentId(userDocumentId);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("파일 삭제 중 오류가 발생했습니다.");
             }
         }
     }
