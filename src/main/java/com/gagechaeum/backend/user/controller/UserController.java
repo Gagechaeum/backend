@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/me")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -46,7 +47,15 @@ public class UserController {
                 .body(CustomResponse.success(ResponseCode.SIGNUP_SUCCESS, userResponse));
     }
 
-    @PostMapping("/password-reset")
+    @PutMapping("/password-change")
+    public ResponseEntity<CustomResponse<String>> changePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody PasswordChangeDTO request) {
+        String tempPassword = userService.changePassword(userDetails.getUsername(), request);
+        return ResponseEntity
+                .status(ResponseCode.PASSWORD_RESET_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.PASSWORD_RESET_SUCCESS, tempPassword));
+    }
+
+    @PutMapping("/password-reset")
     public ResponseEntity<CustomResponse<String>> resetPassword(@RequestBody UserEmailRequestDTO request) {
         String tempPassword = userService.resetPassword(request.getEmail());
         return ResponseEntity

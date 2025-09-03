@@ -22,20 +22,41 @@ public class MailService {
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setFrom(from);
             msg.setTo(to);
-            msg.setSubject("[FinPick] 이메일 인증 코드");
+            msg.setSubject("가게채움 이메일 인증 코드");
             msg.setText("""
-                    안녕하세요, FinPick 입니다.
+                    안녕하세요, 가게채움 입니다.
 
-                    아래 인증 코드를 5분 이내에 입력해주세요.
+                    인증 코드를 5분 이내에 입력해주세요.
 
                     인증코드: %s
 
-                    만약 본인이 요청하지 않았다면 이 메일을 무시하셔도 됩니다.
                     """.formatted(code));
             mailSender.send(msg);
-            log.info("📧 인증코드 메일 발송 성공: {}", to);
+            log.info("인증코드 메일 발송 성공: {}", to);
         } catch (Exception e) {
-            log.error("📧 인증코드 메일 발송 실패: {}", e.getMessage(), e);
+            log.error("인증코드 메일 발송 실패: {}", e.getMessage(), e);
+            throw new RuntimeException("메일 발송 중 오류가 발생했습니다.");
+        }
+    }
+
+    public void sendPasswordChaged(String to, String code) {
+        try {
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setFrom(from);
+            msg.setTo(to);
+            msg.setSubject("가게채움 임시비밀번호");
+            msg.setText("""
+                    안녕하세요, 가게채움 입니다.
+
+                    인증 코드를 5분 이내에 입력해주세요.
+
+                    인증코드: %s
+
+                    """.formatted(code));
+            mailSender.send(msg);
+            log.info("임시 비밀번호 발송 성공: {}", to);
+        } catch (Exception e) {
+            log.error("임시 비밀번호 발송 실패: {}", e.getMessage(), e);
             throw new RuntimeException("메일 발송 중 오류가 발생했습니다.");
         }
     }

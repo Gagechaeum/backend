@@ -54,7 +54,7 @@ public class AuthController {
             @CookieValue(value = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response
     ) {
-        // 💡 실패 시: BusinessException을 발생시켜 처리를 위임
+        // 실패 시: BusinessException을 발생시켜 처리를 위임
         if (refreshToken == null || refreshToken.isBlank()) {
             throw new BusinessException(ErrorCode.JWT_TOKEN_INVALID, "리프레시 토큰이 존재하지 않습니다.");
         }

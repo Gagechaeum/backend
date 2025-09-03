@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService {
         User u = userMapper.findByEmail(email);
         if (u == null) throw new UserNotFoundException();
         String temp = UUID.randomUUID().toString().substring(0,8); // 임시 비밀번호 생성
-        mailService.sendVerificationCode(email, temp);
+        mailService.sendPasswordChaged(email, temp);
         u.setPassword(encoder.encode(temp)); // 암호화
         userMapper.updatePassword(u); // DB에 저장
         return temp;
@@ -246,10 +246,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String changePassword(String email, PasswordChangeDTO pwdChangeDTO) {
-        // 1. 사용자 정보 조회
+        // 사용자 정보 조회
         User user = userMapper.findByEmail(email);
         if (user == null) {
-            // 이메일이 DB에 없는 경우는 거의 없겠지만, 방어적으로 코딩
             throw new UserNotFoundException();
         }
 
@@ -260,12 +259,12 @@ public class UserServiceImpl implements UserService {
 
         // 새 비밀번호와 확인용 비밀번호가 일치하는지 확인
         if (!pwdChangeDTO.getNewPassword().equals(pwdChangeDTO.getConfirmPassword())) {
-            // INVALID_PASSWORD의 메시지("비밀번호가 일치하지 않습니다.")를 재사용
+            // INVALID_PASSWORD의 메시지를 재사용
             throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
 
         String encodedNewPassword = encoder.encode(pwdChangeDTO.getNewPassword());
-        user.setPassword(encodedNewPassword); // User 객체에 setter가 필요합니다.
+        user.setPassword(encodedNewPassword);
         userMapper.updatePassword(user);
 
         log.info("✔️ 비밀번호 변경 완료: {}", email);

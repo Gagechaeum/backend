@@ -4,6 +4,9 @@ package com.gagechaeum.backend.global.config;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.servlet.Filter;
+
+import com.gagechaeum.backend.common.mail.MailConfig;
+import com.gagechaeum.backend.common.redis.RedisConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -16,12 +19,12 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { AppConfig.class, SecurityConfig.class };
+        return new Class[] { AppConfig.class, SecurityConfig.class, RedisConfig.class, MailConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { ServletConfig.class };
+        return new Class[] { ServletConfig.class, SwaggerConfig.class };
     }
 
     @Override
