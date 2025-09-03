@@ -40,14 +40,13 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             requestDto.getDocumentName();
         String s3Url = s3ClientUtil.uploadFile(requestDto.getFile(), key);
         
-        UserDocument userDocument = UserDocument.
-            builder().
-            userId(userId).
-//            userId(user.getId()).
-            documentId(requestDto.getDocumentId()).
-            issuedAt(requestDto.getIssuedAt()).
-            fileUrl(s3Url).
-            build();
+        UserDocument userDocument = UserDocument
+            .builder().userId(userId)
+//            .userId(user.getId())
+            .documentId(requestDto.getDocumentId())
+            .issuedAt(requestDto.getIssuedAt())
+            .fileUrl(s3Url)
+            .build();
         
         userDocumentMapper.insert(userDocument);
     }
