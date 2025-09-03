@@ -1,8 +1,8 @@
 package com.gagechaeum.backend.document.service;
 
-import com.gagechaeum.backend.document.dto.UserDocumentDeleteRequestDto;
+import com.gagechaeum.backend.document.dto.UserDocumentDownloadResponseDto;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
-import java.io.IOException;
+import java.util.List;
 
 public interface UserDocumentService {
 	void uploadUserDocument(
@@ -10,8 +10,13 @@ public interface UserDocumentService {
 //		CustomUser user
 	);
 	
-	void deleteUserDocument(
-		UserDocumentDeleteRequestDto requestDto
+	UserDocumentDownloadResponseDto downloadUserDocuments(
+		List<Long> ids
+//		CustomUser user
+	);
+	
+	void deleteUserDocuments(
+		List<Long> ids
 //		CustomUser user
 	);
 }
