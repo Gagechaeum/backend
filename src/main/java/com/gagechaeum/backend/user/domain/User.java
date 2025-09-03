@@ -15,4 +15,5 @@ public class User {
     private String social;
     private String socialId;
     private LocalDateTime deletedAt;
+    private Boolean isVerified;
 }

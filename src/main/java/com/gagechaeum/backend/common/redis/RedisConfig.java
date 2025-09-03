@@ -1,4 +1,4 @@
-package org.scoula.common.redis;
+package com.gagechaeum.backend.common.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

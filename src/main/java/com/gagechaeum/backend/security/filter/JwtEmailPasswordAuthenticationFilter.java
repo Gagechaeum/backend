@@ -1,9 +1,10 @@
-package org.scoula.security.filter;
+package com.gagechaeum.backend.security.filter;
 
+import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
+import com.gagechaeum.backend.security.handler.LoginFailureHandler;
+import com.gagechaeum.backend.security.handler.LoginSuccessHandler;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.security.account.dto.UserLoginRequestDTO;
-import org.scoula.security.handler.LoginFailureHandler;
-import org.scoula.security.handler.LoginSuccessHandler;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,9 +1,10 @@
-package org.scoula.user.exception.auth;
+package com.gagechaeum.backend.user.exception.auth;
 
-import org.scoula.common.exception.BaseException;
+import com.gagechaeum.backend.global.exception.BusinessException;
+import com.gagechaeum.backend.global.exception.ErrorCode;
 
-public class ExpiredTokenException extends BaseException {
+public class ExpiredTokenException extends BusinessException {
     public ExpiredTokenException() {
-        super("토큰이 만료되었습니다. 다시 로그인해주세요.", 401);
+        super(ErrorCode.JWT_TOKEN_EXPIRED);
     }
 }

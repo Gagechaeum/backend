@@ -1,8 +1,9 @@
-package org.scoula.security.account.domain;
+package com.gagechaeum.backend.security.account.domain;
 
+import com.gagechaeum.backend.user.domain.User;
 import lombok.Getter;
-import org.scoula.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -17,11 +18,13 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
-    // 권한이 여러 개인 경우 확장 가능
+    // ## 권한 정보 (수정 제안) ##
+    // 현재는 'ROLE_USER'로 고정되어 있습니다.
+    // 향후 User 객체에 role 필드가 추가되면, 그 값을 동적으로 읽어오도록 수정해야 합니다.
+    // 예: return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String roleName = (user.getRole() != null) ? user.getRole().name() : "USER";
-        return Collections.singleton(() -> "ROLE_" + roleName);
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -31,8 +34,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();  // email = username 역할
+        return user.getEmail();
     }
+
+    // ## 계정 상태 메서드 ##
 
     @Override
     public boolean isAccountNonExpired() {
@@ -51,18 +56,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getIsActive();  // 활동 여부
+        // [중요] 기존 user.getDeletedAt() != null 논리는 반대로 되어 있어 수정했습니다.
+        boolean isNotDeleted = user.getDeletedAt() == null;
+        return isNotDeleted && user.getIsVerified();
     }
-
-    // 커스텀 getter (선택)
-    public Long getUserId() {
-        return user.getId();
-    }
-
-    public String getUserName() {
-        return user.getUserName();
-    }
-
-    public String getPin(){return user.getAuthPw();}
-
 }

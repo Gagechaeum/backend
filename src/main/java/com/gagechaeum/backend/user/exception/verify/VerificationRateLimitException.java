@@ -1,10 +1,10 @@
-package org.scoula.user.exception.verify;
+package com.gagechaeum.backend.user.exception.verify;
 
-import org.scoula.common.exception.BaseException;
+import com.gagechaeum.backend.global.exception.BusinessException;
+import com.gagechaeum.backend.global.exception.ErrorCode;
 
-public class VerificationRateLimitException extends BaseException {
+public class VerificationRateLimitException extends BusinessException {
     public VerificationRateLimitException() {
-        // 전송 제한/쿨타임 → 429
-        super("인증 메일 전송 제한에 도달했습니다. 잠시 후 다시 시도해주세요.", 429);
+        super(ErrorCode.VERIFICATION_RATE_LIMITED);
     }
 }

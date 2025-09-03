@@ -1,4 +1,4 @@
-package org.scoula.security.util;
+package com.gagechaeum.backend.security.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

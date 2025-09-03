@@ -1,4 +1,4 @@
-package org.scoula.security.account.dto;
+package com.gagechaeum.backend.security.account.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

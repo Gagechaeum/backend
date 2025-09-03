@@ -1,4 +1,4 @@
-package org.scoula.security.account.dto;
+package com.gagechaeum.backend.security.account.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +11,4 @@ public class AuthResultDTO {
     private String accessToken;
     private String refreshToken;
     private UserInfoDTO user;
-    private String NickName;
 }

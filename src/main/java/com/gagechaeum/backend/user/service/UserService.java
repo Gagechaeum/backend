@@ -1,11 +1,13 @@
-package org.scoula.user.service;
+package com.gagechaeum.backend.user.service;
 
-import org.scoula.security.account.dto.UserLoginRequestDTO;
-import org.scoula.user.dto.*;
-import org.scoula.user.domain.User;
+import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
+import com.gagechaeum.backend.user.domain.User;
+import com.gagechaeum.backend.user.dto.TokenResponseDTO;
+import com.gagechaeum.backend.user.dto.UserJoinRequestDTO;
+import com.gagechaeum.backend.user.dto.UserResponseDTO;;
 
 public interface UserService {
-    User getTestUser();
+
     boolean isEmailDuplicated(String email);
     UserResponseDTO registerUser(UserJoinRequestDTO req);
     TokenResponseDTO login(UserLoginRequestDTO req);
@@ -13,11 +15,6 @@ public interface UserService {
     String resetPassword(String email);
     void logout(String token);
     void withdrawal(String token);
-    void checkAndLevelUp(Long userId);
-    void setPin(Long userId, PinRequestDTO pinRequestDTO);
-    void resetPin(Long userId, PinRequestDTO pinRequestDTO);
-    void pinLogin(String email, Long userId, PinRequestDTO pinRequestDTO);
-    Boolean isPin(Long userId);
 
     // 이메일 인증
     void requestEmailVerification(String email);

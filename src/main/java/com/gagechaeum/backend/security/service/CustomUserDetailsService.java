@@ -1,11 +1,12 @@
-package org.scoula.security.service;
+package com.gagechaeum.backend.security.service;
 
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
+import com.gagechaeum.backend.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.security.account.domain.CustomUserDetails;
+
 import org.scoula.security.account.mapper.UserDetailsMapper;
-import org.scoula.user.domain.User;
-import org.scoula.user.mapper.UserStatusMapper;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,4 +1,4 @@
-package org.scoula.security.util;
+package com.gagechaeum.backend.security.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,8 @@
-package org.scoula.security.handler;
+package com.gagechaeum.backend.security.handler;
 
+import com.gagechaeum.backend.security.util.JsonResponse;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.security.util.JsonResponse;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

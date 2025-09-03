@@ -1,11 +1,11 @@
-package org.scoula.security.filter;
+package com.gagechaeum.backend.security.filter;
 
+import com.gagechaeum.backend.security.Exception.BlackListException;
+import com.gagechaeum.backend.security.util.JsonResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
-import org.scoula.security.Exception.BlackListException;
-import org.scoula.security.util.JsonResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,7 +26,7 @@ public class AuthenticationErrorFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException e) {
             JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED, "토큰의 유효시간이 지났습니다.");
         } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | BlackListException e) {
-            JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED, e.getMessage());
+            JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED,"");
         } catch (ServletException e) {
             JsonResponse.sendError(response, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

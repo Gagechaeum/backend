@@ -1,6 +1,7 @@
-package org.scoula.security.handler;
+package com.gagechaeum.backend.security.handler;
 
-import org.scoula.security.util.JsonResponse;
+
+import com.gagechaeum.backend.security.util.JsonResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;

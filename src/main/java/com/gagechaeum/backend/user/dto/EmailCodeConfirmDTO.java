@@ -1,4 +1,4 @@
-package org.scoula.user.dto;
+package com.gagechaeum.backend.user.dto;
 import lombok.Data;
 
 @Data

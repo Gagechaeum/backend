@@ -1,4 +1,4 @@
-package org.scoula.common.redis;
+package com.gagechaeum.backend.common.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.scoula.security.util.JwtUtil;

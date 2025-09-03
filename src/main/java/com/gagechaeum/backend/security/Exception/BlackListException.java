@@ -1,4 +1,4 @@
-package org.scoula.security.Exception;
+package com.gagechaeum.backend.security.Exception;
 
 import org.springframework.security.core.AuthenticationException;
 

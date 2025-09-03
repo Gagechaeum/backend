@@ -1,15 +1,15 @@
-package org.scoula.security.config;
+package com.gagechaeum.backend.security.config;
 
+import com.gagechaeum.backend.security.filter.AuthenticationErrorFilter;
+import com.gagechaeum.backend.security.filter.JwtAuthenticationFilter;
+import com.gagechaeum.backend.security.filter.JwtEmailPasswordAuthenticationFilter;
+import com.gagechaeum.backend.security.handler.CustomAccessDeniedHandler;
+import com.gagechaeum.backend.security.handler.CustomAuthenticationEntryPoint;
+import com.gagechaeum.backend.security.handler.LoginFailureHandler;
+import com.gagechaeum.backend.security.handler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
-import org.scoula.security.filter.AuthenticationErrorFilter;
-import org.scoula.security.filter.JwtAuthenticationFilter;
-import org.scoula.security.filter.JwtEmailPasswordAuthenticationFilter;
-import org.scoula.security.handler.CustomAccessDeniedHandler;
-import org.scoula.security.handler.CustomAuthenticationEntryPoint;
-import org.scoula.security.handler.LoginFailureHandler;
-import org.scoula.security.handler.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -40,11 +40,10 @@ import java.util.List;
 @Slf4j
 // (3) 매퍼 스캔 경로 확장
 @MapperScan(basePackages = {
-        "org.scoula.security.account.mapper",
-        "org.scoula.coin.mapper",
-        "org.scoula.challenge.rank.mapper"
+        "com.gagechaeum.backend.security.account.mapper",
+
 })
-@ComponentScan(basePackages = {"org.scoula.security"})
+@ComponentScan(basePackages = {"com.gagechaeum.backend.security"})
 @RequiredArgsConstructor
 @SuppressWarnings("deprecation")
 @EnableGlobalMethodSecurity(prePostEnabled = true)

@@ -1,9 +1,10 @@
-package org.scoula.user.exception.verify;
+package com.gagechaeum.backend.user.exception.verify;
 
-import org.scoula.common.exception.BaseException;
+import com.gagechaeum.backend.global.exception.BusinessException;
+import com.gagechaeum.backend.global.exception.ErrorCode;
 
-public class EmailAlreadyVerifiedException extends BaseException {
+public class EmailAlreadyVerifiedException extends BusinessException {
     public EmailAlreadyVerifiedException() {
-        super("이미 인증된 이메일입니다.", 409);
+        super(ErrorCode.EMAIL_ALREADY_VERIFIED);
     }
 }

@@ -1,4 +1,4 @@
-package org.scoula.common.redis;
+package com.gagechaeum.backend.common.redis;
 
 import java.util.concurrent.TimeUnit;
 

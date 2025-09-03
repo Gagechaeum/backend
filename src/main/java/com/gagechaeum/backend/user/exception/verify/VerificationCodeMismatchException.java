@@ -1,10 +1,10 @@
-package org.scoula.user.exception.verify;
+package com.gagechaeum.backend.user.exception.verify;
 
-import org.scoula.common.exception.BaseException;
+import com.gagechaeum.backend.global.exception.BusinessException;
+import com.gagechaeum.backend.global.exception.ErrorCode;
 
-public class VerificationCodeMismatchException extends BaseException {
+public class VerificationCodeMismatchException extends BusinessException {
     public VerificationCodeMismatchException() {
-        // 잘못된 입력 → 400
-        super("인증 코드가 일치하지 않습니다.", 400);
+        super(ErrorCode.VERIFICATION_CODE_MISMATCH);
     }
 }

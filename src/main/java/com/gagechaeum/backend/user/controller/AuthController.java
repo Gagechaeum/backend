@@ -1,20 +1,22 @@
-package org.scoula.user.controller;
+package com.gagechaeum.backend.user.controller;
 
+import com.gagechaeum.backend.common.response.CustomResponse;
+import com.gagechaeum.backend.common.response.ResponseCode;
+import com.gagechaeum.backend.global.exception.BusinessException;
+import com.gagechaeum.backend.global.exception.ErrorCode;
+import com.gagechaeum.backend.security.util.CookieUtil;
+import com.gagechaeum.backend.user.dto.TokenResponseDTO;
+import com.gagechaeum.backend.user.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.scoula.common.redis.RedisService;
-import org.scoula.common.dto.CommonResponseDTO;
-import org.scoula.security.account.domain.CustomUserDetails;
-import org.scoula.security.account.dto.UserLoginRequestDTO;
-import org.scoula.security.util.CookieUtil;
-import org.scoula.user.dto.PinRequestDTO;
-import org.scoula.user.dto.TokenResponseDTO;
-import org.scoula.user.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import com.gagechaeum.backend.common.redis.RedisService;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,13 +31,14 @@ public class AuthController {
     private final RedisService redisService;
 
     @PostMapping("/test-login")
-    public CommonResponseDTO<TokenResponseDTO> login(@RequestBody UserLoginRequestDTO request) {
+    public ResponseEntity<CustomResponse<TokenResponseDTO>> login(@RequestBody UserLoginRequestDTO request) {
         log.info("🛂 로그인 컨트롤러 진입");
         TokenResponseDTO token = userService.login(request);
-        return CommonResponseDTO.success("로그인 성공", token);
+        return ResponseEntity
+                .status(ResponseCode.LOGIN_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.LOGIN_SUCCESS, token));
     }
 
-    // AuthController.refresh 위에 추가 (스웨거 문서 노출용)
     @ApiImplicitParams({
             @ApiImplicitParam(
                     name = "Cookie",
@@ -44,52 +47,46 @@ public class AuthController {
                     paramType = "header"
             )
     })
+
     @PostMapping("/refresh")
-    public CommonResponseDTO<Void> refresh(
+    public ResponseEntity<CustomResponse<Void>> refresh(
             @CookieValue(value = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response
     ) {
+        // 💡 실패 시: BusinessException을 발생시켜 처리를 위임
         if (refreshToken == null || refreshToken.isBlank()) {
-            return CommonResponseDTO.error("리프레시 토큰 없음", 401);
+            throw new BusinessException(ErrorCode.JWT_TOKEN_INVALID, "리프레시 토큰이 존재하지 않습니다.");
         }
 
-        // 서비스에서 새 AT/RT 생성
         TokenResponseDTO token = userService.refresh(refreshToken);
 
-        // ★ 새 AT는 헤더로 전달
         response.setHeader("Authorization", "Bearer " + token.getAccessToken());
-
-        // ★ RT 회전(선택) — 보안권장. 회전 안 하면 아래 3줄 생략 가능
-        org.scoula.security.util.CookieUtil.addHttpOnlyCookie(
+        CookieUtil.addHttpOnlyCookie(
                 response, "refreshToken", token.getRefreshToken(),
-                7 * 24 * 60 * 60,  // Max-Age=7일
-                false,             // Secure=false (HTTP)
-                "Lax"              // SameSite=Lax
+                7 * 24 * 60 * 60, false, "Lax"
         );
 
-        // 바디엔 토큰 안 넣음
-        return CommonResponseDTO.success("토큰 재발급 성공");
+        return ResponseEntity
+                .status(ResponseCode.TOKEN_REISSUE_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.TOKEN_REISSUE_SUCCESS));
     }
 
-    /**
-     * 로그아웃: AT 블랙리스트/RT 삭제 + RT 쿠키 제거
-     * 요청 헤더: Authorization: Bearer <accessToken>
-     */
     @PostMapping("/logout")
-    public CommonResponseDTO<Void> logout(
+    public ResponseEntity<CustomResponse<Void>> logout(
             @RequestHeader("Authorization") String bearerToken,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         userService.logout(bearerToken);
 
-        // ★ RT 쿠키 삭제 (개발/운영 구분)
         boolean isDev = request.getServerName().contains("localhost");
         String sameSite = isDev ? "Lax" : "None";
         boolean secure = !isDev;
         CookieUtil.deleteCookie(response, "refreshToken", secure, sameSite);
 
-        return CommonResponseDTO.success("로그아웃 성공");
+        return ResponseEntity
+                .status(ResponseCode.LOGOUT_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.LOGOUT_SUCCESS));
     }
 
     @GetMapping("/test-redis")
@@ -99,16 +96,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public void swaggerLoginForDocs(@RequestBody UserLoginRequestDTO request) {
-        throw new IllegalStateException("swagger 상 필터호출을 위한 엔드포인트입니다.");
+        throw new IllegalStateException("이 엔드포인트는 Swagger 문서화를 위한 것이며, 직접 호출할 수 없습니다.");
     }
 
-
-    //pin 로그인
-    @ApiOperation(value = "간편비밀번호 로그인", notes = "오픈뱅킹")
-    @PostMapping("/pin/login")
-    public CommonResponseDTO<Void> pinLogin(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PinRequestDTO pinRequestDTO) {
-        userService.pinLogin(userDetails.getUsername(), userDetails.getUserId(), pinRequestDTO);
-        return CommonResponseDTO.success("간편 비밀번호 로그인이 성공했습니다.");
-    }
 
 }

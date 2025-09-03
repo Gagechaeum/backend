@@ -1,16 +1,18 @@
-package org.scoula.security.handler;
+package com.gagechaeum.backend.security.handler;
 
+import com.gagechaeum.backend.common.redis.RedisService;
+import com.gagechaeum.backend.common.response.CustomResponse;
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
+import com.gagechaeum.backend.security.account.dto.AuthResultDTO;
+import com.gagechaeum.backend.security.account.dto.UserInfoDTO;
+import com.gagechaeum.backend.security.util.CookieUtil;
+import com.gagechaeum.backend.security.util.JsonResponse;
+import com.gagechaeum.backend.security.util.JwtUtil;
+import com.gagechaeum.backend.common.response.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.scoula.common.dto.CommonResponseDTO;
-import org.scoula.common.redis.RedisService;
-import org.scoula.security.account.dto.AuthResultDTO;
-import org.scoula.security.account.dto.UserInfoDTO;
-import org.scoula.security.account.domain.CustomUserDetails;
-import org.scoula.security.util.CookieUtil;
-import org.scoula.security.util.JwtUtil;
-import org.scoula.security.util.JsonResponse;
-import org.scoula.user.mapper.UserStatusMapper;
+
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtUtil jwtUtil;
     private final RedisService redisService;
-    private final UserStatusMapper userStatusMapper;
 
     @Override
     public void onAuthenticationSuccess(
@@ -36,7 +37,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 1) 사용자 정보
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getUser().getId();
+        Long userId = userDetails.getUser().getUserId();
         String email = userDetails.getUsername();
 
         // 2) 토큰 생성
@@ -67,17 +68,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 6) 응답 바디(토큰은 포함하지 않음)
         UserInfoDTO userInfo = UserInfoDTO.from(userDetails.getUser());
-        String nickname = userStatusMapper.getNickname(userId);
 
-        AuthResultDTO result = new AuthResultDTO(
+        AuthResultDTO result = new AuthResultDTO    (
                 null,               // accessToken 바디 미포함
                 null,               // refreshToken 바디 미포함
-                userInfo,
-                nickname
+                userInfo
         );
 
-        CommonResponseDTO<AuthResultDTO> body =
-                CommonResponseDTO.success("로그인 성공", result);
+        CustomResponse<AuthResultDTO> body =
+                CustomResponse.success(ResponseCode.LOGIN_SUCCESS, result);
 
         JsonResponse.send(response, body);
     }

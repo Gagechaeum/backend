@@ -1,9 +1,10 @@
-package org.scoula.security.filter;
+package com.gagechaeum.backend.security.filter;
 
+import com.gagechaeum.backend.common.redis.RedisService;
+import com.gagechaeum.backend.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.common.redis.RedisService;
-import org.scoula.security.util.JwtUtil;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

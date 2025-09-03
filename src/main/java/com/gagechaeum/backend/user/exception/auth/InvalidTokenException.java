@@ -1,9 +1,10 @@
-package org.scoula.user.exception.auth;
+package com.gagechaeum.backend.user.exception.auth;
 
-import org.scoula.common.exception.BaseException;
+import com.gagechaeum.backend.global.exception.BusinessException;
+import com.gagechaeum.backend.global.exception.ErrorCode;
 
-public class InvalidTokenException extends BaseException {
+public class InvalidTokenException extends BusinessException {
     public InvalidTokenException() {
-        super("유효하지 않은 토큰입니다.", 401);
+        super(ErrorCode.JWT_TOKEN_INVALID);
     }
 }

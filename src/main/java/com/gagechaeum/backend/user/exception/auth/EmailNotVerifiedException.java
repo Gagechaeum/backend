@@ -3,9 +3,9 @@ package com.gagechaeum.backend.user.exception.auth;
 import com.gagechaeum.backend.global.exception.BusinessException;
 import com.gagechaeum.backend.global.exception.ErrorCode;
 
-public class EmailNotFoundException extends BusinessException {
+public class EmailNotVerifiedException extends BusinessException {
+    public EmailNotVerifiedException() {
 
-    public EmailNotFoundException() {
-        super(ErrorCode.USER_NOT_FOUND);
+        super(ErrorCode.EMAIL_NOT_VERIFIED);
     }
 }

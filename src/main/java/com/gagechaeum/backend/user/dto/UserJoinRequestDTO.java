@@ -1,10 +1,7 @@
-package org.scoula.user.dto;
+package com.gagechaeum.backend.user.dto;
 
 import lombok.Data;
-import org.scoula.user.domain.User;
-import org.scoula.user.exception.signup.InvalidEmailFormatException;
-import org.scoula.user.exception.signup.InvalidPasswordFormatException;
-import org.scoula.user.exception.signup.PasswordMismatchException;
+
 
 @Data
 public class UserJoinRequestDTO {
