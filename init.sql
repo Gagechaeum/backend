@@ -93,15 +93,15 @@ CREATE TABLE policies (
 		REFERENCES regions (region_id)
 );
 
-CREATE TABLE policy_scrap_counts (
-	policy_scrap_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE policy_bookmark_counts (
+	policy_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	policy_id	VARCHAR(255)	NOT NULL	COMMENT '공고의 서비스ID',
 	industry_id	BIGINT	NOT NULL,
-	scrap_count	BIGINT	NOT NULL	DEFAULT 0,
-	CONSTRAINT fk_policy_scrap_counts_policy_id FOREIGN KEY (policy_id)
+	bookmark_count	BIGINT	NOT NULL	DEFAULT 0,
+	CONSTRAINT fk_policy_bookmark_counts_policy_id FOREIGN KEY (policy_id)
 		REFERENCES policies (policy_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_policy_scrap_counts_industry_id FOREIGN KEY (industry_id)
+	CONSTRAINT fk_policy_bookmark_counts_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE
 );
@@ -144,15 +144,15 @@ CREATE TABLE rates (
 		ON DELETE CASCADE
 );
 
-CREATE TABLE loan_scrap_counts (
-	loan_scrap_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE loan_bookmark_counts (
+	loan_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	loan_id	BIGINT	NOT NULL,
 	industry_id	BIGINT	NOT NULL	COMMENT '업종 코드',
-	scrap_count	BIGINT	NOT NULL	DEFAULT 0,
-	CONSTRAINT fk_loan_scrap_counts_loan_id FOREIGN KEY (loan_id)
+	bookmark_count	BIGINT	NOT NULL	DEFAULT 0,
+	CONSTRAINT fk_loan_bookmark_counts_loan_id FOREIGN KEY (loan_id)
 		REFERENCES loans (loan_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_loan_scrap_counts_industry_id FOREIGN KEY (industry_id)
+	CONSTRAINT fk_loan_bookmark_counts_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE
 );
@@ -224,26 +224,26 @@ CREATE TABLE repayments (
 );
 
 -- 즐겨찾기
-CREATE TABLE user_policy_scraps (
-	scrap_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE user_policy_bookmarks (
+	bookmark_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	policy_id	VARCHAR(255)	NOT NULL,
-	CONSTRAINT fk_user_policy_scraps_user_id FOREIGN KEY (user_id)
+	CONSTRAINT fk_user_policy_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_user_policy_scraps_policy_id FOREIGN KEY (policy_id)
+	CONSTRAINT fk_user_policy_bookmarks_policy_id FOREIGN KEY (policy_id)
 		REFERENCES policies (policy_id)
 		ON DELETE CASCADE
 );
 
-CREATE TABLE user_loan_scraps (
-	scrap_loan_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE user_loan_bookmarks (
+	bookmark_loan_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	loan_id	BIGINT	NOT NULL,
-	CONSTRAINT fk_user_loan_scraps_user_id FOREIGN KEY (user_id)
+	CONSTRAINT fk_user_loan_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_user_loan_scraps_loan_id FOREIGN KEY (loan_id)
+	CONSTRAINT fk_user_loan_bookmarks_loan_id FOREIGN KEY (loan_id)
 		REFERENCES loans (loan_id)
 		ON DELETE CASCADE
 );
