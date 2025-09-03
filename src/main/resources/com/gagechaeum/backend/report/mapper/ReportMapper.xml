@@ -35,6 +35,12 @@
         <result property="paidDate" column="paid_date"/>
     </resultMap>
 
+    <!-- PolicySearchResult 도메인 객체 매핑 -->
+    <resultMap id="policySearchResultMap" type="com.gagechaeum.backend.report.domain.PolicySearchResult">
+        <result property="policyId" column="policy_id"/>
+        <result property="policyName" column="policy_name"/>
+    </resultMap>
+
 
     <!-- findUserPoliciesByUserId 쿼리 -->
     <select id="findUserPoliciesByUserId" parameterType="long" resultMap="userPolicyResultMap">
@@ -86,6 +92,19 @@
         <foreach item="item" index="index" collection="userLoanIds" open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+
+    <!-- searchPoliciesByName 쿼리 -->
+    <select id="searchPoliciesByName" parameterType="string" resultMap="policySearchResultMap">
+        SELECT
+            policy_id,
+            policy_name
+        FROM
+            policies
+        WHERE
+            policy_name LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY
+            policy_name ASC
     </select>
 
 </mapper>

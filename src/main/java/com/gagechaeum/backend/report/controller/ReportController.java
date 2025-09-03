@@ -3,13 +3,17 @@ package com.gagechaeum.backend.report.controller;
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.report.dto.response.DashboardResponseDTO;
+import com.gagechaeum.backend.report.dto.response.PolicySearchResponseDTO;
 import com.gagechaeum.backend.report.service.ReportService;
 // import com.gagechaeum.backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reports")
@@ -30,5 +34,13 @@ public class ReportController {
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getHttpStatus())
                 .body(CustomResponse.success(ResponseCode.SUCCESS, dashboardData));
+    }
+
+    @GetMapping("/search")
+    public CustomResponse<List<PolicySearchResponseDTO>> searchPolicies(
+            @RequestParam String keyword
+    ) {
+        List<PolicySearchResponseDTO> response = reportService.searchPolicies(keyword);
+        return CustomResponse.success(ResponseCode.SUCCESS, response);
     }
 }
