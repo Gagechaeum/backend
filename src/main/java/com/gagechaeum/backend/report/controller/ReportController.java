@@ -46,7 +46,6 @@ public class ReportController {
         Long userId = 1L; // 테스트용 임시 사용자 ID
         DashboardResponseDTO dashboardData = reportService.getDashboardData(userId);
 
-        // 알려주신 ResponseCode.SUCCESS를 사용하여 응답을 생성합니다.
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getHttpStatus())
                 .body(CustomResponse.success(ResponseCode.SUCCESS, dashboardData));
