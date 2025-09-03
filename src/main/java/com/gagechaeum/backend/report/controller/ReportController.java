@@ -34,8 +34,8 @@ public class ReportController {
         Long userId = 1L; // 테스트용 임시 사용자 ID
         reportService.createUserPolicy(userId, requestDTO);
         return ResponseEntity
-                .status(ResponseCode.SUCCESS_CREATE.getHttpStatus())
-                .body(CustomResponse.success(ResponseCode.SUCCESS_CREATE));
+                .status(ResponseCode.SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.SUCCESS));
     }
 
     @GetMapping("/dashboard")
