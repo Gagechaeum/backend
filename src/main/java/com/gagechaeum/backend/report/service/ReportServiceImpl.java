@@ -17,6 +17,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,23 +56,13 @@ public class ReportServiceImpl implements ReportService {
         // --- 1. 데이터 조회 ---
         List<UserPolicy> userPolicies = reportMapper.findUserPoliciesByUserId(userId);
 
-        // [중요] 마이데이터 연동 여부 플래그
-        boolean isMyDataReady = false;
-
-        List<UserLoan> userLoans;
+        List<UserLoan> userLoans = reportMapper.findUserLoansByUserId(userId);
         List<Repayment> repayments;
-
-        if (isMyDataReady) {
-            userLoans = reportMapper.findUserLoansByUserId(userId);
-            if (userLoans.isEmpty()) {
-                repayments = Collections.emptyList();
-            } else {
-                List<Long> userLoanIds = userLoans.stream().map(UserLoan::getUserLoanId).collect(Collectors.toList());
-                repayments = reportMapper.findRepaymentsByUserLoanIds(userLoanIds);
-            }
+        if (userLoans.isEmpty()) {
+            repayments = Collections.emptyList();
         } else {
-            userLoans = createMockUserLoans();
-            repayments = createMockRepayments();
+            List<Long> userLoanIds = userLoans.stream().map(UserLoan::getUserLoanId).collect(Collectors.toList());
+            repayments = reportMapper.findRepaymentsByUserLoanIds(userLoanIds);
         }
 
         // --- 2. 데이터 가공 ---
@@ -126,12 +117,25 @@ public class ReportServiceImpl implements ReportService {
 
         Stream<DashboardResponseDTO.Schedule> repaymentStream = loans.stream()
                 .filter(l -> l.getNextRepayDate() != null && !l.getNextRepayDate().isBefore(now) && l.getNextRepayDate().isBefore(twoWeeksLater))
-                .map(l -> DashboardResponseDTO.Schedule.builder()
-                        .type("REPAYMENT")
-                        .name(l.getProductName())
-                        .date(l.getNextRepayDate())
-                        .amount(850000) // Mock 상환 금액
-                        .build());
+                .map(l -> {
+                    long amount = 0;
+                    if ("원금균등분할상환".equals(l.getRepayMethod())) {
+                        long monthsBetween = ChronoUnit.MONTHS.between(l.getIssueDate(), l.getExpiryDate());
+                        if (monthsBetween > 0) {
+                            amount = l.getLoanPrincipal() / monthsBetween;
+                        }
+                    } else if ("만기일시상환".equals(l.getRepayMethod())) {
+                        if (l.getExpiryDate().isBefore(twoWeeksLater)) {
+                            amount = l.getBalanceAmount();
+                        }
+                    }
+                    return DashboardResponseDTO.Schedule.builder()
+                            .type("REPAYMENT")
+                            .name(l.getProductName())
+                            .date(l.getNextRepayDate())
+                            .amount(amount)
+                            .build();
+                });
 
         return Stream.concat(benefitStream, repaymentStream)
                 .sorted(Comparator.comparing(DashboardResponseDTO.Schedule::getDate))
@@ -214,35 +218,5 @@ public class ReportServiceImpl implements ReportService {
                 .collect(Collectors.toList());
     }
 
-    // --- Mock 데이터 생성 메서드 ---
-
-    private List<UserLoan> createMockUserLoans() {
-        return List.of(
-                UserLoan.builder()
-                        .userLoanId(101L)
-                        .productName("주택담보대출")
-                        .issueDate(LocalDate.of(2023, 6, 1))
-                        .expiryDate(LocalDate.of(2033, 5, 31))
-                        .balanceAmount(170000000L)
-                        .loanPrincipal(200000000L)
-                        .repayMethod("분할상환")
-                        .lastOfferedRate(new BigDecimal("3.5"))
-                        .nextRepayDate(LocalDate.now().withDayOfMonth(10))
-                        .build()
-        );
-    }
-
-    private List<Repayment> createMockRepayments() {
-        List<Repayment> mockRepayments = new ArrayList<>();
-        // 최근 6개월간의 Mock 상환 데이터 생성
-        for(int i=0; i<6; i++) {
-            mockRepayments.add(Repayment.builder()
-                    .repaymentId(201L + i)
-                    .userLoanId(101L)
-                    .paidDate(LocalDate.now().minusMonths(i).withDayOfMonth(10))
-                    .amount(850000)
-                    .build());
-        }
-        return mockRepayments;
-    }
+    
 }
