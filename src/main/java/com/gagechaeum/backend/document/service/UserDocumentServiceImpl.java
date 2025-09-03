@@ -2,6 +2,7 @@ package com.gagechaeum.backend.document.service;
 
 import com.gagechaeum.backend.common.util.S3ClientUtil;
 import com.gagechaeum.backend.document.domain.UserDocument;
+import com.gagechaeum.backend.document.dto.UserDocumentDeleteRequestDto;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
 import com.gagechaeum.backend.document.mapper.UserDocumentMapper;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         UserDocumentUploadRequestDto requestDto
 //        UserDocumentUploadRequestDto requestDto,
 //        CustomUser user
-    ) throws IOException {
+    ) {
         if (requestDto.getFile() == null ||
             requestDto.getFile().isEmpty() ||
             requestDto.getDocumentId() == null ||
@@ -31,23 +32,33 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             throw new IllegalArgumentException("파일과 메타데이터는 필수값이며, 빈 파일은 허용되지 않습니다.");
         }
         
-        Long userId = 1L;
+        Long userId = 1L; // TODO: CustomUser ID로 변경
         
         String key = "userDocuments/" +
             userId + "/" +
 //            user.getId() + "/" +
             requestDto.getDocumentId() + "/" +
             requestDto.getDocumentName();
-        String s3Url = s3ClientUtil.uploadFile(requestDto.getFile(), key);
         
-        UserDocument userDocument = UserDocument
-            .builder().userId(userId)
+        try {
+            String s3Url = s3ClientUtil.uploadFile(requestDto.getFile(), key);
+            
+            UserDocument userDocument = UserDocument
+                .builder().userId(userId)
 //            .userId(user.getId())
-            .documentId(requestDto.getDocumentId())
-            .issuedAt(requestDto.getIssuedAt())
-            .fileUrl(s3Url)
-            .build();
-        
-        userDocumentMapper.insert(userDocument);
+                .documentId(requestDto.getDocumentId())
+                .issuedAt(requestDto.getIssuedAt())
+                .fileUrl(s3Url)
+                .build();
+            
+            userDocumentMapper.insert(userDocument);
+            
+        } catch (IOException e) {
+            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.");
+        }
+    }
+    
+    public void deleteUserDocument(UserDocumentDeleteRequestDto requestDto) {
+    
     }
 }

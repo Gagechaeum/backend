@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.document.service;
 
+import com.gagechaeum.backend.document.dto.UserDocumentDeleteRequestDto;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
 import java.io.IOException;
 
@@ -8,5 +9,7 @@ public interface UserDocumentService {
 		UserDocumentUploadRequestDto requestDto
 //		UserDocumentUploadRequestDto requestDto,
 //		CustomUser user
-	) throws IOException;
+	);
+	
+	void deleteUserDocument(UserDocumentDeleteRequestDto requestDto);
 }
