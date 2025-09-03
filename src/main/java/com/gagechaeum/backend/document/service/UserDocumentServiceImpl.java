@@ -136,7 +136,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             return baos.toByteArray();
             
         } catch (IOException e) {
-            throw new RuntimeException("파일 다운로드 중 오류가 발생했습니다.");
+            throw new RuntimeException("파일 다운로드 중 오류가 발생했습니다.", e);
         }
     }
     
@@ -158,7 +158,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             
             zipOutputStream.closeEntry();
         } catch (IOException e) {
-            log.error("파일 다운로드에 실패했습니다: " + userDocument.getDocumentName());
+            log.error("파일 다운로드에 실패했습니다: " + userDocument.getDocumentName(), e);
         }
     }
 }

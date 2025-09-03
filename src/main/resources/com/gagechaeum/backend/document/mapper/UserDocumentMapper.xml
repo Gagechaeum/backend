@@ -13,13 +13,13 @@
   </insert>
 
   <select id="getById" resultType="UserDocument">
-    SELECT document_id, document_name, issued_at, file_key
+    SELECT user_document_id, document_id, document_name, issued_at, file_key
     FROM user_documents
     WHERE user_id = #{userId} AND user_document_id = #{userDocumentId}
   </select>
 
   <select id="getFileKeyById" resultType="java.lang.String">
-    SELECT file_url
+    SELECT file_key
     FROM user_documents
     WHERE user_id = #{userId} AND user_document_id = #{userDocumentId}
   </select>
