@@ -16,9 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReferenceController {
 	private final ReferenceService referenceService;
 	
-	@GetMapping("/document/types")
+	@GetMapping("/documents/types")
 	public CustomResponse<Object> getDocumentTypes() {
 		Object response = referenceService.getDocumentTypes();
+		return CustomResponse.success(ResponseCode.SUCCESS, response);
+	}
+	
+	@GetMapping("/industries/types")
+	public CustomResponse<Object> getIndustryTypes() {
+		Object response = referenceService.getIndustryTypes();
+		return CustomResponse.success(ResponseCode.SUCCESS, response);
+	}
+	
+	@GetMapping("/regions/types")
+	public CustomResponse<Object> getRegionTypes() {
+		Object response = referenceService.getRegionTypes();
 		return CustomResponse.success(ResponseCode.SUCCESS, response);
 	}
 }
