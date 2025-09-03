@@ -97,8 +97,8 @@ public class ReportServiceImpl implements ReportService {
         YearMonth currentMonth = YearMonth.from(now);
 
         long benefit = policies.stream()
-                .filter(p -> p.getDepositDate() != null && YearMonth.from(p.getDepositDate()).equals(currentMonth))
-                .mapToLong(UserPolicy::getApprovedAmount)
+                .filter(p -> p.getFirstPaymentDate() != null && YearMonth.from(p.getFirstPaymentDate()).equals(currentMonth))
+                .mapToLong(UserPolicy::getMonthlyAmount)
                 .sum();
 
         long repayment = repayments.stream()
@@ -116,12 +116,12 @@ public class ReportServiceImpl implements ReportService {
         LocalDate twoWeeksLater = now.plusWeeks(2);
 
         Stream<DashboardResponseDTO.Schedule> benefitStream = policies.stream()
-                .filter(p -> p.getDepositDate() != null && !p.getDepositDate().isBefore(now) && p.getDepositDate().isBefore(twoWeeksLater))
+                .filter(p -> p.getFirstPaymentDate() != null && !p.getFirstPaymentDate().isBefore(now) && p.getFirstPaymentDate().isBefore(twoWeeksLater))
                 .map(p -> DashboardResponseDTO.Schedule.builder()
                         .type("BENEFIT")
                         .name(p.getPolicyName())
-                        .date(p.getDepositDate())
-                        .amount(p.getApprovedAmount())
+                        .date(p.getFirstPaymentDate())
+                        .amount(p.getMonthlyAmount())
                         .build());
 
         Stream<DashboardResponseDTO.Schedule> repaymentStream = loans.stream()
@@ -143,8 +143,8 @@ public class ReportServiceImpl implements ReportService {
         YearMonth startMonth = YearMonth.from(now).minusMonths(5);
 
         Map<YearMonth, Long> monthlyBenefits = policies.stream()
-                .filter(p -> p.getDepositDate() != null)
-                .collect(Collectors.groupingBy(p -> YearMonth.from(p.getDepositDate()), Collectors.summingLong(UserPolicy::getApprovedAmount)));
+                .filter(p -> p.getFirstPaymentDate() != null)
+                .collect(Collectors.groupingBy(p -> YearMonth.from(p.getFirstPaymentDate()), Collectors.summingLong(UserPolicy::getMonthlyAmount)));
 
         Map<YearMonth, Long> monthlyRepayments = repayments.stream()
                 .filter(r -> r.getPaidDate() != null)
@@ -170,16 +170,16 @@ public class ReportServiceImpl implements ReportService {
         Stream<DashboardResponseDTO.AllItem> policyStream = policies.stream()
                 .map(p -> {
                     DashboardResponseDTO.Details details = DashboardResponseDTO.Details.builder()
-                            .paymentDateInfo(p.getDepositDate() != null ? "매월 " + p.getDepositDate().getDayOfMonth() + "일" : "지급일 정보 없음")
-                            .totalBenefitAmount(p.getApprovedAmount() * 12) // 총 지원금 계산 로직 필요
+                            .paymentDateInfo(p.getFirstPaymentDate() != null ? "매월 " + p.getFirstPaymentDate().getDayOfMonth() + "일" : "지급일 정보 없음")
+                            .totalBenefitAmount(p.getTotalAmount().longValue()) // 총 지원금 계산 로직 필요
                             .build();
 
                     return DashboardResponseDTO.AllItem.builder()
                             .type("POLICY")
                             .itemId(p.getUserPolicyId())
                             .name(p.getPolicyName())
-                            .period(p.getPolicyBeginDate().format(formatter) + " ~ " + p.getPolicyEndDate().format(formatter))
-                            .amount(p.getApprovedAmount())
+                            .period(p.getStartDate().format(formatter) + " ~ " + p.getEndDate().format(formatter))
+                            .amount(p.getMonthlyAmount())
                             .amountLabel("월")
                             .status("진행중")
                             .details(details)

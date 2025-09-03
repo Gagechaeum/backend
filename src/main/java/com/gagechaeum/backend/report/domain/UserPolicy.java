@@ -23,10 +23,7 @@ public class UserPolicy {
 
     // Joined fields
     private String policyName;
-    private String status; // This seems to be from the old structure, keeping for now
-    private Long approvedAmount; // This seems to be from the old structure, keeping for now
-    private LocalDate depositDate; // This seems to be from the old structure, keeping for now
-    private LocalDate policyBeginDate; // This seems to be from the old structure, keeping for now
-    private LocalDate policyEndDate; // This seems to be from the old structure, keeping for now
+
+    
 
 }
