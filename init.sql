@@ -18,7 +18,7 @@ CREATE TABLE users (
 	social_id	VARCHAR(255)	NOT NULL	COMMENT '소셜 계정',
 	deleted_at	DATETIME	NULL,
 	notification	BOOLEAN	NOT NULL	DEFAULT true,
-	profile_image_key	VARCHAR(255)	NULL
+	profile_image_url	VARCHAR(255)	NULL
 );
 
 -- 지역
@@ -271,12 +271,17 @@ CREATE TABLE required_documents (
 		ON DELETE CASCADE
 );
 
-CREATE TABLE uploaded_documents (
-	uploaded_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE user_documents (
+	user_document_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+	user_id	BIGINT NOT NULL,
 	document_id	BIGINT	NOT NULL,
+	document_name VARCHAR(255) NOT NULL,
 	issued_at	DATE	NOT NULL,
-	file_key	VARCHAR(255)	NOT NULL,
-	CONSTRAINT fk_uploaded_documents_document_id FOREIGN KEY (document_id)
+	file_url	VARCHAR(255)	NOT NULL,
+	CONSTRAINT fk_user_documents_user_id FOREIGN KEY (user_id)
+		REFERENCES users (user_id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_user_documents_document_id FOREIGN KEY (document_id)
 		REFERENCES documents (document_id)
 		ON DELETE CASCADE
 );
@@ -320,7 +325,7 @@ CREATE TABLE chat_messages (
 CREATE TABLE chat_attachments (
 	attachment_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	message_id	BIGINT	NOT NULL,
-	file_key	VARCHAR(255)	NOT NULL,
+	file_url	VARCHAR(255)	NOT NULL,
 	file_type	VARCHAR(255)	NOT NULL	COMMENT '"IMAGE", "VIDEO", "AUDIO", "PDF", "DOCX", ...',
 	file_name	VARCHAR(255)	NOT NULL,
 	file_size	BIGINT	NOT NULL,
