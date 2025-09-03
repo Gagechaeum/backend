@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.policy.service;
 
+import com.gagechaeum.backend.policy.dto.response.PolicyDetailResponseDto;
 import com.gagechaeum.backend.policy.domain.Policy;
 import com.gagechaeum.backend.policy.dto.response.PolicyInfoDTO;
 import com.gagechaeum.backend.policy.dto.response.PolicyRecommendationResponseDTO;
@@ -27,5 +28,14 @@ public class PolicyServiceImpl implements PolicyService {
                 .collect(Collectors.toList());
 
         return PolicyRecommendationResponseDTO.from(policyInfos);
+    }
+    
+    @Override
+    public PolicyDetailResponseDto getPolicyDetails(String policyId) {
+        Policy policy = policyMapper.getPolicyById(policyId);
+        if (policy == null) {
+            throw new IllegalArgumentException("정책이 존재하지 않습니다.");
+        }
+        return PolicyDetailResponseDto.fromVo(policy);
     }
 }

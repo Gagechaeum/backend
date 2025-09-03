@@ -61,4 +61,9 @@
         </foreach>
     </select>
 
+    <select id="getPolicyById" resultType="Policy">
+      SELECT *
+      FROM policies
+      WHERE policy_id = #{policyId}
+    </select>
 </mapper>

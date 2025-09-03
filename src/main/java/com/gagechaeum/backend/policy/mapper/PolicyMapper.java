@@ -10,4 +10,6 @@ public interface PolicyMapper {
     List<Policy> findRecommendedPoliciesByUserId(@Param("userId") Long userId);
 
     void saveOrUpdatePolicy(Policy policy);
+    
+    Policy getPolicyById(String loanId);
 }

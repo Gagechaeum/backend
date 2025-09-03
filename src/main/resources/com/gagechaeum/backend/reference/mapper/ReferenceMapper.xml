@@ -12,4 +12,16 @@
     FROM documents
   </select>
 
+  <select id="getIndustryTypes" resultType="ReferenceTypeDto">
+    SELECT
+      industry_id AS id,
+      name
+    FROM industry
+  </select>
+
+  <select id="getRegionTypes" resultType="Region">
+    SELECT *
+    FROM regions
+  </select>
+
 </mapper>
