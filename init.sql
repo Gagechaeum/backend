@@ -92,6 +92,7 @@ CREATE TABLE policies (
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
 		REFERENCES regions (region_id)
 );
+
 ALTER TABLE policies
 	MODIFY COLUMN selection_criteria TEXT NULL;
 ALTER TABLE policies
