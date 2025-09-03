@@ -159,19 +159,20 @@ CREATE TABLE loan_scrap_counts (
 
 -- 사용자 정책
 CREATE TABLE user_policies (
-	user_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
-	user_id	BIGINT	NOT NULL,
-	policy_id	VARCHAR(255)	NULL,
-	created_at	DATETIME	NOT NULL,
-	status	VARCHAR(255)	NOT NULL,
-	approved_amount	INT	NULL,
-	deposit_date	DATE	NULL,
-	CONSTRAINT fk_user_policies_user_id FOREIGN KEY (user_id)
-		REFERENCES users (user_id)
-		ON DELETE CASCADE,
-	CONSTRAINT fk_user_policies_policy_id FOREIGN KEY (policy_id)
-		REFERENCES policies (policy_id)
-		ON DELETE SET NULL
+    user_policy_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    policy_id VARCHAR(255) NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NULL,
+    first_payment_date DATE NULL,
+    monthly_amount INT NULL, 
+    total_amount INT NULL, 
+    CONSTRAINT fk_user_policies_user_id FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_user_policies_policy_id FOREIGN KEY (policy_id)
+        REFERENCES policies (policy_id)
+        ON DELETE SET NULL
 );
 
 -- 사용자 대출
