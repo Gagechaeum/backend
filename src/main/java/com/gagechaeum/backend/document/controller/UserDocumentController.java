@@ -2,19 +2,19 @@ package com.gagechaeum.backend.document.controller;
 
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
-import com.gagechaeum.backend.document.dto.UserDocumentDeleteRequestDto;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
 import com.gagechaeum.backend.document.service.UserDocumentService;
-import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -34,13 +34,23 @@ public class UserDocumentController {
 		return CustomResponse.success(ResponseCode.SUCCESS);
 	}
 	
-	@DeleteMapping("")
-	public CustomResponse<Object> deleteUserDocument(
-		@RequestBody UserDocumentDeleteRequestDto requestDto
+	@GetMapping("/download")
+	public CustomResponse<Object> downloadUserDocuments(
+		@RequestParam List<Long> ids
 //		@AuthenticationPrincipal CustomUser user
 	) {
-//		userDocumentService.deleteUserDocument(requestDto, user);
-		userDocumentService.deleteUserDocument(requestDto);
+//		userDocumentService.downloadUserDocuments(ids, user);
+		Object response = userDocumentService.downloadUserDocuments(ids);
+		return CustomResponse.success(ResponseCode.SUCCESS, response);
+	}
+	
+	@DeleteMapping("")
+	public CustomResponse<Object> deleteUserDocuments(
+		@RequestParam List<Long> ids
+//		@AuthenticationPrincipal CustomUser user
+	) {
+//		userDocumentService.deleteUserDocuments(ids, user);
+		userDocumentService.deleteUserDocuments(ids);
 		return CustomResponse.success(ResponseCode.SUCCESS);
 	}
 }
