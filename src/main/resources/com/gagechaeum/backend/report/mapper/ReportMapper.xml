@@ -107,4 +107,9 @@
             policy_name ASC
     </select>
 
+    <insert id="insertUserPolicy" parameterType="com.gagechaeum.backend.report.domain.UserPolicy">
+         INSERT INTO user_policies (user_id, policy_id, start_date, end_date, first_payment_date, monthly_amount, total_amount)
+        VALUES (#{userId}, #{policyId}, #{startDate}, #{endDate}, #{firstPaymentDate}, #{monthlyAmount}, #{totalAmount})
+    </insert>
+
 </mapper>

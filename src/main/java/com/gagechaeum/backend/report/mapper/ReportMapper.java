@@ -22,4 +22,6 @@ public interface ReportMapper {
 
     // 정책 이름으로 정책 검색
     List<PolicySearchResult> searchPoliciesByName(@Param("keyword") String keyword);
+
+    void insertUserPolicy(UserPolicy userPolicy);
 }

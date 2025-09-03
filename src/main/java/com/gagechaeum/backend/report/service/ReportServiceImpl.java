@@ -4,6 +4,7 @@ import com.gagechaeum.backend.report.domain.PolicySearchResult;
 import com.gagechaeum.backend.report.domain.Repayment;
 import com.gagechaeum.backend.report.domain.UserLoan;
 import com.gagechaeum.backend.report.domain.UserPolicy;
+import com.gagechaeum.backend.report.dto.request.UserPolicyCreateRequestDTO;
 import com.gagechaeum.backend.report.dto.response.DashboardResponseDTO;
 import com.gagechaeum.backend.report.dto.response.PolicySearchResponseDTO;
 import com.gagechaeum.backend.report.mapper.ReportMapper;
@@ -29,6 +30,12 @@ import java.util.stream.Stream;
 public class ReportServiceImpl implements ReportService {
 
     private final ReportMapper reportMapper;
+
+    @Override
+    @Transactional
+    public void createUserPolicy(Long userId, UserPolicyCreateRequestDTO requestDTO) {
+        reportMapper.insertUserPolicy(requestDTO.toEntity(userId));
+    }
 
     @Override
     @Transactional(readOnly = true)

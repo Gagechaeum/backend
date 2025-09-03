@@ -1,17 +1,32 @@
 package com.gagechaeum.backend.report.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserPolicy {
     private Long userPolicyId;
-    private String status;
-    private Long approvedAmount;
-    private LocalDate depositDate;
+    private Long userId;
+    private String policyId;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate firstPaymentDate;
+    private Integer monthlyAmount;
+    private Integer totalAmount;
 
-    // Join된 Policy 정보
+    // Joined fields
     private String policyName;
-    private LocalDate policyBeginDate;
-    private LocalDate policyEndDate;
+    private String status; // This seems to be from the old structure, keeping for now
+    private Long approvedAmount; // This seems to be from the old structure, keeping for now
+    private LocalDate depositDate; // This seems to be from the old structure, keeping for now
+    private LocalDate policyBeginDate; // This seems to be from the old structure, keeping for now
+    private LocalDate policyEndDate; // This seems to be from the old structure, keeping for now
+
 }
