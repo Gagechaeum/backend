@@ -2,13 +2,10 @@ package com.gagechaeum.backend.reference.controller;
 
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
-import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
 import com.gagechaeum.backend.reference.service.ReferenceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
