@@ -1,7 +1,6 @@
 package com.gagechaeum.backend.user.service;
 
 import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
-import com.gagechaeum.backend.user.domain.User;
 import com.gagechaeum.backend.user.dto.PasswordChangeDTO;
 import com.gagechaeum.backend.user.dto.TokenResponseDTO;
 import com.gagechaeum.backend.user.dto.UserJoinRequestDTO;

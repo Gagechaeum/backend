@@ -11,6 +11,7 @@ public class UserJoinRequestDTO {
     private String email;
     private String password;
     private String passwordConfirm;
+    private String name;
     private String nickname;
     private String phone;
 
@@ -38,6 +39,9 @@ public class UserJoinRequestDTO {
         User user = new User();
         user.setEmail(this.email);
         user.setPassword(this.password); // 비밀번호 암호화는 Service에서 처리
+        user.setNick(this.nickname);
+        user.setName(this.name);
+        user.setPhone(this.phone);
         return user;
     }
 }

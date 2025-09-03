@@ -148,6 +148,7 @@ public class UserServiceImpl implements UserService {
         user.setIsVerified(true); // 가입 시 true로 저장
         user.setCreatedAt(LocalDateTime.now());
 
+
         // 저장
         try {
             userMapper.save(user);
