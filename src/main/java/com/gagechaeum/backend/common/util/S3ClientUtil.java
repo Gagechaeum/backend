@@ -24,7 +24,7 @@ public class S3ClientUtil {
 	}
 
 	// 파일 삭제
-//	public void deleteFile(String key) {
-//		s3Client.deleteObject(bucketName, key);
-//	}
+	public void deleteFile(String key) {
+		s3Client.deleteObject(bucketName, key);
+	}
 }

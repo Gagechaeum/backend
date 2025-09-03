@@ -27,7 +27,6 @@ public class UserDocumentController {
 	@PostMapping("")
 	public CustomResponse<Object> uploadUserDocument(
 		@ModelAttribute UserDocumentUploadRequestDto requestDto
-//		@ModelAttribute UserDocumentUploadRequestDto requestDto,
 //		@AuthenticationPrincipal CustomUser user
 	) {
 //		userDocumentService.uploadUserDocument(requestDto, user);
@@ -37,8 +36,10 @@ public class UserDocumentController {
 	
 	@DeleteMapping("")
 	public CustomResponse<Object> deleteUserDocument(
-		@ModelAttribute UserDocumentDeleteRequestDto requestDto
-	) throws IOException {
+		@RequestBody UserDocumentDeleteRequestDto requestDto
+//		@AuthenticationPrincipal CustomUser user
+	) {
+//		userDocumentService.deleteUserDocument(requestDto, user);
 		userDocumentService.deleteUserDocument(requestDto);
 		return CustomResponse.success(ResponseCode.SUCCESS);
 	}

@@ -7,9 +7,11 @@ import java.io.IOException;
 public interface UserDocumentService {
 	void uploadUserDocument(
 		UserDocumentUploadRequestDto requestDto
-//		UserDocumentUploadRequestDto requestDto,
 //		CustomUser user
 	);
 	
-	void deleteUserDocument(UserDocumentDeleteRequestDto requestDto);
+	void deleteUserDocument(
+		UserDocumentDeleteRequestDto requestDto
+//		CustomUser user
+	);
 }

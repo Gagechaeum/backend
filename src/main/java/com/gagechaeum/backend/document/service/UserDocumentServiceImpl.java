@@ -20,17 +20,9 @@ public class UserDocumentServiceImpl implements UserDocumentService {
     @Override
     public void uploadUserDocument(
         UserDocumentUploadRequestDto requestDto
-//        UserDocumentUploadRequestDto requestDto,
 //        CustomUser user
     ) {
-        if (requestDto.getFile() == null ||
-            requestDto.getFile().isEmpty() ||
-            requestDto.getDocumentId() == null ||
-            requestDto.getDocumentName() == null ||
-            requestDto.getIssuedAt() == null
-        ) {
-            throw new IllegalArgumentException("파일과 메타데이터는 필수값이며, 빈 파일은 허용되지 않습니다.");
-        }
+        requestDto.validate();
         
         Long userId = 1L; // TODO: CustomUser ID로 변경
         
@@ -58,7 +50,27 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         }
     }
     
-    public void deleteUserDocument(UserDocumentDeleteRequestDto requestDto) {
-    
+    public void deleteUserDocument(
+        UserDocumentDeleteRequestDto requestDto
+//        CustomUser user
+    ) {
+        requestDto.validate();
+        
+        Long userId = 1L; // TODO: CustomUser ID로 변경
+        
+        for (Long userDocumentId : requestDto.getUserDocumentIds()) {
+            UserDocument userDocument = UserDocument
+                .builder().userId(userId)
+//            .userId(user.getId())
+                .userDocumentId(userDocumentId)
+                .build();
+            
+            String fileUrl = userDocumentMapper.getFileUrlById(userDocument);
+            
+            if (fileUrl != null) {
+                s3ClientUtil.deleteFile(fileUrl);
+                userDocumentMapper.deleteByUserDocumentId(userDocumentId);
+            }
+        }
     }
 }

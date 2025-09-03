@@ -5,10 +5,22 @@
 
 <mapper namespace="com.gagechaeum.backend.document.mapper.UserDocumentMapper">
 
-  <insert id="insert" parameterType="com.gagechaeum.backend.document.domain.UserDocument"
+  <insert id="insert" parameterType="UserDocument"
     useGeneratedKeys="true" keyProperty="userDocumentId">
-    INSERT INTO user_documents (user_id, document_id, document_name, issued_at, file_url)
+    INSERT
+    INTO user_documents (user_id, document_id, document_name, issued_at, file_url)
     VALUES (#{userId}, #{documentId}, #{documentName}, #{issuedAt}, #{fileUrl})
   </insert>
 
+  <select id="getFileUrlById" parameterType="UserDocument" resultType="java.lang.String">
+    SELECT file_url
+    FROM user_documents
+    WHERE user_id = #{userId} AND user_document_id = #{userDocumentId}
+  </select>
+
+  <delete id="deleteByUserDocumentId">
+    DELETE
+    FROM user_documents
+    WHERE user_document_id = #{userDocumentId}
+  </delete>
 </mapper>
