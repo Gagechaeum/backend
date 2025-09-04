@@ -18,7 +18,6 @@ import com.gagechaeum.backend.user.exception.verify.VerificationCodeExpiredExcep
 import com.gagechaeum.backend.user.exception.verify.VerificationCodeMismatchException;
 import com.gagechaeum.backend.user.exception.verify.VerificationRateLimitException;
 import com.gagechaeum.backend.user.mapper.UserMapper;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +25,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -126,15 +122,28 @@ public class UserServiceImpl implements UserService {
         return Boolean.TRUE.equals(v);
     }
 
+    //닉네임 존재여부 체크
+    @Override
+    public void isNicknameExist(String nickname){
+        Boolean aBoolean=userMapper.findIsNickname(nickname);
+        if(aBoolean){
+            throw new BusinessException(ErrorCode.USER_ALREADY_EXISTS);
+        }
+    }
+
     // ===== 회원가입 시 인증검사 + is_verified=true 저장 =====
     @Override
     public UserResponseDTO registerUser(UserJoinRequestDTO req) {
-        log.info("🔒 회원가입 시도: {}", req.getEmail() + " , " + req.getPassword());
+        log.info("회원가입 시도: {}", req.getEmail() + " , " + req.getPassword());
+
+        req.validate();
 
         // 이메일 중복 검사
         if (userMapper.findByEmail(req.getEmail()) != null) {
             throw new EmailAlreadyVerifiedException();
         }
+        // 닉네임 중복 검사
+        isNicknameExist(req.getNickname());
 
         // 인증 완료 플래그 확인(필수)
         if (!isEmailVerifiedNow(req.getEmail())) {

@@ -25,20 +25,16 @@
         VALUES (#{email}, #{password}, #{nick}, #{name}, #{phone}, NOW(), #{social}, #{socialId}, #{isVerified})
     </insert>
 
-    <insert id="insertUserChallengeSummary" parameterType="long">
-        INSERT INTO user_challenge_summary (user_id, created_at, updated_at)
-        VALUES (#{userId}, NOW(), NOW())
-    </insert>
 
     <update id="updatePassword" parameterType="com.gagechaeum.backend.user.domain.User">
         UPDATE users
-        SET password = #{password},
+        SET password = #{password}
         WHERE user_id = #{userId}
     </update>
 
     <update id="resetPassword" parameterType="com.gagechaeum.backend.user.domain.User">
         UPDATE users
-        SET password = #{password},
+        SET password = #{password}
         WHERE user_id = #{userId}
     </update>
 
@@ -77,6 +73,14 @@
         SELECT is_verified
         FROM users
         WHERE email = #{email}
+    </select>
+
+    <select id="findIsNickname" resultType="boolean">
+        SELECT EXISTS (
+                   SELECT 1
+                   FROM users
+                   WHERE nickname=#{nickname};
+        )
     </select>
 
 </mapper>

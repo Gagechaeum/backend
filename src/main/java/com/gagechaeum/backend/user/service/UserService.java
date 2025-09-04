@@ -9,6 +9,9 @@ import com.gagechaeum.backend.user.dto.UserResponseDTO;;
 public interface UserService {
 
     boolean isEmailDuplicated(String email);
+
+    void isNicknameExist(String nickname);
+
     UserResponseDTO registerUser(UserJoinRequestDTO req);
     TokenResponseDTO login(UserLoginRequestDTO req);
     TokenResponseDTO refresh(String refreshToken);

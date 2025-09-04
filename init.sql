@@ -26,7 +26,7 @@ alter table users
 alter table users
     modify column social_id varchar(255) null comment '소셜 계정';
 alter table users
-    add column is_verified varchar(255) null comment '소셜 계정';
+    add column is_verified varchar(255) not null default true;
 
 -- 지역
 CREATE TABLE regions (

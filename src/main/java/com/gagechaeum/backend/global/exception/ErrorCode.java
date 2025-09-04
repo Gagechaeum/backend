@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import javax.net.ssl.HttpsURLConnection;
+
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
@@ -21,12 +23,14 @@ public enum ErrorCode {
     AUTHORIZATION_FAILED("A002", "권한이 없습니다.", HttpStatus.FORBIDDEN),
     JWT_TOKEN_INVALID("A003", "유효하지 않은 JWT 토큰입니다.", HttpStatus.UNAUTHORIZED),
     JWT_TOKEN_EXPIRED("A004", "만료된 JWT 토큰입니다.", HttpStatus.UNAUTHORIZED),
+    EMAIL_NOT_VERIFIED("A005", "이메일 인증이 완료되지 않았습니다.", HttpStatus.FORBIDDEN),
 
     // User
     USER_NOT_FOUND("U001", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     USER_ALREADY_EXISTS("U002", "이미 존재하는 사용자입니다.", HttpStatus.CONFLICT),
     INVALID_PASSWORD("U003", "비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
-    EMAIL_NOT_VERIFIED("A005", "이메일 인증이 완료되지 않았습니다.", HttpStatus.FORBIDDEN),
+    NICKNAME_ALREADY_EXISTS("U004", "이미 사용 중인 닉네임입니다.", HttpStatus.CONFLICT),
+
     // External API
     EXTERNAL_API_ERROR("E001", "외부 API 호출 중 오류가 발생했습니다.", HttpStatus.SERVICE_UNAVAILABLE),
 

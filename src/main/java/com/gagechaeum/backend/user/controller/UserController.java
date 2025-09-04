@@ -51,8 +51,8 @@ public class UserController {
     public ResponseEntity<CustomResponse<String>> changePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody PasswordChangeDTO request) {
         String tempPassword = userService.changePassword(userDetails.getUsername(), request);
         return ResponseEntity
-                .status(ResponseCode.PASSWORD_RESET_SUCCESS.getHttpStatus())
-                .body(CustomResponse.success(ResponseCode.PASSWORD_RESET_SUCCESS, tempPassword));
+                .status(ResponseCode.PASSWORD_CHANGE_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.PASSWORD_CHANGE_SUCCESS, tempPassword));
     }
 
     @PutMapping("/password-reset")
@@ -84,6 +84,15 @@ public class UserController {
         return ResponseEntity
                 .status(ResponseCode.GET_MY_INFO_SUCCESS.getHttpStatus())
                 .body(CustomResponse.success(ResponseCode.GET_MY_INFO_SUCCESS, body));
+    }
+
+    // 닉네임 존재여부 체크
+    @GetMapping("/me/isNicknameExist")
+    public ResponseEntity<CustomResponse<Void>> emailExist(@RequestParam String nickname) {
+        userService.isNicknameExist(nickname);
+        return ResponseEntity
+                .status(ResponseCode.CAN_USE_NICKNAME.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.CAN_USE_NICKNAME));
     }
 
     // --- 이메일 인증 관련 API ---
