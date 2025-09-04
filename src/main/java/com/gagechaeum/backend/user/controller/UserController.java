@@ -87,7 +87,7 @@ public class UserController {
     }
 
     // 닉네임 존재여부 체크
-    @GetMapping("/me/isNicknameExist")
+    @GetMapping("/isNicknameExist")
     public ResponseEntity<CustomResponse<Void>> emailExist(@RequestParam String nickname) {
         userService.isNicknameExist(nickname);
         return ResponseEntity

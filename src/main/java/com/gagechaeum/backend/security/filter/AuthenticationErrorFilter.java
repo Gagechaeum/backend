@@ -26,7 +26,7 @@ public class AuthenticationErrorFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException e) {
             JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED, "토큰의 유효시간이 지났습니다.");
         } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | BlackListException e) {
-            JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED,"");
+            JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED,"토큰 형식 또는 서명이 유효하지 않습니다.");
         } catch (ServletException e) {
             JsonResponse.sendError(response, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
