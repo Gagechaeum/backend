@@ -4,6 +4,7 @@ package com.gagechaeum.backend.global.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gagechaeum.backend.common.util.Constants;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -50,8 +51,8 @@ public class ServletConfig implements WebMvcConfigurer {
     @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(20971520); // 20MB
-        multipartResolver.setMaxInMemorySize(1048576); // 1MB
+        multipartResolver.setMaxUploadSize(Constants.FILE_SIZE_20MB);
+        multipartResolver.setMaxInMemorySize(Constants.FILE_SIZE_1MB);
         return multipartResolver;
     }
 

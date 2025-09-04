@@ -51,7 +51,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             s3ClientUtil.uploadFile(requestDto.getFile(), key);
             
             UserDocument userDocument = UserDocument
-                .builder().userId(userId)
+                .builder()
                 .userId(userId)
                 .documentId(requestDto.getDocumentId())
                 .documentName(requestDto.getDocumentName())

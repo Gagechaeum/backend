@@ -1,6 +1,7 @@
 package com.gagechaeum.backend.global.config;
 
 
+import com.gagechaeum.backend.common.util.Constants;
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
@@ -44,7 +45,12 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
-                new MultipartConfigElement("/tmp", 20971520, 41943040, 20971520/2)
+                new MultipartConfigElement(
+                    "/tmp",
+                    Constants.FILE_SIZE_20MB,
+                    Constants.FILE_SIZE_40MB,
+                    Constants.FILE_SIZE_10MB
+                )
         );
     }
 }
