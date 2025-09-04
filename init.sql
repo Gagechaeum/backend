@@ -168,7 +168,6 @@ CREATE TABLE user_policies (
     first_payment_date DATE NULL,
     monthly_amount INT NULL, 
     total_amount INT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT '요건확인' COMMENT '"요건확인", "서류 수집/업로드", "제출 준비", "제출 완료/결과"',
     CONSTRAINT fk_user_policies_user_id FOREIGN KEY (user_id)
         REFERENCES users (user_id)
         ON DELETE CASCADE,
@@ -197,7 +196,6 @@ CREATE TABLE user_loans (
 	loan_principal	BIGINT	NOT NULL,
 	next_repay_date	DATE	NOT NULL,
 	loan_organization	VARCHAR(255)	NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT '요건확인' COMMENT '"요건확인", "서류 수집/업로드", "제출 준비", "제출 완료/결과"',
 	CONSTRAINT fk_user_loans_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
@@ -231,6 +229,7 @@ CREATE TABLE user_policy_bookmarks (
 	bookmark_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	policy_id	VARCHAR(255)	NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT '요건확인' COMMENT '"요건확인", "서류 수집/업로드", "제출 준비", "제출 완료/결과"',
 	CONSTRAINT fk_user_policy_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
@@ -243,7 +242,8 @@ CREATE TABLE user_loan_bookmarks (
 	bookmark_loan_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	loan_id	BIGINT	NOT NULL,
-	CONSTRAINT fk_user_loan_bookmarks_user_id FOREIGN KEY (user_id)
+    status VARCHAR(20) NOT NULL DEFAULT '요건확인' COMMENT '"요건확인", "서류 수집/업로드", "제출 준비", "제출 완료/결과"',
+CONSTRAINT fk_user_loan_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
 	CONSTRAINT fk_user_loan_bookmarks_loan_id FOREIGN KEY (loan_id)
