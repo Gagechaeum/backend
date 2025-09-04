@@ -59,7 +59,7 @@
     <update id="updateSocial">
         UPDATE users
         SET name=#{name}
-        WHERE user_id=#{userId}
+        WHERE social_id=#{socialId}
     </update>
 
 

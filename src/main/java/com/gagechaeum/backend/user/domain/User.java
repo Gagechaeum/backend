@@ -21,4 +21,5 @@ public class User {
     private LocalDateTime deletedAt;
     private Boolean isVerified;
     private String profileImageKey;
+    private Boolean notification;
 }

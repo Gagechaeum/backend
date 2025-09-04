@@ -164,8 +164,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(oAuth2LoginSuccessHandler)
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService);
-
-
     }
 
     @Bean

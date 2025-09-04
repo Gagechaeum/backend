@@ -22,5 +22,5 @@ public interface UserMapper {
 
     // Oauth관련
     User findBySocialId(@Param("social") String social, @Param("socialId") String socialId);
-    void updateSocial(User user);
+    void updateSocial(@Param("name") String name, @Param("socialId") String socialId);
 }
