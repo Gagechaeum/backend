@@ -15,7 +15,12 @@ public interface UserMapper {
     void resetPassword(User user);
     void updateDeletedAt(Long id);
     Boolean findIsNickname(String nickname);
+
     // 이메일 인증
     void updateIsVerifiedByEmail(@Param("email") String email, @Param("isVerified") boolean isVerified);
     Boolean selectIsVerifiedByEmail(@Param("email") String email);
+
+    // Oauth관련
+    User findBySocialId(@Param("social") String social, @Param("socialId") String socialId);
+    void updateSocial(@Param("name") String name, @Param("socialId") String socialId);
 }

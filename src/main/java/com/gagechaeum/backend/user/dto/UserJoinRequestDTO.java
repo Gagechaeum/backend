@@ -14,6 +14,7 @@ public class UserJoinRequestDTO {
     private String name;
     private String nickname;
     private String phone;
+    private String profileImageKey;
 
     public void validate() {
         // 이메일 형식 검사
@@ -39,9 +40,10 @@ public class UserJoinRequestDTO {
         User user = new User();
         user.setEmail(this.email);
         user.setPassword(this.password); // 비밀번호 암호화는 Service에서 처리
-        user.setNick(this.nickname);
+        user.setNickname(this.nickname);
         user.setName(this.name);
         user.setPhone(this.phone);
+        user.setProfileImageKey(this.profileImageKey);
         return user;
     }
 }

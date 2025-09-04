@@ -1,4 +1,3 @@
--- 더미 데이터
 
 -- 사용자
 INSERT INTO users (user_id, email, password, nickname, name, phone, created_at, social, social_id, notification, profile_image_key)
