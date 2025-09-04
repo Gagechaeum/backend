@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gagechaeum.backend.reference.mapper.ReferenceMapper">
+
+  <select id="getDocumentTypes" resultType="ReferenceTypeDto">
+    SELECT
+        document_id AS id,
+        document_name AS name
+    FROM documents
+  </select>
+
+  <select id="getIndustryTypes" resultType="ReferenceTypeDto">
+    SELECT
+      industry_id AS id,
+      name
+    FROM industry
+  </select>
+
+  <select id="getRegionTypes" resultType="Region">
+    SELECT *
+    FROM regions
+  </select>
+
+</mapper>

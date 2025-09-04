@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum ResponseCode {
-    SUCCESS(HttpStatus.OK, "요청에 성공했습니다."),
 
     // --- User 관련 성공 코드 ---
     SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입에 성공했습니다."),
@@ -25,6 +24,9 @@ public enum ResponseCode {
     TOKEN_REISSUE_SUCCESS(HttpStatus.OK,"토큰 재발급에 성공했습니다." ),
     LOGOUT_SUCCESS(HttpStatus.OK,"로그아웃에 성공했습니다." ),
     CAN_USE_NICKNAME(HttpStatus.OK,"사용가능한 닉네임입니다.");
+
+    //200 OK
+    SUCCESS(HttpStatus.OK, "성공했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

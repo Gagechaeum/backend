@@ -123,12 +123,17 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
+
     //Swagger UI WebJar 리소스를 수동으로 추가
     add("swaggerUI", "org.webjars:swagger-ui:3.52.5")
 
     // Redis
     implementation 'org.springframework.data:spring-data-redis:2.7.18'
     implementation 'io.lettuce:lettuce-core:6.1.10.RELEASE'
+    
+    // AWS S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 
     // 기타
     implementation 'xerces:xercesImpl:2.12.2'

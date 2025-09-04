@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gagechaeum.backend.chat.mapper.ChatMapper">
+
+  <select id="getChatRooms" resultType="ChatRoomSummaryDto">
+    SELECT
+      cr.room_id,
+      cr.room_type,
+      CASE cr.room_type
+        WHEN 'industry' THEN i.name
+        WHEN 'region' THEN r.name
+        WHEN 'loan' THEN l.product_name
+        WHEN 'policy' THEN p.policy_name
+        END AS name
+    FROM chat_rooms cr
+           LEFT JOIN industry i ON cr.industry_id = i.industry_id
+           LEFT JOIN regions r ON cr.region_id = r.region_id
+           LEFT JOIN loans l ON cr.loan_id = l.loan_id
+           LEFT JOIN policies p ON cr.policy_id = p.policy_id
+    <where>
+      <if test="type != 'all'">
+        cr.room_type = #{type}
+      </if>
+    </where>
+  </select>
+
+</mapper>

@@ -2,25 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gagechaeum.backend.policy.mapper.PolicyMapper">
 
-    <select id="findRecommendedPoliciesByUserId" resultType="com.gagechaeum.backend.policy.domain.Policy" parameterType="long">
+    <select id="findRecommendedPoliciesByUserId" resultType="com.gagechaeum.backend.policy.domain.Policy">
         SELECT
-            p.policy_id AS policyId,
-            p.policy_name AS policyName,
-            p.policy_summary AS policySummary,
-            p.department_name AS departmentName,
-            p.begin_date AS beginDate,
-            p.end_date AS endDate,
+            p.*,
+            -- 사용자의 업종에 맞는 스크랩 수를 가져오고, 없으면 0으로 표시
             COALESCE(psc.scrap_count, 0) AS bookmarkCount
         FROM
             policies p
-                INNER JOIN business_info bi ON bi.user_id = #{userId}
-                LEFT JOIN policy_scrap_counts psc ON p.policy_id = psc.policy_id
+                JOIN
+            business_info bi ON bi.user_id = #{userId}
+                LEFT JOIN
+                policy_scrap_counts psc ON p.policy_id = psc.policy_id AND bi.industry_id = psc.industry_id
         WHERE
-            (p.region_id IS NULL AND p.industry_id IS NULL)
-           OR p.region_id = bi.region_id
-           OR p.industry_id = bi.industry_id
+            (p.region_id IS NULL OR p.region_id = bi.region_id)
+          AND
+            (p.industry_id IS NULL OR p.industry_id = bi.industry_id)
         ORDER BY
-            bookmarkCount DESC, p.end_date ASC
+            bookmarkCount DESC, p.end_date DESC
     </select>
 
+    <insert id="saveOrUpdatePolicy" parameterType="com.gagechaeum.backend.policy.domain.Policy">
+        INSERT INTO policies (
+            policy_id, user_type, policy_field, policy_name, policy_summary, department_name, supervising_organization_name,
+            announcement_url, support_detail, selection_criteria, application_period, begin_date, end_date, notice_date, modification_date, application_method, contact, support_target
+        ) VALUES (
+                     #{policyId}, #{userType}, #{policyField}, #{policyName}, #{policySummary}, #{departmentName}, #{supervisingOrganizationName},
+                     #{announcementUrl}, #{supportDetail}, #{selectionCriteria}, #{applicationPeriod}, #{beginDate}, #{endDate}, #{noticeDate}, #{modificationDate}, #{applicationMethod}, #{contact}, #{supportTarget}
+                 )
+            ON DUPLICATE KEY UPDATE
+                                 user_type = VALUES(user_type),
+                                 policy_field = VALUES(policy_field),
+                                 policy_name = VALUES(policy_name),
+                                 policy_summary = VALUES(policy_summary),
+                                 department_name = VALUES(department_name),
+                                 announcement_url = VALUES(announcement_url),
+                                 support_detail = VALUES(support_detail),
+                                 selection_criteria = VALUES(selection_criteria),
+                                 application_period = VALUES(application_period),
+                                 begin_date = VALUES(begin_date),
+                                 end_date = VALUES(end_date),
+                                 notice_date = VALUES(notice_date),
+                                 modification_date = VALUES(modification_date),
+                                 application_method = VALUES(application_method),
+                                 contact = VALUES(contact),
+                                 support_target = VALUES(support_target)
+    </insert>
+
+    <select id="findBookmarkCountsByPolicyIds" resultType="map">
+        SELECT
+        policy_id,
+        scrap_count AS bookmarkCount
+        FROM
+        policy_scrap_counts
+        WHERE
+        policy_id IN
+        <foreach item="id" collection="policyIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getPolicyById" resultType="Policy">
+      SELECT *
+      FROM policies
+      WHERE policy_id = #{policyId}
+    </select>
 </mapper>

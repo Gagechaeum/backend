@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gagechaeum.backend.loan.mapper.LoanMapper">
+
+    <select id="findRecommendedLoansByUserId" resultType="com.gagechaeum.backend.loan.domain.Loan" parameterType="long">
+        SELECT
+            l.loan_id AS loanId,
+            l.industry_id AS industryId,
+            l.region_id AS regionId,
+            l.company_name AS companyName,
+            l.product_name AS productName,
+            l.join_way AS joinWay,
+            l.begin_date AS beginDate,
+            l.end_date AS endDate,
+            l.product_page_url AS productPageUrl,
+            l.min_limit AS minLimit,
+            l.max_limit AS maxLimit,
+            l.basic_rate AS basicRate,
+            COALESCE(lsc.scrap_count, 0) AS bookmarkCount
+        FROM
+            loans l
+                INNER JOIN business_info bi ON bi.user_id = #{userId}
+                LEFT JOIN loan_scrap_counts lsc ON l.loan_id = lsc.loan_id
+        WHERE
+            (l.region_id IS NULL OR l.region_id = bi.region_id)
+          AND
+            (l.industry_id IS NULL OR l.industry_id = bi.industry_id)
+        ORDER BY
+            bookmarkCount DESC, l.basic_rate ASC -- 즐겨찾기 많은 순, 같다면 금리 낮은 순
+    </select>
+
+    <select id="getLoanById" resultType="LoanDetailResponseDto">
+        SELECT *
+        FROM loans
+        WHERE loan_id = #{loanId}
+    </select>
+
+    <select id="getRatesByLoanId" resultType="RateDto">
+        SELECT
+            rate_id, rate_type, average_rate,
+            rate_range1, rate_range2, rate_range3, rate_range4,
+            rate_range5, rate_range6, rate_range7, rate_range8
+        FROM rates
+        WHERE loan_id = #{loanId}
+    </select>
+</mapper>
