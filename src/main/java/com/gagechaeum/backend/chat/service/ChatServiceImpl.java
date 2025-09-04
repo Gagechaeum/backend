@@ -27,7 +27,7 @@ public class ChatServiceImpl implements ChatService {
 		
 		return ChatRoomListResponseDto
 			.builder()
-			.chatRooms(chatMapper.getChatRooms(type))
+			.chatRooms(chatRooms)
 			.build();
 	}
 }
