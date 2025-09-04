@@ -3,8 +3,6 @@ package com.gagechaeum.backend.chat.controller;
 import com.gagechaeum.backend.chat.service.ChatService;
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
-import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

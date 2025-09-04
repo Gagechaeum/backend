@@ -75,7 +75,7 @@ CREATE TABLE policies (
 	policy_name	VARCHAR(255)	NOT NULL,
 	policy_summary	TEXT	NOT NULL,
 	policy_field	VARCHAR(255)	NOT NULL	COMMENT '"생활안정", "고용·창업", ...',
-	selection_criteria	TEXT	NOT NULL,
+	selection_criteria	TEXT	NULL,
 	supervising_organization_name	VARCHAR(255)	NOT NULL,
 	receiving_organization_name	VARCHAR(255)	NULL,
 	notice_date	DATETIME	NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE policies (
 	begin_date	DATE	NULL,
 	end_date	DATE	NULL,
 	application_method	VARCHAR(255)	NOT NULL,
-	contact	TEXT	NOT NULL,
+	contact	TEXT	NULL,
 	support_detail	TEXT	NOT NULL,
 	support_target	TEXT	NOT NULL,
 	CONSTRAINT fk_policies_industry_id FOREIGN KEY (industry_id)
@@ -92,10 +92,6 @@ CREATE TABLE policies (
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
 		REFERENCES regions (region_id)
 );
-ALTER TABLE policies
-	MODIFY COLUMN selection_criteria TEXT NULL;
-ALTER TABLE policies
-	MODIFY COLUMN contact TEXT NULL;
 
 CREATE TABLE policy_bookmark_counts (
 	policy_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
@@ -178,9 +174,6 @@ CREATE TABLE user_policies (
         REFERENCES policies (policy_id)
         ON DELETE SET NULL
 );
-ALTER TABLE user_policies
-	ADD COLUMN status ENUM('요건확인', '서류 수집/업로드', '제출 준비', '제출 완료/결과')
-		NOT NULL DEFAULT '요건확인';
 
 -- 사용자 대출
 CREATE TABLE user_loans (
@@ -209,9 +202,6 @@ CREATE TABLE user_loans (
 		REFERENCES loans (loan_id)
 		ON DELETE SET NULL
 );
-ALTER TABLE user_loans
-	ADD COLUMN status ENUM('요건확인', '서류 수집/업로드', '제출 준비', '제출 완료/결과')
-		NOT NULL DEFAULT '요건확인';
 
 CREATE TABLE repayments (
 	repayment_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
