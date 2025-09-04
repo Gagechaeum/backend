@@ -9,7 +9,7 @@
         <id property="userId" column="user_id"/>
         <result property="email" column="email"/>
         <result property="password" column="password"/>
-        <result property="nick" column="nickname"/>
+        <result property="nickname" column="nickname"/>
         <result property="name" column="name"/>
         <result property="phone" column="phone"/>
         <result property="createdAt" column="created_at"/>
@@ -21,8 +21,13 @@
 
     <insert id="save" parameterType="com.gagechaeum.backend.user.domain.User"
             useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO users (email, password, nickname, name, phone, created_at, social, social_id, is_verified)
-        VALUES (#{email}, #{password}, #{nick}, #{name}, #{phone}, NOW(), #{social}, #{socialId}, #{isVerified})
+        INSERT INTO users (
+            email, password, nickname, name, phone, created_at,
+            social, social_id, deleted_at, notification, profile_image_key, is_verified
+        ) VALUES (
+                     #{email}, #{password}, #{nickname}, #{name}, #{phone}, #{createdAt},
+                     #{social}, #{socialId}, #{deletedAt}, #{notification}, #{profileImageKey}, #{isVerified}
+                 )
     </insert>
 
 
@@ -51,6 +56,13 @@
         WHERE user_id=#{id}
     </update>
 
+    <update id="updateSocial">
+        UPDATE users
+        SET name=#{name}
+        WHERE user_id=#{userId}
+    </update>
+
+
     <select id="findByEmail" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM users
@@ -76,6 +88,13 @@
                    FROM users
                    WHERE nickname=#{nickname};
         )
+    </select>
+
+    <!-- UserMapper.xml -->
+    <select id="findBySocialId" resultType="com.gagechaeum.backend.user.domain.User">
+        SELECT *
+        FROM users
+        WHERE social = #{social} AND social_id = #{socialId}
     </select>
 
 </mapper>

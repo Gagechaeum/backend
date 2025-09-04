@@ -3,18 +3,17 @@ package com.gagechaeum.backend.security.config;
 import com.gagechaeum.backend.security.filter.AuthenticationErrorFilter;
 import com.gagechaeum.backend.security.filter.JwtAuthenticationFilter;
 import com.gagechaeum.backend.security.filter.JwtEmailPasswordAuthenticationFilter;
-import com.gagechaeum.backend.security.handler.CustomAccessDeniedHandler;
-import com.gagechaeum.backend.security.handler.CustomAuthenticationEntryPoint;
-import com.gagechaeum.backend.security.handler.LoginFailureHandler;
-import com.gagechaeum.backend.security.handler.LoginSuccessHandler;
+import com.gagechaeum.backend.security.handler.*;
+import com.gagechaeum.backend.user.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -26,6 +25,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,6 +46,7 @@ import java.util.List;
 
 })
 @ComponentScan(basePackages = {"com.gagechaeum.backend.security"})
+@PropertySource("classpath:/application.properties")
 @RequiredArgsConstructor
 @SuppressWarnings("deprecation")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -55,6 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
     private final UserDetailsService userDetailsService;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -140,6 +147,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/test-login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll()
+                .antMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
                 .antMatchers("/api/me/email/verify/**").permitAll()
 
                 // 그 외는 기본 차단(로그인 필요)
@@ -150,7 +158,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .httpBasic().disable()
                 .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .oauth2Login()
+                .successHandler(oAuth2LoginSuccessHandler)
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
+
+
     }
 
     @Bean
@@ -162,7 +177,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JwtEmailPasswordAuthenticationFilter filter =
                 new JwtEmailPasswordAuthenticationFilter(loginSuccessHandler, loginFailureHandler);
         filter.setAuthenticationManager(authenticationManager);
-        // 로그인 URL (FE와 동일)
+        // 로그인 URL
         filter.setFilterProcessesUrl("/api/auth/login");
         return filter;
     }

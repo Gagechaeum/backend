@@ -1,20 +1,18 @@
 package com.gagechaeum.backend.user.domain;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
-@Setter
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@Builder
 public class User {
     private Long userId;
     private String email;
     private String password;
-    private String nick;
+    private String nickname;
     private String name;
     private String phone;
     private LocalDateTime createdAt;
@@ -22,4 +20,5 @@ public class User {
     private String socialId;
     private LocalDateTime deletedAt;
     private Boolean isVerified;
+    private String profileImageKey;
 }
