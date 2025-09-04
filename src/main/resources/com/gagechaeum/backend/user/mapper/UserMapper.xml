@@ -38,22 +38,17 @@
         WHERE user_id = #{userId}
     </update>
 
-    <update id="updateIsActive">
-        UPDATE users
-        SET deleted_at =
-        <if test="isActive == true">
-            NULL
-        </if>
-        <if test="isActive == false">
-            NOW()
-        </if>
-        WHERE user_id = #{userId}
-    </update>
 
     <update id="updateIsVerifiedByEmail">
         UPDATE users
         SET is_verified = #{isVerified}
         WHERE email = #{email}
+    </update>
+
+    <update id="updateDeletedAt">
+        UPDATE users
+        SET deleted_at = NOW()
+        WHERE user_id=#{id}
     </update>
 
     <select id="findByEmail" parameterType="String" resultMap="userResultMap">

@@ -39,7 +39,7 @@ public class MailService {
         }
     }
 
-    public void sendPasswordChaged(String to, String code) {
+    public void sendPasswordChanged(String to, String code) {
         try {
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setFrom(from);

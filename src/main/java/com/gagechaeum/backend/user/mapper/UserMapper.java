@@ -13,7 +13,7 @@ public interface UserMapper {
     String findNicknameById(Long id);
     void updatePassword(User user); // 비밀번호 재발급
     void resetPassword(User user);
-    void updateIsActive(@Param("id") Long id);
+    void updateDeletedAt(Long id);
     Boolean findIsNickname(String nickname);
     // 이메일 인증
     void updateIsVerifiedByEmail(@Param("email") String email, @Param("isVerified") boolean isVerified);

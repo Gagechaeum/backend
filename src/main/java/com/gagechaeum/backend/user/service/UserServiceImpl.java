@@ -248,7 +248,7 @@ public class UserServiceImpl implements UserService {
         User u = userMapper.findByEmail(email);
         if (u == null) throw new UserNotFoundException();
         String temp = UUID.randomUUID().toString().substring(0,8); // 임시 비밀번호 생성
-        mailService.sendPasswordChaged(email, temp);
+        mailService.sendPasswordChanged(email, temp);
         u.setPassword(encoder.encode(temp)); // 암호화
         userMapper.updatePassword(u); // DB에 저장
         return temp;
@@ -298,7 +298,7 @@ public class UserServiceImpl implements UserService {
         Long id = jwtUtil.getIdFromToken(token);
         log.info("회원 탈퇴 시도: {}",id);
 
-        userMapper.updateIsActive(id);
+        userMapper.updateDeletedAt(id);
         redisService.deleteRefreshToken(id);
         redisService.blacklistAccessToken(token);
     }

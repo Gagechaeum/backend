@@ -21,12 +21,6 @@ CREATE TABLE users (
 	profile_image_url	VARCHAR(255)	NULL,
     is_verified BOOLEAN NOT NULL DEFAULT false
 );
-alter table users
-    modify column social varchar(255) null comment '소셜 provider';
-alter table users
-    modify column social_id varchar(255) null comment '소셜 계정';
-alter table users
-    add column is_verified varchar(255) not null default true;
 
 -- 지역
 CREATE TABLE regions (
