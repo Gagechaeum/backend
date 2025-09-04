@@ -75,7 +75,7 @@ CREATE TABLE policies (
 	policy_name	VARCHAR(255)	NOT NULL,
 	policy_summary	TEXT	NOT NULL,
 	policy_field	VARCHAR(255)	NOT NULL	COMMENT '"생활안정", "고용·창업", ...',
-	selection_criteria	TEXT	NOT NULL,
+	selection_criteria	TEXT	NULL,
 	supervising_organization_name	VARCHAR(255)	NOT NULL,
 	receiving_organization_name	VARCHAR(255)	NULL,
 	notice_date	DATETIME	NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE policies (
 	begin_date	DATE	NULL,
 	end_date	DATE	NULL,
 	application_method	VARCHAR(255)	NOT NULL,
-	contact	TEXT	NOT NULL,
+	contact	TEXT	NULL,
 	support_detail	TEXT	NOT NULL,
 	support_target	TEXT	NOT NULL,
 	CONSTRAINT fk_policies_industry_id FOREIGN KEY (industry_id)
@@ -92,11 +92,6 @@ CREATE TABLE policies (
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
 		REFERENCES regions (region_id)
 );
-
-ALTER TABLE policies
-	MODIFY COLUMN selection_criteria TEXT NULL;
-ALTER TABLE policies
-	MODIFY COLUMN contact TEXT NULL;
 
 CREATE TABLE policy_bookmark_counts (
 	policy_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
@@ -299,7 +294,7 @@ CREATE TABLE chat_rooms (
 	region_id	BIGINT	NULL,
 	loan_id	BIGINT	NULL,
 	policy_id	VARCHAR(255)	NULL,
-	room_type	VARCHAR(255)	NOT NULL	COMMENT '"업종", "지역"',
+	room_type	VARCHAR(255)	NOT NULL	COMMENT '"업종", "지역", "대출", "정책"',
 	CONSTRAINT fk_chat_rooms_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE,
@@ -313,6 +308,13 @@ CREATE TABLE chat_rooms (
 		REFERENCES loans (loan_id)
 		ON DELETE CASCADE
 );
+UPDATE chat_rooms
+SET room_type = 'industry'
+WHERE room_type = '업종';
+
+UPDATE chat_rooms
+SET room_type = 'region'
+WHERE room_type = '지역';
 
 CREATE TABLE chat_messages (
 	message_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
