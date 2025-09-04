@@ -296,7 +296,7 @@ CREATE TABLE chat_rooms (
 	region_id	BIGINT	NULL,
 	loan_id	BIGINT	NULL,
 	policy_id	VARCHAR(255)	NULL,
-	room_type	VARCHAR(255)	NOT NULL	COMMENT '"업종", "지역"',
+	room_type	VARCHAR(255)	NOT NULL	COMMENT '"업종", "지역", "대출", "정책"',
 	CONSTRAINT fk_chat_rooms_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE,
@@ -310,6 +310,13 @@ CREATE TABLE chat_rooms (
 		REFERENCES loans (loan_id)
 		ON DELETE CASCADE
 );
+UPDATE chat_rooms
+SET room_type = 'industry'
+WHERE room_type = '업종';
+
+UPDATE chat_rooms
+SET room_type = 'region'
+WHERE room_type = '지역';
 
 CREATE TABLE chat_messages (
 	message_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
