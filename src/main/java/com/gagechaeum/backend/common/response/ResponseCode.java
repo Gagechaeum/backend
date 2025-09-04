@@ -23,7 +23,7 @@ public enum ResponseCode {
     EMAIL_VERIFICATION_STATUS_SUCCESS(HttpStatus.OK, "이메일 인증 상태 확인에 성공했습니다."),
     TOKEN_REISSUE_SUCCESS(HttpStatus.OK,"토큰 재발급에 성공했습니다." ),
     LOGOUT_SUCCESS(HttpStatus.OK,"로그아웃에 성공했습니다." ),
-    CAN_USE_NICKNAME(HttpStatus.OK,"사용가능한 닉네임입니다.");
+    CAN_USE_NICKNAME(HttpStatus.OK,"사용가능한 닉네임입니다."),
 
     //200 OK
     SUCCESS(HttpStatus.OK, "성공했습니다.");
