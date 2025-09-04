@@ -11,5 +11,5 @@ public interface PolicyMapper {
 
     void saveOrUpdatePolicy(Policy policy);
     
-    Policy getPolicyById(String loanId);
+    Policy getPolicyById(@Param("loanId") String loanId);
 }

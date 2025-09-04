@@ -12,7 +12,7 @@ import java.util.List;
 public interface LoanMapper {
     List<Loan> findRecommendedLoansByUserId(@Param("userId") Long userId);
     
-    LoanDetailResponseDto getLoanById(Long loanId);
+    LoanDetailResponseDto getLoanById(@Param("loanId") Long loanId);
     
-    List<RateDto> getRatesByLoanId(Long loanId);
+    List<RateDto> getRatesByLoanId(@Param("loanId") Long loanId);
 }
