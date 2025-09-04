@@ -33,14 +33,12 @@
     <update id="updatePassword" parameterType="com.gagechaeum.backend.user.domain.User">
         UPDATE users
         SET password = #{password},
-            last_pw_change_at = NOW()
         WHERE user_id = #{userId}
     </update>
 
     <update id="resetPassword" parameterType="com.gagechaeum.backend.user.domain.User">
         UPDATE users
         SET password = #{password},
-            last_pw_change_at = NOW()
         WHERE user_id = #{userId}
     </update>
 

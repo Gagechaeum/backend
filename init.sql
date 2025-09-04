@@ -14,13 +14,19 @@ CREATE TABLE users (
 	name	VARCHAR(255)	NOT NULL,
 	phone	VARCHAR(255)	NULL,
 	created_at	DATETIME	NOT NULL,
-	social	VARCHAR(255)	NOT NULL	COMMENT '소셜 provider',
-	social_id	VARCHAR(255)	NOT NULL	COMMENT '소셜 계정',
+	social	VARCHAR(255)	NULL	COMMENT '소셜 provider',
+	social_id	VARCHAR(255)	NULL	COMMENT '소셜 계정',
 	deleted_at	DATETIME	NULL,
 	notification	BOOLEAN	NOT NULL	DEFAULT true,
 	profile_image_url	VARCHAR(255)	NULL,
     is_verified BOOLEAN NOT NULL DEFAULT false
 );
+alter table users
+    modify column social varchar(255) null comment '소셜 provider';
+alter table users
+    modify column social_id varchar(255) null comment '소셜 계정';
+alter table users
+    add column is_verified varchar(255) null comment '소셜 계정';
 
 -- 지역
 CREATE TABLE regions (

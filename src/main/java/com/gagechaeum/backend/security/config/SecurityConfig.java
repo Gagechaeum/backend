@@ -1,4 +1,4 @@
-package com.gagechaeum.backend.global.config;
+package com.gagechaeum.backend.security.config;
 
 import com.gagechaeum.backend.security.filter.AuthenticationErrorFilter;
 import com.gagechaeum.backend.security.filter.JwtAuthenticationFilter;
@@ -36,9 +36,8 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableScheduling // (2) 스케줄링 활성화
 @Slf4j
-// (3) 매퍼 스캔 경로 확장
+// 매퍼 스캔 경로 확장
 @MapperScan(basePackages = {
         "com.gagechaeum.backend.security.account.mapper",
 

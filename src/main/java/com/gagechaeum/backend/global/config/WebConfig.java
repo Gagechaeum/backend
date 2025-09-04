@@ -1,17 +1,13 @@
 package com.gagechaeum.backend.global.config;
 
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 import javax.servlet.Filter;
 
 import com.gagechaeum.backend.common.mail.MailConfig;
 import com.gagechaeum.backend.common.redis.RedisConfig;
+import com.gagechaeum.backend.security.config.SecurityConfig;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 

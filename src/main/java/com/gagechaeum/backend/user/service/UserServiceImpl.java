@@ -258,10 +258,15 @@ public class UserServiceImpl implements UserService {
             throw new InvalidPasswordException(); // "비밀번호가 일치하지 않습니다."
         }
 
+        //비밀번호 양식에 맞는지 확인
+        String pwRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,}$";
+        if (!pwdChangeDTO.getNewPassword().matches(pwRegex)) {
+            throw new ValidationFailedException();
+        }
+
         // 새 비밀번호와 확인용 비밀번호가 일치하는지 확인
         if (!pwdChangeDTO.getNewPassword().equals(pwdChangeDTO.getConfirmPassword())) {
-            // INVALID_PASSWORD의 메시지를 재사용
-            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+            throw new BusinessException(ErrorCode.NEW_PASSWORD_INVALID);
         }
 
         String encodedNewPassword = encoder.encode(pwdChangeDTO.getNewPassword());
