@@ -45,7 +45,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         String key = "userDocuments/" +
             userId + ":" +
             requestDto.getDocumentId() + ":" +
-            requestDto.getDocumentName();
+            requestDto.getDocumentName() + ".pdf";
         
         try {
             s3ClientUtil.uploadFile(requestDto.getFile(), key);
@@ -139,7 +139,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         ZipOutputStream zipOutputStream
     ) throws IOException {
         try (InputStream s3InputStream = s3ClientUtil.downloadFile(userDocument.getFileKey())) {
-            String fileName = userDocument.getDocumentName();
+            String fileName = userDocument.getDocumentName() + ".pdf";
             
             ZipEntry zipEntry = new ZipEntry(fileName);
             zipOutputStream.putNextEntry(zipEntry);

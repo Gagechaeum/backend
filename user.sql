@@ -103,4 +103,4 @@ VALUES
 -- 사용자 서류
 INSERT INTO user_documents (user_document_id, user_id, document_id, document_name, issued_at, file_key)
 VALUES
-	(1, 1, 5, '사업자등록증명', '2025-05-10', 'userDocuments/1:5:사업자등록증명.gif');
+	(1, 1, 5, '사업자등록증명', '2025-05-10', 'userDocuments/1:5:사업자등록증명.pdf');
