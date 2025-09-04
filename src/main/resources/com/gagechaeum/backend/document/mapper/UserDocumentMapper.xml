@@ -31,8 +31,8 @@
   <insert id="insert" parameterType="UserDocument"
     useGeneratedKeys="true" keyProperty="userDocumentId">
     INSERT
-    INTO user_documents (user_id, document_id, document_name, issued_at, file_url)
-    VALUES (#{userId}, #{documentId}, #{documentName}, #{issuedAt}, #{fileUrl})
+    INTO user_documents (user_id, document_id, document_name, issued_at, file_key)
+    VALUES (#{userId}, #{documentId}, #{documentName}, #{issuedAt}, #{fileKey})
   </insert>
 
   <select id="getById" resultType="UserDocument">
