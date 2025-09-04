@@ -6,6 +6,12 @@
     </settings>
     <typeAliases>
         <!-- 매퍼 XML에서 클래스 이름만으로 참조할 수 있도록 alias 설정 -->
-        <!-- <package name="com.gagechaeum.backend.domain"/>-->
+        <package name="com.gagechaeum.backend.document.domain"/>
+        <package name="com.gagechaeum.backend.document.dto"/>
+        <package name="com.gagechaeum.backend.reference.domain"/>
+        <package name="com.gagechaeum.backend.reference.dto"/>
+        <package name="com.gagechaeum.backend.loan.dto"/>
+        <package name="com.gagechaeum.backend.policy.domain"/>
+        <package name="com.gagechaeum.backend.chat.dto"/>
     </typeAliases>
 </configuration>

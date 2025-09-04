@@ -4,8 +4,12 @@ import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.policy.dto.response.PolicyRecommendationResponseDTO;
 import com.gagechaeum.backend.policy.service.PolicyService;
+import com.gagechaeum.backend.policy.service.PolicySyncService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,14 +20,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class PolicyController {
 
     private final PolicyService policyService;
+    private final PolicySyncService policySyncService;
 
-    // 정책 추천
     @GetMapping("/recommendation")
     public CustomResponse<PolicyRecommendationResponseDTO> recommendPolicies(
-            @RequestParam Long userId // @AuthenticationPrincipal 대신 @RequestParam 사용
+            @RequestParam(required = false) Long userId
     ) {
-        // user.getUserId() 대신 파라미터로 받은 userId를 바로 사용
         PolicyRecommendationResponseDTO response = policyService.getRecommendedPolicies(userId);
+        return CustomResponse.success(ResponseCode.SUCCESS, response);
+    }
+
+    @PostMapping("/sync")
+    public ResponseEntity<String> syncPolicies() {
+        policySyncService.syncPoliciesFromGov24Api();
+        return ResponseEntity.ok("Policy synchronization started.");
+    }
+    
+    @GetMapping("/{policy_id}")
+    public CustomResponse<Object> getPolicyDetails(@PathVariable("policy_id") String policyId) {
+        Object response = policyService.getPolicyDetails(policyId);
         return CustomResponse.success(ResponseCode.SUCCESS, response);
     }
 }

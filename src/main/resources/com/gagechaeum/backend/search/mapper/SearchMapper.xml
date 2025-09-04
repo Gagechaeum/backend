@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gagechaeum.backend.search.mapper.SearchMapper">
+
+    <!-- 정책/대출 통합 검색 쿼리 -->
+    <select id="findGlobalResultsByKeyword" resultType="com.gagechaeum.backend.search.domain.SearchResult">
+        <choose>
+            <when test="keyword != null and keyword != ''">
+                SELECT
+                'POLICY' AS type,
+                p.policy_id AS id,
+                p.policy_name AS name,
+                i.name AS industryName
+                FROM
+                policies p
+                LEFT JOIN
+                industry i ON p.industry_id = i.industry_id
+                WHERE
+                p.policy_name LIKE CONCAT('%', #{keyword}, '%')
+                OR p.policy_summary LIKE CONCAT('%', #{keyword}, '%')
+
+                UNION ALL
+
+                SELECT
+                'LOAN' AS type,
+                l.loan_id AS id,
+                l.product_name AS name,
+                i.name AS industryName
+                FROM
+                loans l
+                LEFT JOIN
+                industry i ON l.industry_id = i.industry_id
+                WHERE
+                l.product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR l.company_name LIKE CONCAT('%', #{keyword}, '%')
+
+                ORDER BY
+                name ASC
+                LIMIT #{size} OFFSET #{offset}
+            </when>
+            <otherwise>
+                SELECT NULL AS type, NULL AS id, NULL AS name, NULL AS industryName
+                WHERE 1 = 0
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 통합 검색 결과의 전체 개수 카운트 쿼리 -->
+    <select id="countGlobalResultsByKeyword" resultType="long">
+        <choose>
+            <when test="keyword != null and keyword != ''">
+                SELECT
+                SUM(count)
+                FROM (
+                SELECT
+                COUNT(*) AS count
+                FROM
+                policies
+                WHERE
+                policy_name LIKE CONCAT('%', #{keyword}, '%')
+                OR policy_summary LIKE CONCAT('%', #{keyword}, '%')
+
+                UNION ALL
+
+                SELECT
+                COUNT(*) AS count
+                FROM
+                loans
+                WHERE
+                product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR company_name LIKE CONCAT('%', #{keyword}, '%')
+                ) AS total_counts
+            </when>
+            <otherwise>
+                SELECT 0
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

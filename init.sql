@@ -19,7 +19,7 @@ CREATE TABLE users (
 	deleted_at	DATETIME	NULL,
 	notification	BOOLEAN	NOT NULL	DEFAULT true,
 	profile_image_url	VARCHAR(255)	NULL,
-    is_verified BOOLEAN NOT NULL DEFAULT false
+  is_verified BOOLEAN NOT NULL DEFAULT false
 );
 
 -- 지역
@@ -67,16 +67,16 @@ CREATE TABLE business_info (
 
 -- 정책
 CREATE TABLE policies (
-	policy_id	BIGINT	PRIMARY KEY	COMMENT '공고의 서비스ID',
+	policy_id	VARCHAR(255) PRIMARY KEY	COMMENT '공고의 서비스ID',
 	industry_id	BIGINT	NULL,
 	region_id	BIGINT	NULL	COMMENT '법정동 코드',
 	department_name	VARCHAR(255)	NOT NULL,
 	user_type	VARCHAR(255)	NOT NULL	COMMENT '"법인/시설/단체", "개인", ...',
 	announcement_url	VARCHAR(255)	NOT NULL,
 	policy_name	VARCHAR(255)	NOT NULL,
-	policy_summary	VARCHAR(255)	NOT NULL,
+	policy_summary	TEXT	NOT NULL,
 	policy_field	VARCHAR(255)	NOT NULL	COMMENT '"생활안정", "고용·창업", ...',
-	selection_criteria	VARCHAR(255)	NOT NULL,
+	selection_criteria	TEXT	NULL,
 	supervising_organization_name	VARCHAR(255)	NOT NULL,
 	receiving_organization_name	VARCHAR(255)	NULL,
 	notice_date	DATETIME	NOT NULL,
@@ -85,24 +85,24 @@ CREATE TABLE policies (
 	begin_date	DATE	NULL,
 	end_date	DATE	NULL,
 	application_method	VARCHAR(255)	NOT NULL,
-	contact	VARCHAR(255)	NOT NULL,
-	support_detail	VARCHAR(255)	NOT NULL,
-	support_target	VARCHAR(255)	NOT NULL,
+	contact	TEXT	NULL,
+	support_detail	TEXT	NOT NULL,
+	support_target	TEXT	NOT NULL,
 	CONSTRAINT fk_policies_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id),
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
 		REFERENCES regions (region_id)
 );
 
-CREATE TABLE policy_scrap_counts (
-	policy_scrap_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
-	policy_id	BIGINT	NOT NULL	COMMENT '공고의 서비스ID',
+CREATE TABLE policy_bookmark_counts (
+	policy_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+	policy_id	VARCHAR(255)	NOT NULL	COMMENT '공고의 서비스ID',
 	industry_id	BIGINT	NOT NULL,
-	scrap_count	BIGINT	NOT NULL	DEFAULT 0,
-	CONSTRAINT fk_policy_scrap_counts_policy_id FOREIGN KEY (policy_id)
+	bookmark_count	BIGINT	NOT NULL	DEFAULT 0,
+	CONSTRAINT fk_policy_bookmark_counts_policy_id FOREIGN KEY (policy_id)
 		REFERENCES policies (policy_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_policy_scrap_counts_industry_id FOREIGN KEY (industry_id)
+	CONSTRAINT fk_policy_bookmark_counts_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE
 );
@@ -145,34 +145,35 @@ CREATE TABLE rates (
 		ON DELETE CASCADE
 );
 
-CREATE TABLE loan_scrap_counts (
-	loan_scrap_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE loan_bookmark_counts (
+	loan_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	loan_id	BIGINT	NOT NULL,
 	industry_id	BIGINT	NOT NULL	COMMENT '업종 코드',
-	scrap_count	BIGINT	NOT NULL	DEFAULT 0,
-	CONSTRAINT fk_loan_scrap_counts_loan_id FOREIGN KEY (loan_id)
+	bookmark_count	BIGINT	NOT NULL	DEFAULT 0,
+	CONSTRAINT fk_loan_bookmark_counts_loan_id FOREIGN KEY (loan_id)
 		REFERENCES loans (loan_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_loan_scrap_counts_industry_id FOREIGN KEY (industry_id)
+	CONSTRAINT fk_loan_bookmark_counts_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE
 );
 
 -- 사용자 정책
 CREATE TABLE user_policies (
-	user_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
-	user_id	BIGINT	NOT NULL,
-	policy_id	BIGINT	NULL,
-	created_at	DATETIME	NOT NULL,
-	status	VARCHAR(255)	NOT NULL,
-	approved_amount	INT	NULL,
-	deposit_date	DATE	NULL,
-	CONSTRAINT fk_user_policies_user_id FOREIGN KEY (user_id)
-		REFERENCES users (user_id)
-		ON DELETE CASCADE,
-	CONSTRAINT fk_user_policies_policy_id FOREIGN KEY (policy_id)
-		REFERENCES policies (policy_id)
-		ON DELETE SET NULL
+    user_policy_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    policy_id VARCHAR(255) NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NULL,
+    first_payment_date DATE NULL,
+    monthly_amount INT NULL, 
+    total_amount INT NULL, 
+    CONSTRAINT fk_user_policies_user_id FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_user_policies_policy_id FOREIGN KEY (policy_id)
+        REFERENCES policies (policy_id)
+        ON DELETE SET NULL
 );
 
 -- 사용자 대출
@@ -224,26 +225,26 @@ CREATE TABLE repayments (
 );
 
 -- 즐겨찾기
-CREATE TABLE user_policy_scraps (
-	scrap_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE user_policy_bookmarks (
+	bookmark_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
-	policy_id	BIGINT	NOT NULL,
-	CONSTRAINT fk_user_policy_scraps_user_id FOREIGN KEY (user_id)
+	policy_id	VARCHAR(255)	NOT NULL,
+	CONSTRAINT fk_user_policy_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_user_policy_scraps_policy_id FOREIGN KEY (policy_id)
+	CONSTRAINT fk_user_policy_bookmarks_policy_id FOREIGN KEY (policy_id)
 		REFERENCES policies (policy_id)
 		ON DELETE CASCADE
 );
 
-CREATE TABLE user_loan_scraps (
-	scrap_loan_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE user_loan_bookmarks (
+	bookmark_loan_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	loan_id	BIGINT	NOT NULL,
-	CONSTRAINT fk_user_loan_scraps_user_id FOREIGN KEY (user_id)
+	CONSTRAINT fk_user_loan_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
-	CONSTRAINT fk_user_loan_scraps_loan_id FOREIGN KEY (loan_id)
+	CONSTRAINT fk_user_loan_bookmarks_loan_id FOREIGN KEY (loan_id)
 		REFERENCES loans (loan_id)
 		ON DELETE CASCADE
 );
@@ -259,7 +260,7 @@ CREATE TABLE documents (
 CREATE TABLE required_documents (
 	required_document_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	document_id	BIGINT	NOT NULL,
-	policy_id	BIGINT	NULL,
+	policy_id	VARCHAR(255)	NULL,
 	loan_id	BIGINT	NULL,
 	CONSTRAINT fk_required_documents_document_id FOREIGN KEY (document_id)
 		REFERENCES documents (document_id)
@@ -272,12 +273,17 @@ CREATE TABLE required_documents (
 		ON DELETE CASCADE
 );
 
-CREATE TABLE uploaded_documents (
-	uploaded_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE user_documents (
+	user_document_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
+	user_id	BIGINT NOT NULL,
 	document_id	BIGINT	NOT NULL,
+	document_name VARCHAR(255) NOT NULL,
 	issued_at	DATE	NOT NULL,
-	file_url	VARCHAR(255)	NOT NULL,
-	CONSTRAINT fk_uploaded_documents_document_id FOREIGN KEY (document_id)
+	file_key	VARCHAR(255)	NOT NULL,
+	CONSTRAINT fk_user_documents_user_id FOREIGN KEY (user_id)
+		REFERENCES users (user_id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_user_documents_document_id FOREIGN KEY (document_id)
 		REFERENCES documents (document_id)
 		ON DELETE CASCADE
 );
@@ -287,14 +293,29 @@ CREATE TABLE chat_rooms (
 	room_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	industry_id	BIGINT	NULL,
 	region_id	BIGINT	NULL,
-	room_type	VARCHAR(255)	NOT NULL	COMMENT '"업종", "지역"',
+	loan_id	BIGINT	NULL,
+	policy_id	VARCHAR(255)	NULL,
+	room_type	VARCHAR(255)	NOT NULL	COMMENT '"업종", "지역", "대출", "정책"',
 	CONSTRAINT fk_chat_rooms_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 		ON DELETE CASCADE,
 	CONSTRAINT fk_chat_rooms_region_id FOREIGN KEY (region_id)
 		REFERENCES regions (region_id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_chat_rooms_policy_id FOREIGN KEY (policy_id)
+		REFERENCES policies (policy_id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_chat_rooms_loan_id FOREIGN KEY (loan_id)
+		REFERENCES loans (loan_id)
 		ON DELETE CASCADE
 );
+UPDATE chat_rooms
+SET room_type = 'industry'
+WHERE room_type = '업종';
+
+UPDATE chat_rooms
+SET room_type = 'region'
+WHERE room_type = '지역';
 
 CREATE TABLE chat_messages (
 	message_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
@@ -313,7 +334,7 @@ CREATE TABLE chat_messages (
 CREATE TABLE chat_attachments (
 	attachment_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	message_id	BIGINT	NOT NULL,
-	file_url	VARCHAR(255)	NOT NULL,
+	file_key	VARCHAR(255)	NOT NULL,
 	file_type	VARCHAR(255)	NOT NULL	COMMENT '"IMAGE", "VIDEO", "AUDIO", "PDF", "DOCX", ...',
 	file_name	VARCHAR(255)	NOT NULL,
 	file_size	BIGINT	NOT NULL,

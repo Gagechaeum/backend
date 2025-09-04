@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gagechaeum.backend.report.mapper.ReportMapper">
+
+    <!-- UserPolicy 도메인 객체 매핑 -->
+    <resultMap id="userPolicyResultMap" type="com.gagechaeum.backend.report.domain.UserPolicy">
+        <id property="userPolicyId" column="user_policy_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="policyId" column="policy_id"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="firstPaymentDate" column="first_payment_date"/>
+        <result property="monthlyAmount" column="monthly_amount"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="policyName" column="policy_name"/>
+    </resultMap>
+
+    <!-- UserLoan 도메인 객체 매핑 -->
+    <resultMap id="userLoanResultMap" type="com.gagechaeum.backend.report.domain.UserLoan">
+        <id property="userLoanId" column="user_loan_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="issueDate" column="issue_date"/>
+        <result property="expiryDate" column="expiry_date"/>
+        <result property="lastOfferedRate" column="last_offered_rate"/>
+        <result property="repayMethod" column="repay_method"/>
+        <result property="balanceAmount" column="balance_amount"/>
+        <result property="loanPrincipal" column="loan_principal"/>
+        <result property="nextRepayDate" column="next_repay_date"/>
+    </resultMap>
+
+    <!-- Repayment 도메인 객체 매핑 -->
+    <resultMap id="repaymentResultMap" type="com.gagechaeum.backend.report.domain.Repayment">
+        <id property="repaymentId" column="repayment_id"/>
+        <result property="userLoanId" column="user_loan_id"/>
+        <result property="amount" column="amount"/>
+        <result property="paidDate" column="paid_date"/>
+    </resultMap>
+
+    <!-- PolicySearchResult 도메인 객체 매핑 -->
+    <resultMap id="policySearchResultMap" type="com.gagechaeum.backend.report.domain.PolicySearchResult">
+        <result property="policyId" column="policy_id"/>
+        <result property="policyName" column="policy_name"/>
+    </resultMap>
+
+
+    <!-- findUserPoliciesByUserId 쿼리 -->
+    <select id="findUserPoliciesByUserId" parameterType="long" resultMap="userPolicyResultMap">
+        SELECT
+            up.user_policy_id,
+            up.user_id,
+            up.policy_id,
+            up.start_date,
+            up.end_date,
+            up.first_payment_date,
+            up.monthly_amount,
+            up.total_amount,
+            p.policy_name
+        FROM
+            user_policies up
+                LEFT JOIN
+            policies p ON up.policy_id = p.policy_id
+        WHERE
+            up.user_id = #{userId}
+    </select>
+
+    <!-- findUserLoansByUserId 쿼리 -->
+    <select id="findUserLoansByUserId" parameterType="long" resultMap="userLoanResultMap">
+        SELECT
+            user_loan_id,
+            product_name,
+            issue_date,
+            expiry_date,
+            last_offered_rate,
+            repay_method,
+            balance_amount,
+            loan_principal,
+            next_repay_date
+        FROM
+            user_loans
+        WHERE
+            user_id = #{userId}
+    </select>
+
+    <!-- findRepaymentsByUserLoanIds 쿼리 -->
+    <select id="findRepaymentsByUserLoanIds" parameterType="java.util.List" resultMap="repaymentResultMap">
+        SELECT
+        repayment_id,
+        user_loan_id,
+        amount,
+        paid_date
+        FROM
+        repayments
+        WHERE
+        user_loan_id IN
+        <foreach item="item" index="index" collection="userLoanIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- searchPoliciesByName 쿼리 -->
+    <select id="searchPoliciesByName" parameterType="string" resultMap="policySearchResultMap">
+        SELECT
+            policy_id,
+            policy_name
+        FROM
+            policies
+        WHERE
+            policy_name LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY
+            policy_name ASC
+    </select>
+
+    <insert id="insertUserPolicy" parameterType="com.gagechaeum.backend.report.domain.UserPolicy">
+         INSERT INTO user_policies (user_id, policy_id, start_date, end_date, first_payment_date, monthly_amount, total_amount)
+        VALUES (#{userId}, #{policyId}, #{startDate}, #{endDate}, #{firstPaymentDate}, #{monthlyAmount}, #{totalAmount})
+    </insert>
+
+</mapper>
