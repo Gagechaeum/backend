@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gagechaeum.backend.application.mapper.ApplicationMapper">
+
+    <resultMap id="ApplicationResultMap" type="com.gagechaeum.backend.application.dto.response.ApplicationResponseDTO">
+        <result property="applicationId" column="applicationId"/>
+        <result property="processStage" column="processStage"/>
+        <result property="productType" column="productType"/>
+        <result property="productName" column="productName"/>
+        <result property="providerName" column="providerName"/>
+        <result property="completedDocsCount" column="completedDocsCount"/>
+        <result property="totalDocsCount" column="totalDocsCount"/>
+        <result property="actionButtonText" column="actionButtonText"/>
+    </resultMap>
+
+    <select id="findApplicationsByUserId" parameterType="long" resultMap="ApplicationResultMap">
+        -- 사용자가 신청한 정책 현황 조회
+        SELECT
+            up.user_policy_id AS applicationId,
+            '서류 수집/업로드' AS processStage, -- 단계는 로직에 따라 변경 필요
+            '정책' AS productType,
+            p.policy_name AS productName,
+            p.supervising_organization_name AS providerName,
+            (SELECT COUNT(DISTINCT rd.document_id)
+             FROM required_documents rd
+                      JOIN user_documents ud ON rd.document_id = ud.document_id
+             WHERE rd.policy_id = up.policy_id AND ud.user_id = up.user_id) AS completedDocsCount,
+            (SELECT COUNT(*)
+             FROM required_documents
+             WHERE policy_id = up.policy_id) AS totalDocsCount,
+            '업로드하기' AS actionButtonText -- 단계에 따라 변경 필요
+        FROM
+            user_policies up
+                JOIN
+            policies p ON up.policy_id = p.policy_id
+        WHERE
+            up.user_id = #{userId}
+
+        UNION ALL
+
+        -- 사용자가 신청한 대출 현황 조회
+        SELECT
+            ul.user_loan_id AS applicationId,
+            '제출 완료/결과' AS processStage, -- 단계는 로직에 따라 변경 필요
+            '대출' AS productType,
+            l.product_name AS productName,
+            l.company_name AS providerName,
+            (SELECT COUNT(DISTINCT rd.document_id)
+             FROM required_documents rd
+                      JOIN user_documents ud ON rd.document_id = ud.document_id
+             WHERE rd.loan_id = ul.loan_id AND ud.user_id = ul.user_id) AS completedDocsCount,
+            (SELECT COUNT(*)
+             FROM required_documents
+             WHERE loan_id = ul.loan_id) AS totalDocsCount,
+            '결과보기' AS actionButtonText -- 단계에 따라 변경 필요
+        FROM
+            user_loans ul
+                JOIN
+            loans l ON ul.loan_id = l.loan_id
+        WHERE
+            ul.user_id = #{userId}
+    </select>
+
+</mapper>
