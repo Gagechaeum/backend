@@ -59,6 +59,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
                 .fileKey(key)
                 .build();
             
+            userDocumentMapper.deleteByName(userId, userDocument.getDocumentName());
             userDocumentMapper.insert(userDocument);
             
         } catch (IOException e) {

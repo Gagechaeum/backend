@@ -52,4 +52,11 @@
     FROM user_documents
     WHERE user_id = #{userId} AND user_document_id = #{userDocumentId}
   </delete>
+
+  <delete id="deleteByName">
+    DELETE
+    FROM user_documents
+    WHERE user_id = #{userId} AND document_name = #{documentName}
+  </delete>
+
 </mapper>
