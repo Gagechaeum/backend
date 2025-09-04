@@ -3,6 +3,7 @@ package com.gagechaeum.backend.document.controller;
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
+import com.gagechaeum.backend.document.dto.response.UserDocumentResponseDTO;
 import com.gagechaeum.backend.document.service.UserDocumentService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/me/documents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+@RequestMapping(value = "/api/me/documents")
 @RequiredArgsConstructor
 public class UserDocumentController {
 	private final UserDocumentService userDocumentService;
+
+	// 내 서류 목록 조회
+	@GetMapping("")
+	public CustomResponse<List<UserDocumentResponseDTO>> getUserDocuments(
+			// @AuthenticationPrincipal CustomUser user // 주석 해제 후 사용
+	) {
+		// Long userId = user.getId();
+		Long userId = 1L; // 임시 사용자 ID
+		List<UserDocumentResponseDTO> documents = userDocumentService.getUserDocuments(userId);
+		return CustomResponse.success(ResponseCode.SUCCESS, documents);
+	}
 	
-	@PostMapping("")
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public CustomResponse<Object> uploadUserDocument(
 		@ModelAttribute UserDocumentUploadRequestDto requestDto
 //		@AuthenticationPrincipal CustomUser user
