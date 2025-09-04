@@ -11,14 +11,13 @@
         <result property="providerName" column="providerName"/>
         <result property="completedDocsCount" column="completedDocsCount"/>
         <result property="totalDocsCount" column="totalDocsCount"/>
-        <result property="actionButtonText" column="actionButtonText"/>
     </resultMap>
 
     <select id="findApplicationsByUserId" parameterType="long" resultMap="ApplicationResultMap">
         -- 사용자가 신청한 정책 현황 조회
         SELECT
-            up.user_policy_id AS applicationId,
-            '서류 수집/업로드' AS processStage, -- 단계는 로직에 따라 변경 필요
+            CONCAT('policy_', up.user_policy_id) AS applicationId,
+            up.status AS processStage,
             '정책' AS productType,
             p.policy_name AS productName,
             p.supervising_organization_name AS providerName,
@@ -28,8 +27,7 @@
              WHERE rd.policy_id = up.policy_id AND ud.user_id = up.user_id) AS completedDocsCount,
             (SELECT COUNT(*)
              FROM required_documents
-             WHERE policy_id = up.policy_id) AS totalDocsCount,
-            '업로드하기' AS actionButtonText -- 단계에 따라 변경 필요
+             WHERE policy_id = up.policy_id) AS totalDocsCount
         FROM
             user_policies up
                 JOIN
@@ -41,8 +39,8 @@
 
         -- 사용자가 신청한 대출 현황 조회
         SELECT
-            ul.user_loan_id AS applicationId,
-            '제출 완료/결과' AS processStage, -- 단계는 로직에 따라 변경 필요
+            CONCAT('loan_', ul.user_loan_id) AS applicationId,
+            ul.status AS processStage,
             '대출' AS productType,
             l.product_name AS productName,
             l.company_name AS providerName,
@@ -52,8 +50,7 @@
              WHERE rd.loan_id = ul.loan_id AND ud.user_id = ul.user_id) AS completedDocsCount,
             (SELECT COUNT(*)
              FROM required_documents
-             WHERE loan_id = ul.loan_id) AS totalDocsCount,
-            '결과보기' AS actionButtonText -- 단계에 따라 변경 필요
+             WHERE loan_id = ul.loan_id) AS totalDocsCount
         FROM
             user_loans ul
                 JOIN
@@ -61,5 +58,17 @@
         WHERE
             ul.user_id = #{userId}
     </select>
+
+    <update id="updateUserPolicyStatus">
+        UPDATE user_policies
+        SET status = #{status}
+        WHERE user_id = #{userId} AND user_policy_id = #{id}
+    </update>
+
+    <update id="updateUserLoanStatus">
+        UPDATE user_loans
+        SET status = #{status}
+        WHERE user_id = #{userId} AND user_loan_id = #{id}
+    </update>
 
 </mapper>

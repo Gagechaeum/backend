@@ -4,6 +4,7 @@ import com.gagechaeum.backend.application.dto.response.ApplicationResponseDTO;
 import com.gagechaeum.backend.application.mapper.ApplicationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,5 +33,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         return applications;
+    }
+
+    @Override
+    @Transactional
+    public void updateApplicationStatus(Long userId, String type, Long id, String status) {
+        if ("policy".equalsIgnoreCase(type)) {
+            applicationMapper.updateUserPolicyStatus(userId, id, status);
+        } else if ("loan".equalsIgnoreCase(type)) {
+            applicationMapper.updateUserLoanStatus(userId, id, status);
+        } else {
+            throw new IllegalArgumentException("Invalid application type: " + type);
+        }
     }
 }
