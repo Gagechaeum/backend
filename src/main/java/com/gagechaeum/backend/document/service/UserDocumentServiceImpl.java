@@ -29,7 +29,6 @@ public class UserDocumentServiceImpl implements UserDocumentService {
     @Override
     @Transactional(readOnly = true)
     public List<UserDocumentResponseDTO> getUserDocuments(Long userId) {
-        // userDocumentMapper에 findUserDocumentsByUserId 메소드를 만들어야 합니다.
         List<UserDocument> userDocuments = userDocumentMapper.findUserDocumentsByUserId(userId);
         return userDocuments.stream()
                 .map(UserDocumentResponseDTO::from)

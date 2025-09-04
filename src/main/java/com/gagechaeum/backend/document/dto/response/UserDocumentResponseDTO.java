@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 @Getter
@@ -17,18 +15,17 @@ import java.time.temporal.ChronoUnit;
 public class UserDocumentResponseDTO {
     private Long userDocumentId;
     private String documentName;
-    private String issuedAt;
+    private LocalDate issuedAt;
     private long daysElapsed;
     private String fileKey;
 
     public static UserDocumentResponseDTO from(UserDocument userDocument) {
-        LocalDate issuedAtLocalDate = userDocument.getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        String issuedAtString = new SimpleDateFormat("yyyy-MM-dd").format(userDocument.getIssuedAt());
+        LocalDate issuedAtLocalDate = userDocument.getIssuedAt();
 
         return UserDocumentResponseDTO.builder()
                 .userDocumentId(userDocument.getUserDocumentId())
                 .documentName(userDocument.getDocumentName())
-                .issuedAt(issuedAtString)
+                .issuedAt(issuedAtLocalDate)
                 .daysElapsed(ChronoUnit.DAYS.between(issuedAtLocalDate, LocalDate.now()))
                 .fileKey(userDocument.getFileKey())
                 .build();
