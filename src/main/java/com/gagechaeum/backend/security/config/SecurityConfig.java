@@ -148,6 +148,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/auth/test-login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll()
                 .antMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/chatrooms").permitAll()
                 .antMatchers("/api/me/email/verify/**").permitAll()
 
                 // 그 외는 기본 차단(로그인 필요)

@@ -18,7 +18,7 @@ CREATE TABLE users (
 	social_id	VARCHAR(255)	NULL	COMMENT '소셜 계정',
 	deleted_at	DATETIME	NULL,
 	notification	BOOLEAN	NOT NULL	DEFAULT true,
-	profile_image_url	VARCHAR(255)	NULL,
+	profile_image_key	VARCHAR(255)	NULL,
   is_verified BOOLEAN NOT NULL DEFAULT false
 );
 
@@ -311,13 +311,6 @@ CREATE TABLE chat_rooms (
 		REFERENCES loans (loan_id)
 		ON DELETE CASCADE
 );
-UPDATE chat_rooms
-SET room_type = 'industry'
-WHERE room_type = '업종';
-
-UPDATE chat_rooms
-SET room_type = 'region'
-WHERE room_type = '지역';
 
 CREATE TABLE chat_messages (
 	message_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
@@ -401,11 +394,11 @@ INSERT INTO documents (document_name, issuing_authority, issuing_authority_url) 
 	('기타', NULL, NULL);
 
 -- 지역 데이터
----- 1. 전국
+-- 1. 전국
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(1, NULL, 1, '전국', '전국');
 
----- 2. 시/도
+-- 2. 시/도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(11, 1, 2, '서울특별시', '서울특별시'),
 	(26, 1, 2, '부산광역시', '부산광역시'),
@@ -424,8 +417,8 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(48, 1, 2, '경상남도', '경상남도'),
 	(50, 1, 2, '제주특별자치도', '제주특별자치도');
 
----- 3. 시/군/구
------- 서울특별시
+-- 3. 시/군/구
+-- 서울특별시
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(11010, 11, 3, '종로구', '서울특별시 종로구'),
 	(11020, 11, 3, '중구', '서울특별시 중구'),
@@ -453,7 +446,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(11240, 11, 3, '송파구', '서울특별시 송파구'),
 	(11250, 11, 3, '강동구', '서울특별시 강동구');
 
------- 부산광역시
+-- 부산광역시
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(26010, 26, 3, '중구', '부산광역시 중구'),
 	(26020, 26, 3, '서구', '부산광역시 서구'),
@@ -472,7 +465,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(26150, 26, 3, '사상구', '부산광역시 사상구'),
 	(26160, 26, 3, '기장군', '부산광역시 기장군');
 
------- 대구광역시
+-- 대구광역시
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(27010, 27, 3, '중구', '대구광역시 중구'),
 	(27020, 27, 3, '동구', '대구광역시 동구'),
@@ -483,7 +476,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(27070, 27, 3, '달서구', '대구광역시 달서구'),
 	(27080, 27, 3, '달성군', '대구광역시 달성군');
 
------- 인천광역시
+-- 인천광역시
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(28010, 28, 3, '중구', '인천광역시 중구'),
 	(28020, 28, 3, '동구', '인천광역시 동구'),
@@ -496,7 +489,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(28090, 28, 3, '강화군', '인천광역시 강화군'),
 	(28100, 28, 3, '옹진군', '인천광역시 옹진군');
 
------- 광주광역시
+-- 광주광역시
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(29010, 29, 3, '동구', '광주광역시 동구'),
 	(29020, 29, 3, '서구', '광주광역시 서구'),
@@ -504,7 +497,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(29040, 29, 3, '북구', '광주광역시 북구'),
 	(29050, 29, 3, '광산구', '광주광역시 광산구');
 
------- 대전광역시
+-- 대전광역시
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(30010, 30, 3, '동구', '대전광역시 동구'),
 	(30020, 30, 3, '중구', '대전광역시 중구'),
@@ -512,7 +505,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(30040, 30, 3, '유성구', '대전광역시 유성구'),
 	(30050, 30, 3, '대덕구', '대전광역시 대덕구');
 
------- 울산광역시
+-- 울산광역시
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(31010, 31, 3, '중구', '울산광역시 중구'),
 	(31020, 31, 3, '남구', '울산광역시 남구'),
@@ -520,7 +513,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(31040, 31, 3, '북구', '울산광역시 북구'),
 	(31050, 31, 3, '울주군', '울산광역시 울주군');
 
------- 경기도
+-- 경기도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(41110, 41, 3, '수원시 장안구', '경기도 수원시 장안구'),
 	(41120, 41, 3, '수원시 권선구', '경기도 수원시 권선구'),
@@ -566,7 +559,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(41730, 41, 3, '가평군', '경기도 가평군'),
 	(41740, 41, 3, '양평군', '경기도 양평군');
 
------- 강원도
+-- 강원도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(42110, 42, 3, '춘천시', '강원도 춘천시'),
 	(42120, 42, 3, '원주시', '강원도 원주시'),
@@ -587,7 +580,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(42300, 42, 3, '고성군', '강원도 고성군'),
 	(42310, 42, 3, '양양군', '강원도 양양군');
 
------- 충청북도
+-- 충청북도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(43110, 43, 3, '청주시 상당구', '충청북도 청주시 상당구'),
 	(43120, 43, 3, '청주시 서원구', '충청북도 청주시 서원구'),
@@ -603,7 +596,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(43280, 43, 3, '음성군', '충청북도 음성군'),
 	(43290, 43, 3, '단양군', '충청북도 단양군');
 
------- 충청남도
+-- 충청남도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(44130, 44, 3, '천안시 동남구', '충청남도 천안시 동남구'),
 	(44131, 44, 3, '천안시 서북구', '충청남도 천안시 서북구'),
@@ -622,7 +615,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(44280, 44, 3, '예산군', '충청남도 예산군'),
 	(44990, 44, 3, '태안군', '충청남도 태안군');
 
------- 전라북도
+-- 전라북도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(45110, 45, 3, '전주시 완산구', '전라북도 전주시 완산구'),
 	(45120, 45, 3, '전주시 덕진구', '전라북도 전주시 덕진구'),
@@ -640,7 +633,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(45340, 45, 3, '고창군', '전라북도 고창군'),
 	(45370, 45, 3, '부안군', '전라북도 부안군');
 
------- 전라남도
+-- 전라남도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(46110, 46, 3, '목포시', '전라남도 목포시'),
 	(46120, 46, 3, '여수시', '전라남도 여수시'),
@@ -665,7 +658,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(46360, 46, 3, '진도군', '전라남도 진도군'),
 	(46370, 46, 3, '신안군', '전라남도 신안군');
 
------- 경상북도
+-- 경상북도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(47110, 47, 3, '포항시 남구', '경상북도 포항시 남구'),
 	(47120, 47, 3, '포항시 북구', '경상북도 포항시 북구'),
@@ -692,7 +685,7 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(47430, 47, 3, '울진군', '경상북도 울진군'),
 	(47440, 47, 3, '울릉군', '경상북도 울릉군');
 
------- 경상남도
+-- 경상남도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(48110, 48, 3, '창원시 의창구', '경상남도 창원시 의창구'),
 	(48120, 48, 3, '창원시 성산구', '경상남도 창원시 성산구'),
@@ -716,49 +709,49 @@ INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(48380, 48, 3, '거창군', '경상남도 거창군'),
 	(48390, 48, 3, '합천군', '경상남도 합천군');
 
------- 제주도
+-- 제주도
 INSERT INTO regions (region_id, super_id, depth, name, full_name) VALUES
 	(50110, 50, 3, '제주시', '제주특별자치도 제주시'),
 	(50130, 50, 3, '서귀포시', '제주특별자치도 서귀포시');
 
 -- 채팅방 데이터
----- 업종별 채팅방
+-- 업종별 채팅방
 INSERT INTO chat_rooms (industry_id, region_id, room_type) VALUES
-	(1, NULL, '업종'),
-	(2, NULL, '업종'),
-	(3, NULL, '업종'),
-	(4, NULL, '업종'),
-	(5, NULL, '업종'),
-	(6, NULL, '업종'),
-	(7, NULL, '업종'),
-	(8, NULL, '업종'),
-	(9, NULL, '업종'),
-	(10, NULL, '업종'),
-	(11, NULL, '업종'),
-	(12, NULL, '업종'),
-	(13, NULL, '업종'),
-	(14, NULL, '업종'),
-	(15, NULL, '업종'),
-	(16, NULL, '업종'),
-	(17, NULL, '업종'),
-	(18, NULL, '업종'),
-	(19, NULL, '업종');
+	(1, NULL, 'industry'),
+	(2, NULL, 'industry'),
+	(3, NULL, 'industry'),
+	(4, NULL, 'industry'),
+	(5, NULL, 'industry'),
+	(6, NULL, 'industry'),
+	(7, NULL, 'industry'),
+	(8, NULL, 'industry'),
+	(9, NULL, 'industry'),
+	(10, NULL, 'industry'),
+	(11, NULL, 'industry'),
+	(12, NULL, 'industry'),
+	(13, NULL, 'industry'),
+	(14, NULL, 'industry'),
+	(15, NULL, 'industry'),
+	(16, NULL, 'industry'),
+	(17, NULL, 'industry'),
+	(18, NULL, 'industry'),
+	(19, NULL, 'industry');
 
----- 시/도별 채팅방
+-- 시/도별 채팅방
 INSERT INTO chat_rooms (industry_id, region_id, room_type) VALUES
-	(NULL, 11, '지역'),
-	(NULL, 26, '지역'),
-	(NULL, 27, '지역'),
-	(NULL, 28, '지역'),
-	(NULL, 29, '지역'),
-	(NULL, 30, '지역'),
-	(NULL, 31, '지역'),
-	(NULL, 41, '지역'),
-	(NULL, 42, '지역'),
-	(NULL, 43, '지역'),
-	(NULL, 44, '지역'),
-	(NULL, 45, '지역'),
-	(NULL, 46, '지역'),
-	(NULL, 47, '지역'),
-	(NULL, 48, '지역'),
-	(NULL, 50, '지역');
+	(NULL, 11, 'region'),
+	(NULL, 26, 'region'),
+	(NULL, 27, 'region'),
+	(NULL, 28, 'region'),
+	(NULL, 29, 'region'),
+	(NULL, 30, 'region'),
+	(NULL, 31, 'region'),
+	(NULL, 41, 'region'),
+	(NULL, 42, 'region'),
+	(NULL, 43, 'region'),
+	(NULL, 44, 'region'),
+	(NULL, 45, 'region'),
+	(NULL, 46, 'region'),
+	(NULL, 47, 'region'),
+	(NULL, 48, 'region'),
+	(NULL, 50, 'region');
