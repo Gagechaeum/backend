@@ -5,6 +5,7 @@ import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
 import com.gagechaeum.backend.document.dto.response.UserDocumentResponseDTO;
 import com.gagechaeum.backend.document.service.UserDocumentService;
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,41 +29,37 @@ public class UserDocumentController {
 	// 내 서류 목록 조회
 	@GetMapping("")
 	public CustomResponse<List<UserDocumentResponseDTO>> getUserDocuments(
-			// @AuthenticationPrincipal CustomUser user // 주석 해제 후 사용
+		 @AuthenticationPrincipal CustomUserDetails user
 	) {
-		// Long userId = user.getId();
-		Long userId = 1L; // 임시 사용자 ID
-		List<UserDocumentResponseDTO> documents = userDocumentService.getUserDocuments(userId);
+		List<UserDocumentResponseDTO> documents =
+			userDocumentService.getUserDocuments(user.getUserId());
 		return CustomResponse.success(ResponseCode.SUCCESS, documents);
 	}
 	
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public CustomResponse<Object> uploadUserDocument(
-		@ModelAttribute UserDocumentUploadRequestDto requestDto
-//		@AuthenticationPrincipal CustomUser user
+		@ModelAttribute UserDocumentUploadRequestDto requestDto,
+		@AuthenticationPrincipal CustomUserDetails user
 	) {
-//		userDocumentService.uploadUserDocument(requestDto, user);
-		userDocumentService.uploadUserDocument(requestDto);
+		userDocumentService.uploadUserDocument(requestDto, user.getUser());
 		return CustomResponse.success(ResponseCode.SUCCESS);
 	}
 	
 	@GetMapping("/download")
 	public CustomResponse<Object> downloadUserDocuments(
-		@RequestParam List<Long> ids
-//		@AuthenticationPrincipal CustomUser user
+		@RequestParam List<Long> ids,
+		@AuthenticationPrincipal CustomUserDetails user
 	) {
-//		userDocumentService.downloadUserDocuments(ids, user);
-		Object response = userDocumentService.downloadUserDocuments(ids);
+		Object response = userDocumentService.downloadUserDocuments(ids, user.getUser());
 		return CustomResponse.success(ResponseCode.SUCCESS, response);
 	}
 	
 	@DeleteMapping("")
 	public CustomResponse<Object> deleteUserDocuments(
-		@RequestParam List<Long> ids
-//		@AuthenticationPrincipal CustomUser user
+		@RequestParam List<Long> ids,
+		@AuthenticationPrincipal CustomUserDetails user
 	) {
-//		userDocumentService.deleteUserDocuments(ids, user);
-		userDocumentService.deleteUserDocuments(ids);
+		userDocumentService.deleteUserDocuments(ids, user.getUser());
 		return CustomResponse.success(ResponseCode.SUCCESS);
 	}
 }

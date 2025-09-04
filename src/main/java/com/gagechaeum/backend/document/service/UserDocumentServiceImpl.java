@@ -6,6 +6,7 @@ import com.gagechaeum.backend.document.dto.UserDocumentDownloadResponseDto;
 import com.gagechaeum.backend.document.dto.UserDocumentUploadRequestDto;
 import com.gagechaeum.backend.document.dto.response.UserDocumentResponseDTO;
 import com.gagechaeum.backend.document.mapper.UserDocumentMapper;
+import com.gagechaeum.backend.user.domain.User;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,18 +37,14 @@ public class UserDocumentServiceImpl implements UserDocumentService {
     }
 
     @Override
-    public void uploadUserDocument(
-        UserDocumentUploadRequestDto requestDto
-//        CustomUser user
-    ) {
+    public void uploadUserDocument(UserDocumentUploadRequestDto requestDto, User user) {
         requestDto.validate();
         
-        Long userId = 1L; // TODO: CustomUser ID로 변경
+        Long userId = user.getUserId();
         
         String key = "userDocuments/" +
-            userId + "/" +
-//            user.getId() + "/" +
-            requestDto.getDocumentId() + "/" +
+            userId + ":" +
+            requestDto.getDocumentId() + ":" +
             requestDto.getDocumentName();
         
         try {
@@ -55,8 +52,9 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             
             UserDocument userDocument = UserDocument
                 .builder().userId(userId)
-//            .userId(user.getId())
+                .userId(userId)
                 .documentId(requestDto.getDocumentId())
+                .documentName(requestDto.getDocumentName())
                 .issuedAt(requestDto.getIssuedAt())
                 .fileKey(key)
                 .build();
@@ -68,19 +66,16 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         }
     }
     
-    public UserDocumentDownloadResponseDto downloadUserDocuments(
-        List<Long> ids
-//        CustomUser user
-    ) {
+    public UserDocumentDownloadResponseDto downloadUserDocuments(List<Long> ids, User user) {
         if (ids == null || ids.isEmpty()) {
             throw new IllegalArgumentException("ids는 필수 쿼리 파라미터입니다.");
         }
         
-        Long userId = 1L; // TODO: CustomUser ID로 변경
+        Long userId = user.getUserId();
         
         if (ids.size() == 1) {
             return UserDocumentDownloadResponseDto.builder()
-                .file(downloadSingleFile(userId, ids.get(0)))
+                .fileUrl(downloadSingleFile(userId, ids.get(0)))
                 .build();
         }
         
@@ -89,23 +84,14 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             .build();
     }
     
-    public void deleteUserDocuments(
-        List<Long> ids
-//        CustomUser user
-    ) {
+    public void deleteUserDocuments(List<Long> ids, User user) {
         if (ids == null || ids.isEmpty()) {
             throw new IllegalArgumentException("ids는 필수 쿼리 파라미터입니다.");
         }
         
-        Long userId = 1L; // TODO: CustomUser ID로 변경
+        Long userId = user.getUserId();
         
         for (Long userDocumentId : ids) {
-            UserDocument userDocument = UserDocument
-                .builder().userId(userId)
-//            .userId(user.getId())
-                .userDocumentId(userDocumentId)
-                .build();
-            
             String fileKey = userDocumentMapper.getFileKeyById(userId, userDocumentId);
             
             try {
@@ -119,17 +105,13 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         }
     }
     
-    private InputStream downloadSingleFile(Long userId, Long userDocumentId) {
+    private String downloadSingleFile(Long userId, Long userDocumentId) {
         UserDocument userDocument = userDocumentMapper.getById(userId, userDocumentId);
         
         if (userDocument != null) {
-            try {
-                return s3ClientUtil.downloadFile(userDocument.getFileKey());
-            } catch (IOException e) {
-                throw new RuntimeException("파일 다운로드 중 오류가 발생했습니다.", e);
-            }
+            return s3ClientUtil.getFileUrl(userDocument.getFileKey());
         }
-        throw new IllegalArgumentException("유효하지 않은 파일입니다.");
+        throw new IllegalArgumentException("존재하지 않는 파일입니다.");
     }
     
     private byte[] downloadMultiFiles(Long userId, List<Long> ids) {
@@ -137,7 +119,6 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ZipOutputStream zipOutputStream = new ZipOutputStream(baos)
         ) {
-            
             for (Long userDocumentId : ids) {
                 UserDocument userDocument = userDocumentMapper.getById(userId, userDocumentId);
                 
@@ -156,7 +137,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
     private void writeSingleEntry(
         UserDocument userDocument,
         ZipOutputStream zipOutputStream
-    ) {
+    ) throws IOException {
         try (InputStream s3InputStream = s3ClientUtil.downloadFile(userDocument.getFileKey())) {
             String fileName = userDocument.getDocumentName();
             
@@ -170,8 +151,6 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             }
             
             zipOutputStream.closeEntry();
-        } catch (IOException e) {
-            log.error("파일 다운로드에 실패했습니다: " + userDocument.getDocumentName(), e);
         }
     }
 }

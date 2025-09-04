@@ -2,6 +2,8 @@ package com.gagechaeum.backend.global.config;
 
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration;
 
 import com.gagechaeum.backend.common.mail.MailConfig;
 import com.gagechaeum.backend.common.redis.RedisConfig;
@@ -37,5 +39,12 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         characterEncodingFilter.setForceEncoding(true);
 
         return new Filter[] { characterEncodingFilter };
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setMultipartConfig(
+                new MultipartConfigElement("/tmp", 20971520, 41943040, 20971520/2)
+        );
     }
 }
