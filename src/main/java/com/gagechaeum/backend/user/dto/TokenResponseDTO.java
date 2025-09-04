@@ -1,0 +1,14 @@
+package com.gagechaeum.backend.user.dto;
+
+import lombok.Data;
+
+@Data
+public class TokenResponseDTO {
+    private String accessToken;
+    private String refreshToken;
+
+    public TokenResponseDTO(String at, String rt) {
+        this.accessToken = at;
+        this.refreshToken = rt;
+    }
+}

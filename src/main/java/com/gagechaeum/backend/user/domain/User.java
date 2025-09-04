@@ -1,8 +1,14 @@
 package com.gagechaeum.backend.user.domain;
 
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Data
+@Setter
 @Getter
 public class User {
     private Long userId;
@@ -15,4 +21,5 @@ public class User {
     private String social;
     private String socialId;
     private LocalDateTime deletedAt;
+    private Boolean isVerified;
 }
