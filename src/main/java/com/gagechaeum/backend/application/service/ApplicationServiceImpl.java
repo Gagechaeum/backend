@@ -21,12 +21,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         // 진행률(%) 계산
         for (ApplicationResponseDTO dto : applications) {
-            int progressPercentage = 0;
-            // 0으로 나누는 것을 방지
+            int progressPercentage;
+
             if (dto.getTotalDocsCount() > 0) {
                 progressPercentage = (int) ((double) dto.getCompletedDocsCount() * 100 / dto.getTotalDocsCount());
-            } else if (dto.getTotalDocsCount() == 0) {
-                // 필요한 서류가 0개인 경우 100%로 처리
+            } else { // totalDocsCount가 0인 경우
                 progressPercentage = 100;
             }
             dto.setProgressPercentage(progressPercentage);
