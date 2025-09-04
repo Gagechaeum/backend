@@ -1,10 +1,14 @@
 package com.gagechaeum.backend.common.util;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,7 +28,17 @@ public class S3ClientUtil {
 		s3Client.putObject(bucketName, key, file.getInputStream(), metadata);
 	}
 	
-	// 파일 다운로드
+	// 파일 다운로드 url
+	public String getFileUrl(String key) {
+		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, key)
+			.withMethod(HttpMethod.GET)
+			.withExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5));
+		
+		URL url = s3Client.generatePresignedUrl(request);
+		return url.toString();
+	}
+	
+	// 파일 다운로드 zip
 	public InputStream downloadFile(String key) throws IOException {
 		S3Object s3Object = s3Client.getObject(bucketName, key);
 		return s3Object.getObjectContent();
