@@ -1,4 +1,4 @@
-package com.gagechaeum.backend.application.dto.response;
+package com.gagechaeum.backend.bookmark.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationResponseDTO {
-    private String applicationId;
+public class BookmarkResponseDTO {
+    private String bookmarkId;
     private String processStage;
     private String productType;
     private String productName;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gagechaeum.backend.application.mapper.ApplicationMapper">
+<mapper namespace="com.gagechaeum.backend.bookmark.mapper.BookmarkMapper">
 
-    <resultMap id="ApplicationResultMap" type="com.gagechaeum.backend.application.dto.response.ApplicationResponseDTO">
-        <result property="applicationId" column="applicationId"/>
+    <resultMap id="BookmarkResultMap" type="com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO">
+        <result property="bookmarkId" column="bookmarkId"/>
         <result property="processStage" column="processStage"/>
         <result property="productType" column="productType"/>
         <result property="productName" column="productName"/>
@@ -13,10 +13,10 @@
         <result property="totalDocsCount" column="totalDocsCount"/>
     </resultMap>
 
-    <select id="findApplicationsByUserId" parameterType="long" resultMap="ApplicationResultMap">
+    <select id="findBookmarksByUserId" parameterType="long" resultMap="BookmarkResultMap">
         -- 사용자가 즐겨찾기한 정책 현황 조회
         SELECT
-            CONCAT('policy_', upb.bookmark_policy_id) AS applicationId,
+            CONCAT('policy_', upb.bookmark_policy_id) AS bookmarkId,
             upb.status AS processStage,
             '정책' AS productType,
             p.policy_name AS productName,
@@ -39,7 +39,7 @@
 
         -- 사용자가 즐겨찾기한 대출 현황 조회
         SELECT
-            CONCAT('loan_', ulb.bookmark_loan_id) AS applicationId,
+            CONCAT('loan_', ulb.bookmark_loan_id) AS bookmarkId,
             ulb.status AS processStage,
             '대출' AS productType,
             l.product_name AS productName,
