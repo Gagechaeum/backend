@@ -1,6 +1,7 @@
 package com.gagechaeum.backend.bookmark.controller;
 
 import com.gagechaeum.backend.bookmark.dto.request.BookmarkStatusUpdateRequestDTO;
+import com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO;
 import com.gagechaeum.backend.bookmark.service.BookmarkService;
 import com.gagechaeum.backend.common.response.CustomResponse;
@@ -23,6 +24,14 @@ public class BookmarkController {
         Long userId = 1L;
         List<BookmarkResponseDTO> bookmarks = bookmarkService.findBookmarksByUserId(userId);
         return CustomResponse.success(ResponseCode.SUCCESS, bookmarks);
+    }
+
+    @GetMapping("/bookmarks/documents")
+    public CustomResponse<BookmarkDocumentsResponseDTO> getBookmarkDocuments() {
+        // TODO: Get user ID from SecurityContext
+        Long userId = 1L;
+        BookmarkDocumentsResponseDTO response = bookmarkService.getBookmarkDocuments(userId);
+        return CustomResponse.success(ResponseCode.SUCCESS, response);
     }
 
     @PatchMapping("/policies/{id}/status")

@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.bookmark.service;
 
+import com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO;
 import com.gagechaeum.backend.bookmark.mapper.BookmarkMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,15 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         return bookmarks;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BookmarkDocumentsResponseDTO getBookmarkDocuments(Long userId) {
+        int totalBookmarkCount = bookmarkMapper.countTotalBookmarksByUserId(userId);
+        List<BookmarkDocumentsResponseDTO.DocumentInfoDTO> documents = bookmarkMapper.findBookmarkDocumentsByUserId(userId);
+
+        return new BookmarkDocumentsResponseDTO(totalBookmarkCount, documents);
     }
 
     @Override
