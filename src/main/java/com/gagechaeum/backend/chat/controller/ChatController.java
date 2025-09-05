@@ -6,6 +6,7 @@ import com.gagechaeum.backend.common.response.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,22 @@ public class ChatController {
 		@RequestParam(value = "type", defaultValue = "all") String type
 	) {
 		Object response = chatService.getChatRooms(type);
+		return CustomResponse.success(ResponseCode.SUCCESS, response);
+	}
+	
+	@GetMapping("/policies/{policy_id}")
+	public CustomResponse<Object> getPolicyChatRoomDetails(
+			@PathVariable("policy_id") String policyId
+	) {
+		Object response = chatService.getPolicyChatRoomDetails(policyId);
+		return CustomResponse.success(ResponseCode.SUCCESS, response);
+	}
+	
+	@GetMapping("/loans/{loan_id}")
+	public CustomResponse<Object> getLoanChatRoomDetails(
+		@PathVariable("loan_id") Long loanId
+	) {
+		Object response = chatService.getLoanChatRoomDetails(loanId);
 		return CustomResponse.success(ResponseCode.SUCCESS, response);
 	}
 }

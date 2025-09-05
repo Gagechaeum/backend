@@ -30,4 +30,26 @@ public class ChatServiceImpl implements ChatService {
 			.chatRooms(chatRooms)
 			.build();
 	}
+	
+	public ChatRoomSummaryDto getPolicyChatRoomDetails(String policyId) {
+		ChatRoomSummaryDto chatRoom = chatMapper.getChatRoomDetailsByPolicyId(policyId);
+		if (chatRoom == null) {
+			throw new IllegalArgumentException("채팅방이 존재하지 않습니다.");
+		}
+		chatRoom.setParticipantCount(
+			redisService.getChatRoomParticipantCount(chatRoom.getRoomId())
+		);
+		return chatRoom;
+	}
+	
+	public ChatRoomSummaryDto getLoanChatRoomDetails(Long loanId) {
+		ChatRoomSummaryDto chatRoom = chatMapper.getChatRoomDetailsByLoanId(loanId);
+		if (chatRoom == null) {
+			throw new IllegalArgumentException("채팅방이 존재하지 않습니다.");
+		}
+		chatRoom.setParticipantCount(
+				redisService.getChatRoomParticipantCount(chatRoom.getRoomId())
+		);
+		return chatRoom;
+	}
 }
