@@ -27,4 +27,9 @@ public interface UserDocumentMapper {
 		@Param("userId") Long userId,
 		@Param("userDocumentId") Long userDocumentId
 	);
+
+	int deleteByName(
+		@Param("userId") Long userId,
+		@Param("documentName") String documentName
+	);
 }

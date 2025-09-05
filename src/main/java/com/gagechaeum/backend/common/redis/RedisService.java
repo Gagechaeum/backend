@@ -161,4 +161,22 @@ public class RedisService {
     public long incrDailyAndSetExpireIfNew(String email) {
         return incr(evDailyKey(email), RedisKeyPrefix.EV_DAILY_TTL_SEC);
     }
+    
+    // ===== 채팅 참여자 수 관리 (Set operations) =====
+    
+    public void addChatRoomParticipant(Long roomId, Long userId) {
+        String key = "chatroom:participants:" + roomId;
+        redis.opsForSet().add(key, userId.toString());
+    }
+    
+    public void removeChatRoomParticipant(Long roomId, Long userId) {
+        String key = "chatroom:participants:" + roomId;
+        redis.opsForSet().remove(key, userId.toString());
+    }
+    
+    public Long getChatRoomParticipantCount(Long roomId) {
+        String key = "chatroom:participants:" + roomId;
+        Long count = redis.opsForSet().size(key);
+        return (count != null) ? count : 0L;
+    }
 }
