@@ -27,4 +27,26 @@
     </where>
   </select>
 
+  <select id="getChatRoomDetailsByPolicyId" resultType="ChatRoomSummaryDto">
+    SELECT
+      cr.room_id,
+      cr.room_type,
+      p.policy_name AS name
+    FROM chat_rooms cr
+        JOIN policies p
+            ON cr.policy_id = p.policy_id
+    WHERE cr.policy_id = #{policyId}
+  </select>
+
+  <select id="getChatRoomDetailsByLoanId" resultType="ChatRoomSummaryDto">
+    SELECT
+      cr.room_id,
+      cr.room_type,
+      l.product_name AS name
+    FROM chat_rooms cr
+        JOIN loans l
+            ON cr.loan_id = l.loan_id
+    WHERE cr.loan_id = #{loanId}
+  </select>
+
 </mapper>
