@@ -56,6 +56,7 @@ CREATE TABLE business_info (
 			'SALES_SCOPE5'
 		)	NOT NULL,
 	company_name	VARCHAR(255)	NOT NULL,
+    estb_date date not null comment '개업일자',
 	CONSTRAINT fk_business_info_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
@@ -64,6 +65,7 @@ CREATE TABLE business_info (
 	CONSTRAINT fk_business_info_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 );
+
 
 -- 정책
 CREATE TABLE policies (

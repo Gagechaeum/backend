@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gagechaeum.backend.user.mapper.BusinessInfoMapper">
+
+    <insert id="save">
+        INSERT INTO business_info(user_id, region_id, industry_id, business_num, sales_scope, company_name, estd_date) VALUES
+            VALUES ( #{userId}, #{regionId},#{industryId},#{businessNum},#{salesSope},#{companyName},#{estd_date} )
+    </insert>
+
+    <select id="selectByUserId" resultType="com.gagechaeum.backend.user.domain.BusinessInfoVO">
+        SELECT * FROM business_info WHERE user_id=#{userId}
+    </select>
+
+    <update id="update">
+        UPDATE business_info
+        SET sales_scope=#{salesScope}, company_name=#{companyName}, region_id=#{regionId}
+        WHERE business_info_id=#{businessInfoId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM business_info where business_info_id=#{businessInfoId}
+    </delete>
+</mapper>

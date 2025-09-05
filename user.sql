@@ -16,14 +16,15 @@ VALUES (
 		);
 
 -- 사업자
-INSERT INTO business_info (user_id, region_id, industry_id, business_num, sales_scope, company_name)
+INSERT INTO business_info (user_id, region_id, industry_id, business_num, sales_scope, company_name, estb_date)
 VALUES (
 		   1,
 		   47210,  -- 경상북도 경주시
 		   9,  -- 숙박 및 음식점업
 		   '596-18-01709',
 		   'SALES_SCOPE1',
-		   '피자스쿨'
+		   '피자스쿨',
+        '2019-01-11'
 		);
 
 -- 사용자 정책
