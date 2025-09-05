@@ -14,61 +14,61 @@
     </resultMap>
 
     <select id="findApplicationsByUserId" parameterType="long" resultMap="ApplicationResultMap">
-        -- 사용자가 신청한 정책 현황 조회
+        -- 사용자가 즐겨찾기한 정책 현황 조회
         SELECT
-            CONCAT('policy_', up.user_policy_id) AS applicationId,
-            up.status AS processStage,
+            CONCAT('policy_', upb.bookmark_policy_id) AS applicationId,
+            upb.status AS processStage,
             '정책' AS productType,
             p.policy_name AS productName,
             p.supervising_organization_name AS providerName,
             (SELECT COUNT(DISTINCT rd.document_id)
              FROM required_documents rd
-                      JOIN user_documents ud ON rd.document_id = ud.document_id
-             WHERE rd.policy_id = up.policy_id AND ud.user_id = up.user_id) AS completedDocsCount,
+                      JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = upb.user_id
+             WHERE rd.policy_id = upb.policy_id) AS completedDocsCount,
             (SELECT COUNT(*)
              FROM required_documents
-             WHERE policy_id = up.policy_id) AS totalDocsCount
+             WHERE policy_id = upb.policy_id) AS totalDocsCount
         FROM
-            user_policies up
+            user_policy_bookmarks upb
                 JOIN
-            policies p ON up.policy_id = p.policy_id
+            policies p ON upb.policy_id = p.policy_id
         WHERE
-            up.user_id = #{userId}
+            upb.user_id = #{userId}
 
         UNION ALL
 
-        -- 사용자가 신청한 대출 현황 조회
+        -- 사용자가 즐겨찾기한 대출 현황 조회
         SELECT
-            CONCAT('loan_', ul.user_loan_id) AS applicationId,
-            ul.status AS processStage,
+            CONCAT('loan_', ulb.bookmark_loan_id) AS applicationId,
+            ulb.status AS processStage,
             '대출' AS productType,
             l.product_name AS productName,
             l.company_name AS providerName,
             (SELECT COUNT(DISTINCT rd.document_id)
              FROM required_documents rd
-                      JOIN user_documents ud ON rd.document_id = ud.document_id
-             WHERE rd.loan_id = ul.loan_id AND ud.user_id = ul.user_id) AS completedDocsCount,
+                      JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = ulb.user_id
+             WHERE rd.loan_id = ulb.loan_id) AS completedDocsCount,
             (SELECT COUNT(*)
              FROM required_documents
-             WHERE loan_id = ul.loan_id) AS totalDocsCount
+             WHERE loan_id = ulb.loan_id) AS totalDocsCount
         FROM
-            user_loans ul
+            user_loan_bookmarks ulb
                 JOIN
-            loans l ON ul.loan_id = l.loan_id
+            loans l ON ulb.loan_id = l.loan_id
         WHERE
-            ul.user_id = #{userId}
+            ulb.user_id = #{userId}
     </select>
 
     <update id="updateUserPolicyStatus">
-        UPDATE user_policies
+        UPDATE user_policy_bookmarks
         SET status = #{status}
-        WHERE user_id = #{userId} AND user_policy_id = #{id}
+        WHERE user_id = #{userId} AND bookmark_policy_id = #{id}
     </update>
 
     <update id="updateUserLoanStatus">
-        UPDATE user_loans
+        UPDATE user_loan_bookmarks
         SET status = #{status}
-        WHERE user_id = #{userId} AND user_loan_id = #{id}
+        WHERE user_id = #{userId} AND bookmark_loan_id = #{id}
     </update>
 
 </mapper>

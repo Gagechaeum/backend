@@ -86,7 +86,7 @@
         SELECT EXISTS (
                    SELECT 1
                    FROM users
-                   WHERE nickname=#{nickname};
+                   WHERE nickname=#{nickname}
         )
     </select>
 
