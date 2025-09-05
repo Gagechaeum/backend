@@ -5,6 +5,7 @@ import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.mapper.ChatMapper;
 import com.gagechaeum.backend.common.redis.RedisService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ChatServiceImpl implements ChatService {
 	public ChatRoomSummaryDto getPolicyChatRoomDetails(String policyId) {
 		ChatRoomSummaryDto chatRoom = chatMapper.getChatRoomDetailsByPolicyId(policyId);
 		if (chatRoom == null) {
-			throw new IllegalArgumentException("채팅방이 존재하지 않습니다.");
+			throw new NoSuchElementException("채팅방이 존재하지 않습니다.");
 		}
 		chatRoom.setParticipantCount(
 			redisService.getChatRoomParticipantCount(chatRoom.getRoomId())
@@ -45,7 +46,7 @@ public class ChatServiceImpl implements ChatService {
 	public ChatRoomSummaryDto getLoanChatRoomDetails(Long loanId) {
 		ChatRoomSummaryDto chatRoom = chatMapper.getChatRoomDetailsByLoanId(loanId);
 		if (chatRoom == null) {
-			throw new IllegalArgumentException("채팅방이 존재하지 않습니다.");
+			throw new NoSuchElementException("채팅방이 존재하지 않습니다.");
 		}
 		chatRoom.setParticipantCount(
 				redisService.getChatRoomParticipantCount(chatRoom.getRoomId())

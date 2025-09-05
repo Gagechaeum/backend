@@ -1669,109 +1669,110 @@ VALUES
     (LAST_INSERT_ID(), '가산금리', 5.02, 4.38, 5.51, 5.88);
 
 -- 대출 더미데이터에 해당하는 채팅방 생성
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (1, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (2, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (3, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (4, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (5, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (6, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (7, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (8, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (9, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (10, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (11, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (12, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (13, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (14, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (15, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (16, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (17, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (18, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (19, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (20, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (21, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (22, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (23, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (24, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (25, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (26, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (27, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (28, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (29, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (30, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (31, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (32, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (33, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (34, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (35, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (36, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (37, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (38, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (39, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (40, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (41, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (42, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (43, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (44, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (45, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (46, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (47, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (48, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (49, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (50, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (51, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (52, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (53, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (54, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (55, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (56, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (57, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (58, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (59, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (60, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (61, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (62, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (63, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (64, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (65, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (66, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (67, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (68, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (69, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (70, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (71, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (72, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (73, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (74, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (75, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (76, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (77, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (78, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (79, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (80, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (81, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (82, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (83, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (84, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (85, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (86, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (87, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (88, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (89, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (90, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (91, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (92, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (93, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (94, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (95, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (96, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (97, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (98, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (99, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (100, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (101, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (102, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (103, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (104, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (105, '대출');
-INSERT INTO chat_rooms (loan_id, room_type) VALUES (106, '대출');
+INSERT INTO chat_rooms (loan_id, room_type) VALUES
+	(1, '대출'),
+	(2, '대출'),
+	(3, '대출'),
+	(4, '대출'),
+	(5, '대출'),
+	(6, '대출'),
+	(7, '대출'),
+	(8, '대출'),
+	(9, '대출'),
+	(10, '대출'),
+	(11, '대출'),
+	(12, '대출'),
+	(13, '대출'),
+	(14, '대출'),
+	(15, '대출'),
+	(16, '대출'),
+	(17, '대출'),
+	(18, '대출'),
+	(19, '대출'),
+	(20, '대출'),
+	(21, '대출'),
+	(22, '대출'),
+	(23, '대출'),
+	(24, '대출'),
+	(25, '대출'),
+	(26, '대출'),
+	(27, '대출'),
+	(28, '대출'),
+	(29, '대출'),
+	(30, '대출'),
+	(31, '대출'),
+	(32, '대출'),
+	(33, '대출'),
+	(34, '대출'),
+	(35, '대출'),
+	(36, '대출'),
+	(37, '대출'),
+	(38, '대출'),
+	(39, '대출'),
+	(40, '대출'),
+	(41, '대출'),
+	(42, '대출'),
+	(43, '대출'),
+	(44, '대출'),
+	(45, '대출'),
+	(46, '대출'),
+	(47, '대출'),
+	(48, '대출'),
+	(49, '대출'),
+	(50, '대출'),
+	(51, '대출'),
+	(52, '대출'),
+	(53, '대출'),
+	(54, '대출'),
+	(55, '대출'),
+	(56, '대출'),
+	(57, '대출'),
+	(58, '대출'),
+	(59, '대출'),
+	(60, '대출'),
+	(61, '대출'),
+	(62, '대출'),
+	(63, '대출'),
+	(64, '대출'),
+	(65, '대출'),
+	(66, '대출'),
+	(67, '대출'),
+	(68, '대출'),
+	(69, '대출'),
+	(70, '대출'),
+	(71, '대출'),
+	(72, '대출'),
+	(73, '대출'),
+	(74, '대출'),
+	(75, '대출'),
+	(76, '대출'),
+	(77, '대출'),
+	(78, '대출'),
+	(79, '대출'),
+	(80, '대출'),
+	(81, '대출'),
+	(82, '대출'),
+	(83, '대출'),
+	(84, '대출'),
+	(85, '대출'),
+	(86, '대출'),
+	(87, '대출'),
+	(88, '대출'),
+	(89, '대출'),
+	(90, '대출'),
+	(91, '대출'),
+	(92, '대출'),
+	(93, '대출'),
+	(94, '대출'),
+	(95, '대출'),
+	(96, '대출'),
+	(97, '대출'),
+	(98, '대출'),
+	(99, '대출'),
+	(100, '대출'),
+	(101, '대출'),
+	(102, '대출'),
+	(103, '대출'),
+	(104, '대출'),
+	(105, '대출'),
+	(106, '대출');
