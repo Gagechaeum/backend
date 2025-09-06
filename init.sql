@@ -231,6 +231,7 @@ CREATE TABLE user_policy_bookmarks (
 	bookmark_policy_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	policy_id	VARCHAR(255)	NOT NULL,
+	created_at DATETIME	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_user_policy_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
@@ -243,6 +244,7 @@ CREATE TABLE user_loan_bookmarks (
 	bookmark_loan_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	user_id	BIGINT	NOT NULL,
 	loan_id	BIGINT	NOT NULL,
+	created_at DATETIME	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_user_loan_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
