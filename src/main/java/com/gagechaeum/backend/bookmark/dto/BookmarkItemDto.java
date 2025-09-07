@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class BookmarkItemDto {
-	private String policy_id;
-	private Long loan_id;
+	private String policyId;
+	private Long loanId;
 	private String name;
 	private LocalDate beginDate;
 	private LocalDate endDate;

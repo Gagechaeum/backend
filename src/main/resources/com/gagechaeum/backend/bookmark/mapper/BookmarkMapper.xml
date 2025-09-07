@@ -6,8 +6,8 @@
 <mapper namespace="com.gagechaeum.backend.bookmark.mapper.BookmarkMapper">
 
   <resultMap id="bookmarkItemMap" type="BookmarkItemDto">
-    <result property="policy_id" column="policy_id"/>
-    <result property="loan_id" column="loan_id"/>
+    <result property="policyId" column="policy_id"/>
+    <result property="loanId" column="loan_id"/>
     <result property="name" column="name"/>
     <result property="beginDate" column="begin_date"/>
     <result property="endDate" column="end_date"/>
