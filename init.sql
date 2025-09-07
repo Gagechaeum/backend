@@ -230,6 +230,7 @@ CREATE TABLE user_policy_bookmarks (
 	user_id	BIGINT	NOT NULL,
 	policy_id	VARCHAR(255)	NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT '요건확인' COMMENT '"요건확인", "서류 수집/업로드", "제출 준비", "제출 완료/결과"',
+	created_at DATETIME	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_user_policy_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
@@ -243,7 +244,8 @@ CREATE TABLE user_loan_bookmarks (
 	user_id	BIGINT	NOT NULL,
 	loan_id	BIGINT	NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT '요건확인' COMMENT '"요건확인", "서류 수집/업로드", "제출 준비", "제출 완료/결과"',
-CONSTRAINT fk_user_loan_bookmarks_user_id FOREIGN KEY (user_id)
+	created_at DATETIME	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT fk_user_loan_bookmarks_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
 		ON DELETE CASCADE,
 	CONSTRAINT fk_user_loan_bookmarks_loan_id FOREIGN KEY (loan_id)

@@ -87,17 +87,17 @@ VALUES (
 		);
 
 -- 사용자 정책 즐겨찾기
-INSERT INTO user_policy_bookmarks (user_id, policy_id, status)
+INSERT INTO user_policy_bookmarks (user_id, policy_id, status, created_at)
 VALUES
-	(1, '304000000186', '서류 수집/업로드'),
-	(1, '142100000050', '제출 완료/결과');
+	(1, '304000000186', '서류 수집/업로드', '2025-09-03 14:30:00'),
+	(1, '142100000050', '제출 완료/결과', '2025-09-06 21:20:00');
 
 -- 사용자 대출 즐겨찾기
-INSERT INTO user_loan_bookmarks (user_id, loan_id)
+INSERT INTO user_loan_bookmarks (user_id, loan_id, created_at)
 VALUES
-	(1, 57),
-	(1, 67),
-	(1, 94);
+	(1, 57, '2025-09-01 10:00:00'),
+	(1, 67, '2025-09-03 14:30:00'),
+	(1, 94, '2025-09-05 09:10:00');
 
 -- 사용자 서류
 INSERT INTO user_documents (user_document_id, user_id, document_id, document_name, issued_at, file_key)
