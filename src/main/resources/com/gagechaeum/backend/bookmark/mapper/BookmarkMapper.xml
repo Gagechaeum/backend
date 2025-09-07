@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gagechaeum.backend.bookmark.mapper.BookmarkMapper">
 
-  <resultMap id="bookmarkItemMap" type="BookmarkItemDto">
-    <result property="policyId" column="policy_id"/>
-    <result property="loanId" column="loan_id"/>
-    <result property="name" column="name"/>
-    <result property="beginDate" column="begin_date"/>
-    <result property="endDate" column="end_date"/>
-    <result property="applicationPeriod" column="application_period"/>
-  </resultMap>
+    <resultMap id="bookmarkItemMap" type="BookmarkItemDto">
+        <result property="policyId" column="policy_id"/>
+        <result property="loanId" column="loan_id"/>
+        <result property="name" column="name"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="applicationPeriod" column="application_period"/>
+    </resultMap>
+
     <resultMap id="BookmarkResultMap" type="com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO">
         <result property="bookmarkId" column="bookmarkId"/>
         <result property="processStage" column="processStage"/>
@@ -23,22 +24,6 @@
         <result property="totalDocsCount" column="totalDocsCount"/>
     </resultMap>
 
-  <select
-    id="getUserPolicyBookmarks"
-    parameterType="BookmarkListRequestDto"
-    resultMap="bookmarkItemMap"
-  >
-    SELECT
-      p.policy_id,
-      p.policy_name AS name,
-      p.begin_date,
-      p.end_date,
-      p.application_period,
-      upb.created_at
-    FROM user_policy_bookmarks upb
-           JOIN policies p ON upb.policy_id = p.policy_id
-    WHERE upb.user_id = #{userId}
-  </select>
     <resultMap id="DocumentInfoResultMap" type="com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO$DocumentInfoDTO">
         <result property="documentName" column="documentName"/>
         <result property="productCount" column="productCount"/>
@@ -46,140 +31,141 @@
         <result property="issuingUrl" column="issuingUrl"/>
     </resultMap>
 
-    <select id="findBookmarksByUserId" parameterType="long" resultMap="BookmarkResultMap">
-        -- 사용자가 즐겨찾기한 정책 현황 조회
+    <!-- 정책 즐겨찾기 목록 -->
+    <select id="getUserPolicyBookmarks" parameterType="BookmarkListRequestDto" resultMap="bookmarkItemMap">
         SELECT
-            CONCAT('policy_', upb.bookmark_policy_id) AS bookmarkId,
-            upb.status AS processStage,
-            '정책' AS productType,
-            p.policy_name AS productName,
-            p.supervising_organization_name AS providerName,
-            (SELECT COUNT(DISTINCT rd.document_id)
-             FROM required_documents rd
-                      JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = upb.user_id
-             WHERE rd.policy_id = upb.policy_id) AS completedDocsCount,
-            (SELECT COUNT(*)
-             FROM required_documents
-             WHERE policy_id = upb.policy_id) AS totalDocsCount
-        FROM
-            user_policy_bookmarks upb
-                JOIN
-            policies p ON upb.policy_id = p.policy_id
-        WHERE
-            upb.user_id = #{userId}
-
-  <select
-    id="getUserPolicyBookmarksWithPagination"
-    parameterType="BookmarkListRequestDto"
-    resultMap="bookmarkItemMap"
-  >
-    SELECT
-      p.policy_id,
-      p.policy_name AS name,
-      p.begin_date,
-      p.end_date,
-      p.application_period,
-      upb.created_at
-    FROM user_policy_bookmarks upb
-           JOIN policies p ON upb.policy_id = p.policy_id
-    WHERE upb.user_id = #{userId}
-    ORDER BY upb.created_at DESC
-      LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
-  </select>
-        UNION ALL
-
-        -- 사용자가 즐겨찾기한 대출 현황 조회
-        SELECT
-            CONCAT('loan_', ulb.bookmark_loan_id) AS bookmarkId,
-            ulb.status AS processStage,
-            '대출' AS productType,
-            l.product_name AS productName,
-            l.company_name AS providerName,
-            (SELECT COUNT(DISTINCT rd.document_id)
-             FROM required_documents rd
-                      JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = ulb.user_id
-             WHERE rd.loan_id = ulb.loan_id) AS completedDocsCount,
-            (SELECT COUNT(*)
-             FROM required_documents
-             WHERE loan_id = ulb.loan_id) AS totalDocsCount
-        FROM
-            user_loan_bookmarks ulb
-                JOIN
-            loans l ON ulb.loan_id = l.loan_id
-        WHERE
-            ulb.user_id = #{userId}
+            p.policy_id,
+            p.policy_name AS name,
+            p.begin_date,
+            p.end_date,
+            p.application_period,
+            upb.created_at
+        FROM user_policy_bookmarks upb
+                 JOIN policies p ON upb.policy_id = p.policy_id
+        WHERE upb.user_id = #{userId}
     </select>
 
-  <select
-    id="getUserLoanBookmarks"
-    parameterType="BookmarkListRequestDto"
-    resultMap="bookmarkItemMap"
-  >
-    SELECT
-      l.loan_id,
-      l.product_name AS name,
-      l.begin_date,
-      l.end_date,
-      ulb.created_at
-    FROM user_loan_bookmarks ulb
-           JOIN loans l ON ulb.loan_id = l.loan_id
-    WHERE ulb.user_id = #{userId}
-  </select>
+    <!-- 정책 + 대출 즐겨찾기 현황 (UNION ALL) -->
+    <select id="findBookmarksByUserId" parameterType="long" resultMap="BookmarkResultMap">
+        <!-- 사용자가 즐겨찾기한 정책 현황 조회 -->
+        SELECT
+        CONCAT('policy_', upb.bookmark_policy_id) AS bookmarkId,
+        upb.status AS processStage,
+        '정책' AS productType,
+        p.policy_name AS productName,
+        p.supervising_organization_name AS providerName,
+        (SELECT COUNT(DISTINCT rd.document_id)
+        FROM required_documents rd
+        JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = upb.user_id
+        WHERE rd.policy_id = upb.policy_id) AS completedDocsCount,
+        (SELECT COUNT(*) FROM required_documents WHERE policy_id = upb.policy_id) AS totalDocsCount
+        FROM user_policy_bookmarks upb
+        JOIN policies p ON upb.policy_id = p.policy_id
+        WHERE upb.user_id = #{userId}
+
+        UNION ALL
+
+        <!-- 사용자가 즐겨찾기한 대출 현황 조회 -->
+        SELECT
+        CONCAT('loan_', ulb.bookmark_loan_id) AS bookmarkId,
+        ulb.status AS processStage,
+        '대출' AS productType,
+        l.product_name AS productName,
+        l.company_name AS providerName,
+        (SELECT COUNT(DISTINCT rd.document_id)
+        FROM required_documents rd
+        JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = ulb.user_id
+        WHERE rd.loan_id = ulb.loan_id) AS completedDocsCount,
+        (SELECT COUNT(*) FROM required_documents WHERE loan_id = ulb.loan_id) AS totalDocsCount
+        FROM user_loan_bookmarks ulb
+        JOIN loans l ON ulb.loan_id = l.loan_id
+        WHERE ulb.user_id = #{userId}
+    </select>
+
+    <!-- 정책 즐겨찾기 (페이징) -->
+    <select id="getUserPolicyBookmarksWithPagination" parameterType="BookmarkListRequestDto" resultMap="bookmarkItemMap">
+        SELECT
+            p.policy_id,
+            p.policy_name AS name,
+            p.begin_date,
+            p.end_date,
+            p.application_period,
+            upb.created_at
+        FROM user_policy_bookmarks upb
+                 JOIN policies p ON upb.policy_id = p.policy_id
+        WHERE upb.user_id = #{userId}
+        ORDER BY upb.created_at DESC
+            LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+    </select>
+
+    <!-- 대출 즐겨찾기 -->
+    <select id="getUserLoanBookmarks" parameterType="BookmarkListRequestDto" resultMap="bookmarkItemMap">
+        SELECT
+            l.loan_id,
+            l.product_name AS name,
+            l.begin_date,
+            l.end_date,
+            ulb.created_at
+        FROM user_loan_bookmarks ulb
+                 JOIN loans l ON ulb.loan_id = l.loan_id
+        WHERE ulb.user_id = #{userId}
+    </select>
+
+    <!-- 전체 즐겨찾기 개수 -->
     <select id="countTotalBookmarksByUserId" parameterType="long" resultType="int">
         SELECT SUM(count)
         FROM (
-            SELECT COUNT(*) as count FROM user_policy_bookmarks WHERE user_id = #{userId}
-            UNION ALL
-            SELECT COUNT(*) as count FROM user_loan_bookmarks WHERE user_id = #{userId}
-        ) as total_counts;
+                 SELECT COUNT(*) AS count FROM user_policy_bookmarks WHERE user_id = #{userId}
+                 UNION ALL
+                 SELECT COUNT(*) AS count FROM user_loan_bookmarks WHERE user_id = #{userId}
+             ) AS total_counts
     </select>
 
-  <select
-    id="getUserLoanBookmarksWithPagination"
-    parameterType="BookmarkListRequestDto"
-    resultMap="bookmarkItemMap"
-  >
-    SELECT
-      l.loan_id,
-      l.product_name AS name,
-      l.begin_date,
-      l.end_date,
-      ulb.created_at
-    FROM user_loan_bookmarks ulb
-           JOIN loans l ON ulb.loan_id = l.loan_id
-    WHERE ulb.user_id = #{userId}
-    ORDER BY ulb.created_at DESC
-      LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
-  </select>
+    <!-- 대출 즐겨찾기 (페이징) -->
+    <select id="getUserLoanBookmarksWithPagination" parameterType="BookmarkListRequestDto" resultMap="bookmarkItemMap">
+        SELECT
+            l.loan_id,
+            l.product_name AS name,
+            l.begin_date,
+            l.end_date,
+            ulb.created_at
+        FROM user_loan_bookmarks ulb
+                 JOIN loans l ON ulb.loan_id = l.loan_id
+        WHERE ulb.user_id = #{userId}
+        ORDER BY ulb.created_at DESC
+            LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+    </select>
+
+    <!-- 문서 보유 현황 -->
     <select id="findBookmarkDocumentsByUserId" parameterType="long" resultMap="DocumentInfoResultMap">
         SELECT
             d.document_name AS documentName,
             COUNT(d.document_id) AS productCount,
             d.issuing_authority_url AS issuingUrl,
-            (CASE WHEN EXISTS (SELECT 1 FROM user_documents ud WHERE ud.document_id = d.document_id AND ud.user_id = #{userId})
-                THEN '보유'
+            CASE
+                WHEN EXISTS (
+                    SELECT 1 FROM user_documents ud WHERE ud.document_id = d.document_id AND ud.user_id = #{userId}
+                )
+                    THEN '보유'
                 ELSE '미보유'
-            END) AS possessionStatus
-        FROM
-            documents d
-        JOIN
-            (
-                SELECT rd.document_id
-                FROM required_documents rd
-                JOIN user_policy_bookmarks upb ON rd.policy_id = upb.policy_id
-                WHERE upb.user_id = #{userId}
-                UNION ALL
-                SELECT rd.document_id
-                FROM required_documents rd
-                JOIN user_loan_bookmarks ulb ON rd.loan_id = ulb.loan_id
-                WHERE ulb.user_id = #{userId}
-            ) AS all_required_docs ON d.document_id = all_required_docs.document_id
-        GROUP BY
-            d.document_id, d.document_name, d.issuing_authority_url
-        ORDER BY
-            productCount DESC, d.document_name ASC;
+                END AS possessionStatus
+        FROM documents d
+                 JOIN (
+            SELECT rd.document_id
+            FROM required_documents rd
+                     JOIN user_policy_bookmarks upb ON rd.policy_id = upb.policy_id
+            WHERE upb.user_id = #{userId}
+            UNION ALL
+            SELECT rd.document_id
+            FROM required_documents rd
+                     JOIN user_loan_bookmarks ulb ON rd.loan_id = ulb.loan_id
+            WHERE ulb.user_id = #{userId}
+        ) AS all_required_docs ON d.document_id = all_required_docs.document_id
+        GROUP BY d.document_id, d.document_name, d.issuing_authority_url
+        ORDER BY productCount DESC, d.document_name ASC
     </select>
 
+    <!-- 상태 업데이트 -->
     <update id="updateUserPolicyStatus">
         UPDATE user_policy_bookmarks
         SET status = #{status}
