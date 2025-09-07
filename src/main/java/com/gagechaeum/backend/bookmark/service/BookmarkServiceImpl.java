@@ -6,16 +6,15 @@ import com.gagechaeum.backend.bookmark.dto.BookmarkListResponseDto;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO;
 import com.gagechaeum.backend.bookmark.mapper.BookmarkMapper;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -31,11 +30,9 @@ public class BookmarkServiceImpl implements BookmarkService {
     ) {
         if ("policy".equals(requestDto.getType())) {
             return getUserPolicyBookmarks(requestDto, userId);
-        }
-        else if ("loan".equals(requestDto.getType())) {
+        } else if ("loan".equals(requestDto.getType())) {
             return getUserLoanBookmarks(requestDto, userId);
-        }
-        else if ("all".equals(requestDto.getType())) {
+        } else if ("all".equals(requestDto.getType())) {
             return getUserAllBookmarks(requestDto, userId);
         }
         throw new IllegalArgumentException("type 쿼리 파라미터가 유효하지 않습니다.");
@@ -46,17 +43,59 @@ public class BookmarkServiceImpl implements BookmarkService {
             Long userId
     ) {
         return BookmarkListResponseDto
-            .builder()
-            .bookmarks(bookmarkMapper.getUserPolicyBookmarksWithPagination(requestDto, userId))
-            .build();
-    public List<BookmarkResponseDTO> findBookmarksByUserId(Long userId) {
+                .builder()
+                .bookmarks(bookmarkMapper.getUserPolicyBookmarksWithPagination(requestDto, userId))
+                .build();
+    }
 
+    public BookmarkListResponseDto getUserLoanBookmarks(
+            BookmarkListRequestDto requestDto,
+            Long userId
+    ) {
+        return BookmarkListResponseDto
+                .builder()
+                .bookmarks(bookmarkMapper.getUserLoanBookmarksWithPagination(requestDto, userId))
+                .build();
+    }
+
+    public BookmarkListResponseDto getUserAllBookmarks(
+            BookmarkListRequestDto requestDto,
+            Long userId
+    ) {
+        List<BookmarkItemDto> policies = bookmarkMapper.getUserPolicyBookmarks(requestDto, userId);
+        List<BookmarkItemDto> loans = bookmarkMapper.getUserLoanBookmarks(requestDto, userId);
+
+        List<BookmarkItemDto> allBookmarks = Stream.concat(policies.stream(), loans.stream())
+                .sorted(Comparator.comparing(BookmarkItemDto::getCreatedAt).reversed())
+                .toList();
+
+        return BookmarkListResponseDto
+                .builder()
+                .bookmarks(paginationAllBookmarks(requestDto, allBookmarks))
+                .build();
+    }
+
+    public List<BookmarkItemDto> paginationAllBookmarks(
+            BookmarkListRequestDto requestDto,
+            List<BookmarkItemDto> allBookmarks
+    ) {
+        int offset = requestDto.getOffset();
+        int limit = requestDto.getSize();
+        int totalSize = allBookmarks.size();
+
+        if (offset >= totalSize) {
+            return Collections.emptyList();
+        }
+        return allBookmarks.subList(offset, Math.min(offset + limit, totalSize));
+    }
+
+    @Override
+    public List<BookmarkResponseDTO> findBookmarksByUserId(Long userId) {
         List<BookmarkResponseDTO> bookmarks = bookmarkMapper.findBookmarksByUserId(userId);
 
         // 진행률(%) 계산
         for (BookmarkResponseDTO dto : bookmarks) {
             int progressPercentage;
-
             if (dto.getTotalDocsCount() > 0) {
                 progressPercentage = (int) ((double) dto.getCompletedDocsCount() * 100 / dto.getTotalDocsCount());
             } else { // totalDocsCount가 0인 경우
@@ -77,44 +116,6 @@ public class BookmarkServiceImpl implements BookmarkService {
         return new BookmarkDocumentsResponseDTO(totalBookmarkCount, documents);
     }
 
-    public BookmarkListResponseDto getUserLoanBookmarks(
-            BookmarkListRequestDto requestDto,
-            Long userId
-    ) {
-        return BookmarkListResponseDto
-            .builder()
-            .bookmarks(bookmarkMapper.getUserLoanBookmarksWithPagination(requestDto, userId))
-            .build();
-    }
-
-    public BookmarkListResponseDto getUserAllBookmarks(
-            BookmarkListRequestDto requestDto,
-            Long userId
-    ) {
-        List<BookmarkItemDto> policies = bookmarkMapper.getUserPolicyBookmarks(requestDto, userId);
-        List<BookmarkItemDto> loans = bookmarkMapper.getUserLoanBookmarks(requestDto, userId);
-
-        List<BookmarkItemDto> allBookmarks = Stream.concat(policies.stream(), loans.stream())
-            .sorted(Comparator.comparing(BookmarkItemDto::getCreatedAt).reversed())
-            .toList();
-
-        return BookmarkListResponseDto
-                .builder()
-                .bookmarks(paginationAllBookmarks(requestDto, allBookmarks))
-                .build();
-    }
-
-    public List<BookmarkItemDto> paginationAllBookmarks(
-            BookmarkListRequestDto requestDto,
-            List<BookmarkItemDto> allBookmarks
-    ) {
-        int offset = requestDto.getOffset();
-        int limit = requestDto.getSize();
-        int totalSize = allBookmarks.size();
-
-        if (offset >= totalSize) {
-            return Collections.emptyList();
-
     @Override
     @Transactional
     public void updateBookmarkStatus(Long userId, String type, Long id, String status) {
@@ -125,6 +126,5 @@ public class BookmarkServiceImpl implements BookmarkService {
         } else {
             throw new IllegalArgumentException("Invalid bookmark type: " + type);
         }
-        return allBookmarks.subList(offset, Math.min(offset + limit, totalSize));
     }
 }
