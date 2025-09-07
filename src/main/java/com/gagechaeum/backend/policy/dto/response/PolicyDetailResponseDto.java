@@ -3,6 +3,7 @@ package com.gagechaeum.backend.policy.dto.response;
 import com.gagechaeum.backend.policy.domain.Policy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -30,7 +31,8 @@ public class PolicyDetailResponseDto {
 	private String contact;                     // 문의 연락처
 	private String supportDetail;               // 지원 내용
 	private String supportTarget;               // 지원 대상
-	
+	private List<String> requiredDocuments;     // 필요 서류
+
 	public static PolicyDetailResponseDto fromVo(Policy policy) {
 		return PolicyDetailResponseDto
 			.builder()
@@ -55,6 +57,7 @@ public class PolicyDetailResponseDto {
 			.contact(policy.getContact())
 			.supportDetail(policy.getSupportDetail())
 			.supportTarget(policy.getSupportTarget())
+			.requiredDocuments(policy.getRequiredDocuments())
 			.build();
 	}
 }

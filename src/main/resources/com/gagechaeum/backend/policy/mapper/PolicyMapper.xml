@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gagechaeum.backend.policy.mapper.PolicyMapper">
 
+    <resultMap id="StructuredDocumentResultMap" type="com.gagechaeum.backend.policy.dto.response.PolicyDocumentsResponseDTO$StructuredDocumentDTO">
+        <result property="documentName" column="documentName"/>
+        <result property="possessionStatus" column="possessionStatus"/>
+        <result property="issuingUrl" column="issuingUrl"/>
+    </resultMap>
+
     <select id="findRecommendedPoliciesByUserId" resultType="com.gagechaeum.backend.policy.domain.Policy">
         SELECT
             p.*,
@@ -24,10 +30,10 @@
     <insert id="saveOrUpdatePolicy" parameterType="com.gagechaeum.backend.policy.domain.Policy">
         INSERT INTO policies (
             policy_id, user_type, policy_field, policy_name, policy_summary, department_name, supervising_organization_name,
-            announcement_url, support_detail, selection_criteria, application_period, begin_date, end_date, notice_date, modification_date, application_method, contact, support_target
+            announcement_url, support_detail, selection_criteria, application_period, begin_date, end_date, notice_date, modification_date, application_method, contact, support_target, required_documents_raw_text
         ) VALUES (
                      #{policyId}, #{userType}, #{policyField}, #{policyName}, #{policySummary}, #{departmentName}, #{supervisingOrganizationName},
-                     #{announcementUrl}, #{supportDetail}, #{selectionCriteria}, #{applicationPeriod}, #{beginDate}, #{endDate}, #{noticeDate}, #{modificationDate}, #{applicationMethod}, #{contact}, #{supportTarget}
+                     #{announcementUrl}, #{supportDetail}, #{selectionCriteria}, #{applicationPeriod}, #{beginDate}, #{endDate}, #{noticeDate}, #{modificationDate}, #{applicationMethod}, #{contact}, #{supportTarget}, #{requiredDocumentsRawText}
                  )
             ON DUPLICATE KEY UPDATE
                                  user_type = VALUES(user_type),
@@ -45,7 +51,8 @@
                                  modification_date = VALUES(modification_date),
                                  application_method = VALUES(application_method),
                                  contact = VALUES(contact),
-                                 support_target = VALUES(support_target)
+                                 support_target = VALUES(support_target),
+                                 required_documents_raw_text = VALUES(required_documents_raw_text)
     </insert>
 
     <select id="findBookmarkCountsByPolicyIds" resultType="map">
@@ -66,4 +73,52 @@
       FROM policies
       WHERE policy_id = #{policyId}
     </select>
+
+    <select id="findAllDocumentsWithKeywords" resultType="com.gagechaeum.backend.policy.dto.DocumentKeywordDTO">
+        SELECT
+            document_id as documentId,
+            document_name as documentName,
+            keywords
+        FROM
+            documents
+        WHERE
+            keywords IS NOT NULL
+    </select>
+
+    <delete id="deleteRequiredDocumentsByPolicyId" parameterType="string">
+        DELETE FROM required_documents
+        WHERE policy_id = #{policyId}
+    </delete>
+
+    <insert id="insertRequiredDocument">
+        INSERT INTO required_documents (policy_id, document_id)
+        VALUES (#{policyId}, #{documentId})
+    </insert>
+
+    <select id="findStructuredDocumentsByPolicyId" resultMap="StructuredDocumentResultMap">
+        SELECT
+            d.document_name AS documentName,
+            d.issuing_authority_url AS issuingUrl,
+            (CASE WHEN EXISTS (SELECT 1 FROM user_documents ud WHERE ud.document_id = d.document_id AND ud.user_id = #{userId})
+                THEN '보유'
+                ELSE '미보유'
+            END) AS possessionStatus
+        FROM
+            documents d
+        JOIN
+            required_documents rd ON d.document_id = rd.document_id
+        WHERE
+            rd.policy_id = #{policyId}
+    </select>
+
+    <select id="findAllPolicyIdsWithModificationDate" resultType="com.gagechaeum.backend.policy.domain.Policy">
+        SELECT policy_id, modification_date
+        FROM policies
+    </select>
+
+    <select id="findAllPolicies" resultType="com.gagechaeum.backend.policy.domain.Policy">
+        SELECT *
+        FROM policies
+    </select>
+
 </mapper>

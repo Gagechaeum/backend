@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,4 +91,14 @@ public class AppConfig {
         return new RestTemplate();
     }
 
+    @Bean(name = "taskExecutor")
+    public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);   // 동시에 10개만 실행
+        executor.setMaxPoolSize(20);    // 최대 20개
+        executor.setQueueCapacity(500); // 초과되면 큐에 쌓임
+        executor.setThreadNamePrefix("Gov24-");
+        executor.initialize();
+        return executor;
+    }
 }
