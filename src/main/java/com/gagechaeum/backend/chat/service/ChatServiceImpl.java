@@ -26,10 +26,7 @@ public class ChatServiceImpl implements ChatService {
 			);
 		});
 		
-		return ChatRoomListResponseDto
-			.builder()
-			.chatRooms(chatRooms)
-			.build();
+		return new ChatRoomListResponseDto(chatRooms);
 	}
 	
 	public ChatRoomSummaryDto getPolicyChatRoomDetails(String policyId) {
@@ -49,7 +46,7 @@ public class ChatServiceImpl implements ChatService {
 			throw new NoSuchElementException("채팅방이 존재하지 않습니다.");
 		}
 		chatRoom.setParticipantCount(
-				redisService.getChatRoomParticipantCount(chatRoom.getRoomId())
+			redisService.getChatRoomParticipantCount(chatRoom.getRoomId())
 		);
 		return chatRoom;
 	}
