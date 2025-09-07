@@ -119,4 +119,30 @@ public class UserController {
                 .status(ResponseCode.EMAIL_VERIFICATION_STATUS_SUCCESS.getHttpStatus())
                 .body(CustomResponse.success(ResponseCode.EMAIL_VERIFICATION_STATUS_SUCCESS, isVerified));
     }
+
+    @PutMapping("/update/Notification")
+    public ResponseEntity<CustomResponse<Void>> updateNotification(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody Boolean notification) {
+        userService.updateNotification(userDetails.getUserId(), notification);
+        return ResponseEntity
+                .status(ResponseCode.UPDATE_NOTIFICATION_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.UPDATE_NOTIFICATION_SUCCESS));
+    }
+
+    @PutMapping("/update/user")
+    public ResponseEntity<CustomResponse<Boolean>> update(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UpdateUserDTO req) {
+        userService.updateUser(userDetails.getUserId(), req);
+        return ResponseEntity
+                .status(ResponseCode.UPDATE_USER_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.UPDATE_USER_SUCCESS));
+    }
+
+    @GetMapping("/get/userInfo")
+    public ResponseEntity<CustomResponse<Object>> getUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserInfoResponseDTO res=userService.getUserInfo(userDetails);
+        return ResponseEntity
+                .status(ResponseCode.GET_USERINFO_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.GET_USERINFO_SUCCESS,res));
+    }
+
+
 }
