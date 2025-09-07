@@ -1,8 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gagechaeum.backend.bookmark.mapper.BookmarkMapper">
 
+  <resultMap id="bookmarkItemMap" type="BookmarkItemDto">
+    <result property="policyId" column="policy_id"/>
+    <result property="loanId" column="loan_id"/>
+    <result property="name" column="name"/>
+    <result property="beginDate" column="begin_date"/>
+    <result property="endDate" column="end_date"/>
+    <result property="applicationPeriod" column="application_period"/>
+  </resultMap>
     <resultMap id="BookmarkResultMap" type="com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO">
         <result property="bookmarkId" column="bookmarkId"/>
         <result property="processStage" column="processStage"/>
@@ -13,6 +23,22 @@
         <result property="totalDocsCount" column="totalDocsCount"/>
     </resultMap>
 
+  <select
+    id="getUserPolicyBookmarks"
+    parameterType="BookmarkListRequestDto"
+    resultMap="bookmarkItemMap"
+  >
+    SELECT
+      p.policy_id,
+      p.policy_name AS name,
+      p.begin_date,
+      p.end_date,
+      p.application_period,
+      upb.created_at
+    FROM user_policy_bookmarks upb
+           JOIN policies p ON upb.policy_id = p.policy_id
+    WHERE upb.user_id = #{userId}
+  </select>
     <resultMap id="DocumentInfoResultMap" type="com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO$DocumentInfoDTO">
         <result property="documentName" column="documentName"/>
         <result property="productCount" column="productCount"/>
@@ -42,6 +68,24 @@
         WHERE
             upb.user_id = #{userId}
 
+  <select
+    id="getUserPolicyBookmarksWithPagination"
+    parameterType="BookmarkListRequestDto"
+    resultMap="bookmarkItemMap"
+  >
+    SELECT
+      p.policy_id,
+      p.policy_name AS name,
+      p.begin_date,
+      p.end_date,
+      p.application_period,
+      upb.created_at
+    FROM user_policy_bookmarks upb
+           JOIN policies p ON upb.policy_id = p.policy_id
+    WHERE upb.user_id = #{userId}
+    ORDER BY upb.created_at DESC
+      LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+  </select>
         UNION ALL
 
         -- 사용자가 즐겨찾기한 대출 현황 조회
@@ -66,6 +110,21 @@
             ulb.user_id = #{userId}
     </select>
 
+  <select
+    id="getUserLoanBookmarks"
+    parameterType="BookmarkListRequestDto"
+    resultMap="bookmarkItemMap"
+  >
+    SELECT
+      l.loan_id,
+      l.product_name AS name,
+      l.begin_date,
+      l.end_date,
+      ulb.created_at
+    FROM user_loan_bookmarks ulb
+           JOIN loans l ON ulb.loan_id = l.loan_id
+    WHERE ulb.user_id = #{userId}
+  </select>
     <select id="countTotalBookmarksByUserId" parameterType="long" resultType="int">
         SELECT SUM(count)
         FROM (
@@ -75,6 +134,23 @@
         ) as total_counts;
     </select>
 
+  <select
+    id="getUserLoanBookmarksWithPagination"
+    parameterType="BookmarkListRequestDto"
+    resultMap="bookmarkItemMap"
+  >
+    SELECT
+      l.loan_id,
+      l.product_name AS name,
+      l.begin_date,
+      l.end_date,
+      ulb.created_at
+    FROM user_loan_bookmarks ulb
+           JOIN loans l ON ulb.loan_id = l.loan_id
+    WHERE ulb.user_id = #{userId}
+    ORDER BY ulb.created_at DESC
+      LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+  </select>
     <select id="findBookmarkDocumentsByUserId" parameterType="long" resultMap="DocumentInfoResultMap">
         SELECT
             d.document_name AS documentName,
