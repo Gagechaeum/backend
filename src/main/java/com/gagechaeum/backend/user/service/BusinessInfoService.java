@@ -14,5 +14,5 @@ public interface BusinessInfoService {
     List<BusinessInfoDTO> selectAll(Long userId);
 
     //사업자 번호, 유저명, 개업일자가 일치하는지 검증하는 기능
-    Boolean verifyBusinessIdentity(Long business_num, String name, LocalDate date);
+    Boolean verifyBusinessInfo(Long business_num, String name, LocalDate date);
 }

@@ -21,38 +21,31 @@ public class BusinessInfoController {
 
     private final BusinessInfoService service;
 
-    @PostMapping("/save-bis-info")
+    @PostMapping("/save")
     public CustomResponse<Object> saveBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BusinessInfoRequestDTO reqDto) {
-
         service.save(userDetails.getUserId(),reqDto);
         return CustomResponse.success(ResponseCode.SUCCESS, reqDto);
     }
 
-    @GetMapping("/save-bis-info")
-    public CustomResponse<Object> saveBisInfo(BusinessInfoDTO reqDto) {
-
-        return CustomResponse.success(ResponseCode.SUCCESS, response);
+    @PutMapping("/update")
+    public CustomResponse<BusinessInfoDTO> updateBisInfo(@RequestBody BusinessInfoDTO reqDto) {
+        service.update(reqDto);
+        return CustomResponse.success(ResponseCode.SUCCESS, reqDto);
     }
 
-    @GetMapping("/update-bis-info")
-    public CustomResponse<Object> saveBisInfo(BusinessInfoDTO reqDto) {
-
-        return CustomResponse.success(ResponseCode.SUCCESS, response);
+    @GetMapping("/select")
+    public CustomResponse<CustomUserDetails> selectBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        service.selectAll(userDetails.getUserId());
+        return CustomResponse.success(ResponseCode.SUCCESS, userDetails);
     }
 
-    @GetMapping("/select-bis-info")
-    public CustomResponse<Object> saveBisInfo(BusinessInfoDTO reqDto) {
-
-        return CustomResponse.success(ResponseCode.SUCCESS, response);
+    @GetMapping("/delete")
+    public CustomResponse<Object> deleteBisInfo(BusinessInfoDTO reqDto) {
+        service.delete(reqDto.getBusinessInfoId());
+        return CustomResponse.success(ResponseCode.SUCCESS);
     }
 
-    @GetMapping("/delete-bis-info")
-    public CustomResponse<Object> saveBisInfo(BusinessInfoDTO reqDto) {
-
-        return CustomResponse.success(ResponseCode.SUCCESS, response);
-    }
-
-    @GetMapping("/is-bis-real")
+    @GetMapping("/verifyBisNum")
     public CustomResponse<Object> saveBisInfo(BusinessInfoDTO reqDto) {
 
         return CustomResponse.success(ResponseCode.SUCCESS, response);

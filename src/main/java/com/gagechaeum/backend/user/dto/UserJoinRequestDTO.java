@@ -16,6 +16,7 @@ public class UserJoinRequestDTO {
     private String phone;
     private String profileImageKey;
 
+
     public void validate() {
         // 이메일 형식 검사
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
