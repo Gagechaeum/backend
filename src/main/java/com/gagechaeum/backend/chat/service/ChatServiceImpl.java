@@ -1,5 +1,7 @@
 package com.gagechaeum.backend.chat.service;
 
+import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
+import com.gagechaeum.backend.chat.dto.ChatRoomHistoryResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomListResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomListResponseDto;
@@ -63,5 +65,14 @@ public class ChatServiceImpl implements ChatService {
 			redisService.getChatRoomParticipantCount(chatRoom.getRoomId())
 		);
 		return chatRoom;
+	}
+	
+	public ChatRoomHistoryResponseDto getChatRoomHistory(
+		ChatRoomHistoryRequestDto requestDto,
+		Long roomId
+	) {
+		return new ChatRoomHistoryResponseDto(
+			chatMapper.getChatRoomHistoryByRoomId(requestDto, roomId)
+		);
 	}
 }
