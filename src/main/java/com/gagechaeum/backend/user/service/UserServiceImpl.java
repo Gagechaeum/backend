@@ -156,6 +156,7 @@ public class UserServiceImpl implements UserService {
         User user = req.toUser(); // DTO → 도메인 객체
         user.setPassword(encoder.encode(user.getPassword())); // 비밀번호 암호화
         user.setNotification(false);
+        user.setProfileImageKey("userProfileImage/default.png");
         // 기본값 설정
         user.setIsVerified(true); // 가입 시 true로 저장
         user.setCreatedAt(LocalDateTime.now());
@@ -325,7 +326,7 @@ public class UserServiceImpl implements UserService {
 
         if (profileImageKey != null && !profileImageKey.isEmpty()) {
             // S3 키를 사용해 임시 접근 URL을 생성합니다.
-            profileImageUrl = s3ClientUtil.getFileUrl(profileImageKey);
+            profileImageUrl = s3ClientUtil.getProfileUrl(profileImageKey);
         }
 
         return UserInfoResponseDTO.builder()
@@ -348,7 +349,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             // S3에 새 이미지 업로드
-            s3ClientUtil.uploadFile(profileImage, newImageKey);
+            s3ClientUtil.uploadProfile(profileImage, newImageKey);
         } catch (IOException e) {
             log.error("S3 파일 업로드 실패: {}", e.getMessage());
             throw new BusinessException(ErrorCode.FILE_UPLOAD_FAILED);

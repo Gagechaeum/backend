@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -142,6 +143,22 @@ public class UserController {
         return ResponseEntity
                 .status(ResponseCode.GET_USERINFO_SUCCESS.getHttpStatus())
                 .body(CustomResponse.success(ResponseCode.GET_USERINFO_SUCCESS,res));
+    }
+
+    @PutMapping("/update/profile-image")
+    public ResponseEntity<CustomResponse<Void>> updateProfileImage(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam("image") MultipartFile image) {
+
+        if (image == null || image.isEmpty()) {
+            throw new BusinessException(ErrorCode.INVALID_INPUT_VALUE, "이미지 파일이 비어있습니다.");
+        }
+
+        userService.updateProfileImage(userDetails.getUserId(), image);
+
+        return ResponseEntity
+                .status(ResponseCode.UPDATE_USER_SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.UPDATE_USER_SUCCESS));
     }
 
 
