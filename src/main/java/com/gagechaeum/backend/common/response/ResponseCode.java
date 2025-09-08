@@ -16,6 +16,9 @@ public enum ResponseCode {
     GET_MY_INFO_SUCCESS(HttpStatus.OK, "내 정보 조회에 성공했습니다."),
     LOGIN_SUCCESS(HttpStatus.OK,"로그인에 성공했습니다"),
     PASSWORD_CHANGE_SUCCESS(HttpStatus.OK, "비밀번호 변경에 성공했습니다."),
+    UPDATE_NOTIFICATION_SUCCESS(HttpStatus.OK,"알람설정 변경에 성공했습니다."),
+    UPDATE_USER_SUCCESS(HttpStatus.OK, "유저정보 변경에 성공했습니다."),
+    GET_USERINFO_SUCCESS(HttpStatus.OK,"유저정보 조회에 성공했습니다."),
 
     // --- 이메일 인증 관련 성공 코드 ---
     EMAIL_VERIFICATION_REQUEST_SUCCESS(HttpStatus.OK, "인증 코드가 이메일로 발송되었습니다."),

@@ -16,14 +16,57 @@
         WHEN 'policy' THEN p.policy_name
         END AS name
     FROM chat_rooms cr
-           LEFT JOIN industry i ON cr.industry_id = i.industry_id
-           LEFT JOIN regions r ON cr.region_id = r.region_id
-           LEFT JOIN loans l ON cr.loan_id = l.loan_id
-           LEFT JOIN policies p ON cr.policy_id = p.policy_id
+    LEFT JOIN industry i ON cr.industry_id = i.industry_id
+    LEFT JOIN regions r ON cr.region_id = r.region_id
+    LEFT JOIN loans l ON cr.loan_id = l.loan_id
+    LEFT JOIN policies p ON cr.policy_id = p.policy_id
     <where>
       <if test="type != 'all'">
         cr.room_type = #{type}
       </if>
+    </where>
+  </select>
+
+  <select id="getUserChatRooms" resultType="UserChatRoomSummaryDto">
+    SELECT
+        cr.room_id,
+        cr.room_type,
+        CASE cr.room_type
+            WHEN 'industry' THEN i.name
+            WHEN 'region' THEN r.name
+            WHEN 'loan' THEN l.product_name
+            WHEN 'policy' THEN p.policy_name
+            ELSE NULL
+        END AS name,
+        (SELECT content
+            FROM chat_messages
+            WHERE room_id = cr.room_id
+            ORDER BY created_at DESC
+            LIMIT 1
+        ) AS lastMessage,
+        (SELECT created_at
+            FROM chat_messages
+            WHERE room_id = cr.room_id
+            ORDER BY created_at DESC
+            LIMIT 1
+        ) AS lastMessageDate,
+        uc.last_left_at,
+        (SELECT COUNT(*)
+            FROM chat_messages cm
+            WHERE cm.room_id = uc.room_id
+            AND cm.created_at > uc.last_left_at
+        ) AS unreadCount
+    FROM user_chat_rooms uc
+    LEFT JOIN chat_rooms cr ON uc.room_id = cr.room_id
+    LEFT JOIN industry i ON cr.industry_id = i.industry_id
+    LEFT JOIN regions r ON cr.region_id = r.region_id
+    LEFT JOIN loans l ON cr.loan_id = l.loan_id
+    LEFT JOIN policies p ON cr.policy_id = p.policy_id
+    <where>
+        uc.user_id = #{userId}
+        <if test="type != 'all'">
+            AND cr.room_type = #{type}
+        </if>
     </where>
   </select>
 
@@ -48,5 +91,44 @@
             ON cr.loan_id = l.loan_id
     WHERE cr.loan_id = #{loanId}
   </select>
+    
+    <resultMap id="chatMessageResultMap" type="ChatMessageDto">
+        <id property="messageId" column="message_id"/>
+        <result property="profileImageKey" column="profile_image_key"/>
+        <result property="nickname" column="nickname"/>
+        <result property="message" column="content"/>
+        <result property="sentAt" column="created_at"/>
+        <collection property="files" ofType="ChatAttachmentDto">
+            <result property="key" column="file_key"/>
+            <result property="extension" column="file_extension"/>
+            <result property="name" column="file_name"/>
+            <result property="size" column="file_size"/>
+        </collection>
+    </resultMap>
+
+    <select id="getChatRoomHistoryByRoomId" resultMap="chatMessageResultMap">
+        SELECT
+            cm.message_id,
+            u.profile_image_key,
+            u.nickname,
+            cm.content,
+            cm.created_at,
+            ca.file_key,
+            ca.file_name,
+            ca.file_extension,
+            ca.file_size
+        FROM chat_messages cm
+        LEFT JOIN users u ON cm.user_id = u.user_id
+        LEFT JOIN chat_attachments ca ON cm.message_id = ca.message_id
+        <where>
+            cm.room_id = #{roomId}
+            <if test="requestDto.since != null">
+                AND cm.created_at &gt;= #{requestDto.since}
+            </if>
+        </where>
+        ORDER BY cm.created_at ASC
+
+        LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+    </select>
 
 </mapper>

@@ -42,20 +42,18 @@ public class BookmarkServiceImpl implements BookmarkService {
             BookmarkListRequestDto requestDto,
             Long userId
     ) {
-        return BookmarkListResponseDto
-                .builder()
-                .bookmarks(bookmarkMapper.getUserPolicyBookmarksWithPagination(requestDto, userId))
-                .build();
+        return new BookmarkListResponseDto(
+                bookmarkMapper.getUserPolicyBookmarksWithPagination(requestDto, userId)
+        );
     }
 
     public BookmarkListResponseDto getUserLoanBookmarks(
             BookmarkListRequestDto requestDto,
             Long userId
     ) {
-        return BookmarkListResponseDto
-                .builder()
-                .bookmarks(bookmarkMapper.getUserLoanBookmarksWithPagination(requestDto, userId))
-                .build();
+        return new BookmarkListResponseDto(
+                bookmarkMapper.getUserLoanBookmarksWithPagination(requestDto, userId)
+        );
     }
 
     public BookmarkListResponseDto getUserAllBookmarks(
@@ -69,10 +67,9 @@ public class BookmarkServiceImpl implements BookmarkService {
                 .sorted(Comparator.comparing(BookmarkItemDto::getCreatedAt).reversed())
                 .toList();
 
-        return BookmarkListResponseDto
-                .builder()
-                .bookmarks(paginationAllBookmarks(requestDto, allBookmarks))
-                .build();
+        return new BookmarkListResponseDto(
+                paginationAllBookmarks(requestDto, allBookmarks)
+        );
     }
 
     public List<BookmarkItemDto> paginationAllBookmarks(
@@ -89,6 +86,8 @@ public class BookmarkServiceImpl implements BookmarkService {
         return allBookmarks.subList(offset, Math.min(offset + limit, totalSize));
     }
 
+    // ✅ 네 코드에서 추가된 기능들
+
     @Override
     public List<BookmarkResponseDTO> findBookmarksByUserId(Long userId) {
         List<BookmarkResponseDTO> bookmarks = bookmarkMapper.findBookmarksByUserId(userId);
@@ -98,7 +97,7 @@ public class BookmarkServiceImpl implements BookmarkService {
             int progressPercentage;
             if (dto.getTotalDocsCount() > 0) {
                 progressPercentage = (int) ((double) dto.getCompletedDocsCount() * 100 / dto.getTotalDocsCount());
-            } else { // totalDocsCount가 0인 경우
+            } else {
                 progressPercentage = 100;
             }
             dto.setProgressPercentage(progressPercentage);

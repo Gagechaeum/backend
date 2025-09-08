@@ -78,4 +78,12 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     public String getName() {
         return String.valueOf(user.getSocialId());
     }
+
+    public String getPhone() {
+        return user.getPhone();
+    }
+
+    public String getNickname() {
+        return user.getNickname();
+    }
 }

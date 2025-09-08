@@ -103,3 +103,30 @@ VALUES
 INSERT INTO user_documents (user_document_id, user_id, document_id, document_name, issued_at, file_key)
 VALUES
 	(1, 1, 5, '사업자등록증명', '2025-05-10', 'userDocuments/1:5:사업자등록증명.pdf');
+
+-- 사용자 채팅방
+-- 우리 프랜차이즈론
+INSERT INTO user_chat_rooms (user_id, room_id, last_left_at)
+VALUES (1, 198, '2025-09-08 10:00:00');
+
+-- 경상북도
+INSERT INTO user_chat_rooms (user_id, room_id, last_left_at)
+VALUES (1, 33, '2025-09-01 10:30:00');
+
+-- 숙박 및 음식점업
+INSERT INTO user_chat_rooms (user_id, room_id, last_left_at)
+VALUES (1, 9, '2025-09-05 14:30:00');
+
+-- 나머지 더미 유저 id 2~10
+INSERT INTO users (
+	user_id, email, password, nickname, name, created_at, notification, is_verified
+) VALUES
+	  (2, 'user2@example.com', 'dummy_password', '성공창업가', '김민준', NOW(), TRUE, TRUE),
+	  (3, 'user3@example.com', 'dummy_password', '대박사장님', '박서연', NOW(), TRUE, TRUE),
+	  (4, 'user4@example.com', 'dummy_password', '오늘도야근', '이도윤', NOW(), TRUE, TRUE),
+	  (5, 'user5@example.com', 'dummy_password', '돈세는날', '정하준', NOW(), TRUE, TRUE),
+	  (6, 'user6@example.com', 'dummy_password', '사업1년차', '최지호', NOW(), TRUE, TRUE),
+	  (7, 'user7@example.com', 'dummy_password', '스마트경영', '김시우', NOW(), TRUE, TRUE),
+	  (8, 'user8@example.com', 'dummy_password', '성장하는가게', '한예준', NOW(), TRUE, TRUE),
+	  (9, 'user9@example.com', 'dummy_password', '월매출천만', '강서준', NOW(), TRUE, TRUE),
+	  (10, 'user10@example.com', 'dummy_password', '폐업은안돼', '윤지환', NOW(), TRUE, TRUE);

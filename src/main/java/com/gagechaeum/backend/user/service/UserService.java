@@ -1,10 +1,8 @@
 package com.gagechaeum.backend.user.service;
 
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
-import com.gagechaeum.backend.user.dto.PasswordChangeDTO;
-import com.gagechaeum.backend.user.dto.TokenResponseDTO;
-import com.gagechaeum.backend.user.dto.UserJoinRequestDTO;
-import com.gagechaeum.backend.user.dto.UserResponseDTO;;
+import com.gagechaeum.backend.user.dto.*;
 
 public interface UserService {
 
@@ -19,6 +17,9 @@ public interface UserService {
     String changePassword(String email, PasswordChangeDTO pwdChangeDTO);
     void logout(String token);
     void withdrawal(String token);
+    void updateNotification(Long id, Boolean notification);
+    void updateUser(Long id, UpdateUserDTO req);
+    UserInfoResponseDTO getUserInfo(CustomUserDetails user);
 
     // 이메일 인증
     void requestEmailVerification(String email);
