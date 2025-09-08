@@ -15,6 +15,7 @@ public class UserJoinRequestDTO {
     private String nickname;
     private String phone;
     private String profileImageKey;
+    private Boolean notification;
 
 
     public void validate() {
@@ -45,6 +46,7 @@ public class UserJoinRequestDTO {
         user.setName(this.name);
         user.setPhone(this.phone);
         user.setProfileImageKey(this.profileImageKey);
+        user.setNotification(this.notification);
         return user;
     }
 }

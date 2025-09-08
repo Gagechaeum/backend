@@ -4,13 +4,12 @@ import com.gagechaeum.backend.common.mail.MailService;
 import com.gagechaeum.backend.common.redis.RedisService;
 import com.gagechaeum.backend.global.exception.BusinessException;
 import com.gagechaeum.backend.global.exception.ErrorCode;
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
+import com.gagechaeum.backend.security.account.dto.UserInfoDTO;
 import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
 import com.gagechaeum.backend.security.util.JwtUtil;
 import com.gagechaeum.backend.user.domain.User;
-import com.gagechaeum.backend.user.dto.PasswordChangeDTO;
-import com.gagechaeum.backend.user.dto.TokenResponseDTO;
-import com.gagechaeum.backend.user.dto.UserJoinRequestDTO;
-import com.gagechaeum.backend.user.dto.UserResponseDTO;
+import com.gagechaeum.backend.user.dto.*;
 import com.gagechaeum.backend.user.exception.auth.*;
 import com.gagechaeum.backend.user.exception.signup.ValidationFailedException;
 import com.gagechaeum.backend.user.exception.verify.EmailAlreadyVerifiedException;
@@ -152,7 +151,7 @@ public class UserServiceImpl implements UserService {
 
         User user = req.toUser(); // DTO → 도메인 객체
         user.setPassword(encoder.encode(user.getPassword())); // 비밀번호 암호화
-
+        user.setNotification(false);
         // 기본값 설정
         user.setIsVerified(true); // 가입 시 true로 저장
         user.setCreatedAt(LocalDateTime.now());
@@ -303,4 +302,25 @@ public class UserServiceImpl implements UserService {
         redisService.blacklistAccessToken(token);
     }
 
+    public void updateNotification(Long id, Boolean notification) {
+        userMapper.updateNotification(id, notification);
+
+        log.info("알림여부 변경완료 : {}", notification);
+    }
+
+    public void updateUser(Long id, UpdateUserDTO req) {
+
+        isNicknameExist(req.getNickname());
+        userMapper.updateUser(id, req);
+        log.info("유저정보 변경완료 : {}", req.toString());
+    }
+
+    public UserInfoResponseDTO getUserInfo(CustomUserDetails user) {
+        return UserInfoResponseDTO.builder()
+                .userId(user.getUserId())
+                .phone(user.getPhone())
+                .email(user.getUsername())
+                .nickname(user.getNickname())
+                .build();
+    }
 }

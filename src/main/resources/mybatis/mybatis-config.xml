@@ -13,5 +13,6 @@
         <package name="com.gagechaeum.backend.loan.dto"/>
         <package name="com.gagechaeum.backend.policy.domain"/>
         <package name="com.gagechaeum.backend.chat.dto"/>
+        <package name="com.gagechaeum.backend.bookmark.dto"/>
     </typeAliases>
 </configuration>
