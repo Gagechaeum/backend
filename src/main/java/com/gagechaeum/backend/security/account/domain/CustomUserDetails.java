@@ -79,6 +79,10 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         return String.valueOf(user.getSocialId());
     }
 
+    public String getTrueName(){
+        return user.getName();
+    }
+
     public String getPhone() {
         return user.getPhone();
     }
@@ -86,4 +90,5 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     public String getNickname() {
         return user.getNickname();
     }
+
 }
