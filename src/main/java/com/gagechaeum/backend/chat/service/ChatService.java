@@ -22,6 +22,8 @@ public interface ChatService {
 	);
 	
 	void enterRoom(Long userId, Long roomId);
-
+	
 	void leaveRoom(Long userId, Long roomId);
+
+	void leavePage(Long userId, Long roomId);
 }

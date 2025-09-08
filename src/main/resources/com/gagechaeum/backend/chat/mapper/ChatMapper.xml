@@ -138,9 +138,15 @@
         LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
     </select>
 
+    <update id="updateLastLeftAt">
+        UPDATE user_chatrooms
+        SET last_left_at = NOW()
+        WHERE user_id = #{userId} AND room_id = #{roomId};
+    </update>
+
     <delete id="deleteByRoomIdAndUserId">
         DELETE FROM user_chatrooms
-        WHERE room_id = #{roomId} AND user_id = #{userId}
+        WHERE user_id = #{userId} AND room_id = #{roomId};
     </delete>
 
 </mapper>

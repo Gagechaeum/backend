@@ -3,10 +3,13 @@ package com.gagechaeum.backend.chat.controller;
 import com.gagechaeum.backend.chat.dto.ChatMessageDto;
 import com.gagechaeum.backend.chat.service.ChatService;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import java.security.Principal;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -19,8 +22,15 @@ public class ChatStompController {
 	@MessageMapping("/chatrooms/{room_id}/enter")
 	public void enterRoom(
 		@DestinationVariable("room_id") String roomId,
-		Principal principal
+		Principal principal,
+		SimpMessageHeaderAccessor headerAccessor
 	) {
+		Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+		if (sessionAttributes == null) {
+			headerAccessor.setSessionAttributes(new HashMap<>());
+		}
+		headerAccessor.getSessionAttributes().put("roomId", roomId);
+		
 		chatService.enterRoom(
 			Long.valueOf(principal.getName()),
 			Long.valueOf(roomId)

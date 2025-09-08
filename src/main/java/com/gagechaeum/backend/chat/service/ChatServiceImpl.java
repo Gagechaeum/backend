@@ -86,8 +86,12 @@ public class ChatServiceImpl implements ChatService {
 	}
 	
 	@Transactional
-	public void leaveRoom(Long roomId, Long userId) {
+	public void leaveRoom(Long userId, Long roomId) {
 		chatMapper.deleteByRoomIdAndUserId(userId, roomId);
 		redisChatService.removeChatRoomParticipant(userId, roomId);
+	}
+	
+	public void leavePage(Long userId, Long roomId) {
+		chatMapper.updateLastLeftAt(userId, roomId);
 	}
 }

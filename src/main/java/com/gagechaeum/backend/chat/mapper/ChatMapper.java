@@ -37,6 +37,11 @@ public interface ChatMapper {
 		@Param("roomId") Long roomId
 	);
 	
+	int updateLastLeftAt(
+		@Param("userId") Long userId,
+		@Param("roomId") Long roomId
+	);
+	
 	int deleteByRoomIdAndUserId(
 		@Param("userId") Long userId,
 		@Param("roomId") Long roomId
