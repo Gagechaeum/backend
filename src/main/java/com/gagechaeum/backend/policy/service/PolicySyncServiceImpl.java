@@ -5,7 +5,9 @@ import com.gagechaeum.backend.policy.client.Gov24ApiClient;
 import com.gagechaeum.backend.policy.domain.Policy;
 import com.gagechaeum.backend.policy.dto.external.Gov24ApiResponseDto;
 import com.gagechaeum.backend.policy.dto.external.Gov24ApiServiceDto;
+import com.gagechaeum.backend.policy.mapper.IndustryMapper;
 import com.gagechaeum.backend.policy.mapper.PolicyMapper;
+import com.gagechaeum.backend.policy.mapper.RegionMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -30,6 +32,10 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     private final PolicyMapper policyMapper;
     private final PolicyUpdateService policyUpdateService;
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+    private final PythonMatcherService pythonMatcherService;
+    private final RegionMapper regionMapper;
+    private final IndustryMapper industryMapper;
 
     @Override
     public void syncPolicies() {
