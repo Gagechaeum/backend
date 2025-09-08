@@ -3,7 +3,6 @@ package com.gagechaeum.backend.user.service;
 import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
 import com.gagechaeum.backend.user.dto.*;
-;
 
 public interface UserService {
 

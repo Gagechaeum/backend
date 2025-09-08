@@ -129,7 +129,7 @@ public class UserController {
     }
 
     @PutMapping("/update/user")
-    public ResponseEntity<CustomResponse<Boolean>> update(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UpdateUserDTO req) {
+    public ResponseEntity<CustomResponse<Void>> update(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UpdateUserDTO req) {
         userService.updateUser(userDetails.getUserId(), req);
         return ResponseEntity
                 .status(ResponseCode.UPDATE_USER_SUCCESS.getHttpStatus())
