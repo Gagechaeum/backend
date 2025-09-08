@@ -11,6 +11,9 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 
@@ -74,5 +77,36 @@ public class RedisConfig {
 
         template.afterPropertiesSet();
         return template;
+    }
+    
+    /**
+     * Redis Pub/Sub 메시지 리스너 컨테이너
+     */
+    @Bean
+    public RedisMessageListenerContainer redisMessageListenerContainer(
+        RedisConnectionFactory connectionFactory,
+        MessageListenerAdapter listenerAdapter,
+        ChannelTopic chatTopic
+    ) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(listenerAdapter, chatTopic);
+        return container;
+    }
+    
+    /**
+     * 메시지 수신 로직을 담은 어댑터
+     */
+    @Bean
+    public MessageListenerAdapter listenerAdapter(RedisMessageSubscriber subscriber) {
+        return new MessageListenerAdapter(subscriber, "onMessage");
+    }
+    
+    /**
+     * 구독할 Redis 채널 (토픽)
+     */
+    @Bean
+    public ChannelTopic chatTopic() {
+        return new ChannelTopic("chatTopic");
     }
 }
