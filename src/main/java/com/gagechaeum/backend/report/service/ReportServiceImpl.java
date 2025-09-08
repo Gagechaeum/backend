@@ -9,6 +9,7 @@ import com.gagechaeum.backend.report.dto.response.DashboardResponseDTO;
 import com.gagechaeum.backend.report.dto.response.PolicySearchResponseDTO;
 import com.gagechaeum.backend.report.mapper.ReportMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,14 +72,33 @@ public class ReportServiceImpl implements ReportService {
         DashboardResponseDTO.Summary summary = calculateSummary(userPolicies, repayments, now);
         List<DashboardResponseDTO.Schedule> schedule = createSchedule(userPolicies, userLoans, now);
         List<DashboardResponseDTO.CashFlow> cashFlow = createCashFlow(userPolicies, repayments, now);
-        List<DashboardResponseDTO.AllItem> allItems = createAllItems(userPolicies, userLoans);
 
         // --- 3. 최종 DTO 조립 및 반환 ---
         return DashboardResponseDTO.builder()
                 .summary(summary)
                 .schedule(schedule)
                 .cashFlow(cashFlow)
-                .allItems(allItems)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DashboardResponseDTO.AllItemsPage getItems(Long userId, Pageable pageable) {
+        List<UserPolicy> userPolicies = reportMapper.findUserPoliciesByUserId(userId);
+        List<UserLoan> userLoans = reportMapper.findUserLoansByUserId(userId);
+
+        List<DashboardResponseDTO.AllItem> allItems = createAllItems(userPolicies, userLoans);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), allItems.size());
+        List<DashboardResponseDTO.AllItem> pagedItems = allItems.subList(start, end);
+
+        return DashboardResponseDTO.AllItemsPage.builder()
+                .content(pagedItems)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
+                .totalElements(allItems.size())
+                .totalPages((int) Math.ceil((double) allItems.size() / pageable.getPageSize()))
                 .build();
     }
 

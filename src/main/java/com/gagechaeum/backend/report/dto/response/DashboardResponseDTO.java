@@ -15,7 +15,9 @@ public class DashboardResponseDTO {
     private Summary summary;
     private List<Schedule> schedule;
     private List<CashFlow> cashFlow;
-    private List<AllItem> allItems;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private AllItemsPage allItems;
 
     @Getter
     @Builder
@@ -39,6 +41,16 @@ public class DashboardResponseDTO {
         private String month;
         private long benefit;
         private long repayment;
+    }
+
+    @Getter
+    @Builder
+    public static class AllItemsPage {
+        private List<AllItem> content;
+        private int page;
+        private int size;
+        private long totalElements;
+        private int totalPages;
     }
 
     @Getter

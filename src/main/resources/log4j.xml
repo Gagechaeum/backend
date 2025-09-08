@@ -13,7 +13,7 @@
     <Logger name="org.springframework.context" level="info"/>
     <Logger name="org.springframework.web" level="info"/>
 
-    <Logger name="com.gagechaeum.backend" level="info" additivity="false">
+    <Logger name="com.gagechaeum.backend" level="debug" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
 
@@ -22,7 +22,7 @@
     <Logger name="jdbc.connection" level="warn"/>
     <Logger name="jdbc.sqlonly" level="info"/>
 
-    <Root level="info">
+    <Root level="debug">
       <AppenderRef ref="Console"/>
     </Root>
   </Loggers>

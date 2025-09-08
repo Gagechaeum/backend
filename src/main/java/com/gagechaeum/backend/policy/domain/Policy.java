@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -39,4 +43,21 @@ public class Policy {
     private String contact;
     private String supportDetail;
     private String supportTarget;
+
+    // 원본 필요 서류 텍스트
+    private String requiredDocumentsRawText;
+
+    private List<String> requiredDocuments;
+
+    public void parseAndSetRequiredDocuments() {
+        if (this.requiredDocumentsRawText == null || this.requiredDocumentsRawText.isBlank()) {
+            this.requiredDocuments = Collections.emptyList();
+            return;
+        }
+
+        this.requiredDocuments = Arrays.stream(this.requiredDocumentsRawText.split("[,\r\n]+"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
+    }
 }
