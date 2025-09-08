@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class PolicySummaryDto {
 	private Long policyId;						// 공고 ID
-	private Long industryId;					// 지역 ID
-	private Long regionId;						// 업종 ID
+	private Long industryId;					// 업종 ID
+	private Long regionId;						// 지역 ID
 	private String policyName;					// 정책 이름
 	private String supervisingOrganizationName;	// 소관기관명
 	private LocalDateTime noticeDate;			// 등록일시
