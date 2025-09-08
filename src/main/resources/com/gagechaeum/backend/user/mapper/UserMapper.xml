@@ -62,6 +62,17 @@
         WHERE social_id=#{socialId}
     </update>
 
+    <update id="updateNotification">
+        UPDATE users
+        SET notification=#{notification}
+        WHERE user_id=#{id}
+    </update>
+
+    <update id="updateUser">
+        UPDATE users
+        SET phone=#{req.phone}, nickname=#{req.nickname}
+        WHERE user_id=#{id}
+    </update>
 
     <select id="findByEmail" parameterType="String" resultMap="userResultMap">
         SELECT *
