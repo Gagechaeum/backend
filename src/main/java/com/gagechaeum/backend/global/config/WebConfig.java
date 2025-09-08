@@ -46,7 +46,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
                 new MultipartConfigElement(
-                    "/tmp",
+                        null,
                     Constants.FILE_SIZE_20MB,
                     Constants.FILE_SIZE_40MB,
                     Constants.FILE_SIZE_10MB

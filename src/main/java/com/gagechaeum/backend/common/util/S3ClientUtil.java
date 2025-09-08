@@ -4,6 +4,7 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 import com.amazonaws.services.s3.model.S3Object;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,5 +48,31 @@ public class S3ClientUtil {
 	// 파일 삭제
 	public void deleteFile(String key) {
 		s3Client.deleteObject(bucketName, key);
+	}
+
+
+	// 프로필 사진 업로드
+	public void uploadProfile(MultipartFile file, String key) throws IOException {
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(file.getSize());
+		metadata.setContentType(file.getContentType());
+		s3Client.putObject(bucketName, key, file.getInputStream(), metadata);
+	}
+
+	// 프로필 이미지 조회
+	public String getProfileUrl(String key) {
+
+		ResponseHeaderOverrides headerOverrides = new ResponseHeaderOverrides();
+
+		// 파일이 브라우저에서 바로 열리도록 Content-Disposition을 "inline"으로 설정
+		headerOverrides.setContentDisposition("inline");
+
+		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, key)
+				.withMethod(HttpMethod.GET)
+				.withExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))
+				.withResponseHeaders(headerOverrides);
+
+		URL url = s3Client.generatePresignedUrl(request);
+		return url.toString();
 	}
 }
