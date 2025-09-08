@@ -1,9 +1,12 @@
 package com.gagechaeum.backend.loan.service;
 
 import com.gagechaeum.backend.loan.domain.Loan;
+import com.gagechaeum.backend.loan.dto.request.LoanListRequestDto;
 import com.gagechaeum.backend.loan.dto.response.LoanDetailResponseDto;
 import com.gagechaeum.backend.loan.dto.response.LoanInfoDTO;
+import com.gagechaeum.backend.loan.dto.response.LoanListResponseDto;
 import com.gagechaeum.backend.loan.dto.response.LoanRecommendationResponseDTO;
+import com.gagechaeum.backend.loan.dto.response.LoanSummaryDto;
 import com.gagechaeum.backend.loan.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,11 @@ import java.util.stream.Collectors;
 public class LoanServiceImpl implements LoanService {
 
     private final LoanMapper loanMapper;
+    
+    @Override
+    public LoanListResponseDto getLoanList(LoanListRequestDto requestDto) {
+        return new LoanListResponseDto(loanMapper.getLoanList(requestDto));
+    }
 
     @Override
     @Transactional(readOnly = true)

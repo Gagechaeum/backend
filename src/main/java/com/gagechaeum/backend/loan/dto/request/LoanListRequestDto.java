@@ -1,12 +1,12 @@
-package com.gagechaeum.backend.bookmark.dto;
+package com.gagechaeum.backend.loan.dto.request;
 
 import lombok.Data;
 
 @Data
-public class BookmarkListRequestDto {
+public class LoanListRequestDto {
 	private Integer page = 1;
 	private Integer size = 10;
-	private String type = "all";
+	private Long industryId = null;
 	
 	public Integer getOffset() {
 		return (this.page - 1) * this.size;

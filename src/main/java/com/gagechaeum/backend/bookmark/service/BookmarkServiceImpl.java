@@ -39,20 +39,18 @@ public class BookmarkServiceImpl implements BookmarkService {
             BookmarkListRequestDto requestDto,
             Long userId
     ) {
-        return BookmarkListResponseDto
-            .builder()
-            .bookmarks(bookmarkMapper.getUserPolicyBookmarksWithPagination(requestDto, userId))
-            .build();
+        return new BookmarkListResponseDto(
+            bookmarkMapper.getUserPolicyBookmarksWithPagination(requestDto, userId)
+        );
     }
     
     public BookmarkListResponseDto getUserLoanBookmarks(
             BookmarkListRequestDto requestDto,
             Long userId
     ) {
-        return BookmarkListResponseDto
-            .builder()
-            .bookmarks(bookmarkMapper.getUserLoanBookmarksWithPagination(requestDto, userId))
-            .build();
+        return new BookmarkListResponseDto(
+            bookmarkMapper.getUserLoanBookmarksWithPagination(requestDto, userId)
+        );
     }
     
     public BookmarkListResponseDto getUserAllBookmarks(
@@ -66,10 +64,9 @@ public class BookmarkServiceImpl implements BookmarkService {
             .sorted(Comparator.comparing(BookmarkItemDto::getCreatedAt).reversed())
             .toList();
         
-        return BookmarkListResponseDto
-                .builder()
-                .bookmarks(paginationAllBookmarks(requestDto, allBookmarks))
-                .build();
+        return new BookmarkListResponseDto(
+            paginationAllBookmarks(requestDto, allBookmarks)
+        );
     }
     
     public List<BookmarkItemDto> paginationAllBookmarks(

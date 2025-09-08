@@ -1,11 +1,12 @@
 package com.gagechaeum.backend.chat.dto;
 
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class ChatRoomListResponseDto {
 	private List<ChatRoomSummaryDto> chatRooms;
 }
