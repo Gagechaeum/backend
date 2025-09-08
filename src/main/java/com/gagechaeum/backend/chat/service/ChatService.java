@@ -7,6 +7,7 @@ import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomListResponseDto;
 
 public interface ChatService {
+	
 	ChatRoomListResponseDto getChatRooms(String type);
 	
 	UserChatRoomListResponseDto getUserChatRooms(String type, Long userId);
@@ -19,4 +20,8 @@ public interface ChatService {
 		ChatRoomHistoryRequestDto requestDto,
 		Long roomId
 	);
+	
+	void enterRoom(Long userId, Long roomId);
+
+	void leaveRoom(Long userId, Long roomId);
 }

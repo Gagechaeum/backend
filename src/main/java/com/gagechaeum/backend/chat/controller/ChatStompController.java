@@ -1,6 +1,7 @@
 package com.gagechaeum.backend.chat.controller;
 
 import com.gagechaeum.backend.chat.dto.ChatMessageDto;
+import com.gagechaeum.backend.chat.service.ChatService;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import java.security.Principal;
@@ -12,7 +13,30 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class ChatStompController {
+	private final ChatService chatService;
 	private final SimpMessagingTemplate messagingTemplate;
+	
+	@MessageMapping("/chatrooms/{room_id}/enter")
+	public void enterRoom(
+		@DestinationVariable("room_id") String roomId,
+		Principal principal
+	) {
+		chatService.enterRoom(
+			Long.valueOf(principal.getName()),
+			Long.valueOf(roomId)
+		);
+	}
+	
+	@MessageMapping("/chatrooms/{room_id}/leave")
+	public void leaveRoom(
+		@DestinationVariable("room_id") String roomId,
+		Principal principal
+	) {
+		chatService.leaveRoom(
+			Long.valueOf(principal.getName()),
+			Long.valueOf(roomId)
+		);
+	}
 	
 	@MessageMapping("/chatrooms/{room_id}/send")
 	public void sendMessage(

@@ -5,6 +5,13 @@
 
 <mapper namespace="com.gagechaeum.backend.chat.mapper.ChatMapper">
 
+    <insert id="insertIfNotExists">
+        INSERT INTO user_chatrooms (user_id, room_id)
+        VALUES (#{userId}, #{roomId})
+        ON DUPLICATE KEY UPDATE
+        user_id = user_id;
+    </insert>
+
   <select id="getChatRooms" resultType="ChatRoomSummaryDto">
     SELECT
       cr.room_id,
@@ -130,5 +137,10 @@
 
         LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
     </select>
+
+    <delete id="deleteByRoomIdAndUserId">
+        DELETE FROM user_chatrooms
+        WHERE room_id = #{roomId} AND user_id = #{userId}
+    </delete>
 
 </mapper>
