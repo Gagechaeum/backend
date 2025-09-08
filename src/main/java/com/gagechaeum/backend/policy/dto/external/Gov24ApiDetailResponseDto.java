@@ -16,6 +16,10 @@ public class Gov24ApiDetailResponseDto {
     @Getter
     @NoArgsConstructor
     public static class DetailData {
+
+        @JsonProperty("서비스ID")
+        private String serviceId;
+
         @JsonProperty("구비서류")
         private String requiredDocumentsText;
     }

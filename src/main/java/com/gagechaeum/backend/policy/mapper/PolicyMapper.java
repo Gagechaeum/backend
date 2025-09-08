@@ -26,4 +26,8 @@ public interface PolicyMapper {
     List<Policy> findAllPolicyIdsWithModificationDate();
 
     List<Policy> findAllPolicies();
+
+    int updatePoliciesFromTempTable();
+
+    void saveOrUpdateTempPolicyDetail(@Param("policyId") String policyId, @Param("rawText") String rawText);
 }
