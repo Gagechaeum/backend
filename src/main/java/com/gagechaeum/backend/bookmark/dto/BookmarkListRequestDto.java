@@ -7,7 +7,6 @@ public class BookmarkListRequestDto {
 	private Integer page = 1;
 	private Integer size = 10;
 	private String type = "all";
-	private Integer offset;
 	
 	public Integer getOffset() {
 		return (this.page - 1) * this.size;
