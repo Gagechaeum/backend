@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,9 @@ import java.util.List;
 @Builder
 public class VerifyBisArrayReqDTO {
 
+    @JsonProperty("businesses")
     private List<VerifyBisReqDTO> businesses;
+
 
 
 }

@@ -1,19 +1,7 @@
 
 -- 사용자
-INSERT INTO users (user_id, email, password, nickname, name, phone, created_at, social, social_id, notification, profile_image_key)
-VALUES (
-		   1,
-		   'test@example.com',
-		   '$2a$10$4DKsqy/vPc05zfqNSyy6Fe43KNk3Q6GeDatsjesWKjKyzsdUvt87i',
-		   'angela4',
-		   '사윤민',
-		   '010-1234-5678',
-		   NOW(),
-		   NULL,
-		   NULL,
-		   true,
-		   NULL
-		);
+
+
 
 -- 사업자
 INSERT INTO business_info (user_id, region_id, industry_id, business_num, sales_scope, company_name, estb_date)
@@ -24,7 +12,7 @@ VALUES (
 		   '596-18-01709',
 		   'SALES_SCOPE1',
 		   '피자스쿨',
-        '2019-01-11'
+        '2021-12-22'
 		);
 
 -- 사용자 정책

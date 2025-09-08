@@ -45,7 +45,13 @@ public enum ErrorCode {
     VERIFICATION_RATE_LIMITED("V005", "요청 횟수를 초과했습니다. 잠시 후 다시 시도해주세요.", HttpStatus.TOO_MANY_REQUESTS), // 429 Too Many Requests
     EMAIL_ALREADY_VERIFIED("V006", "이미 인증된 이메일입니다.", HttpStatus.CONFLICT), // 409 Conflict
     VERIFICATION_TOKEN_INVALID("V007", "인증 토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
-    NEW_PASSWORD_INVALID("V008","새 비밀번호와 확인용 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+    NEW_PASSWORD_INVALID("V008","새 비밀번호와 확인용 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+
+    //Business
+    BUSINESS_VALIDATION_FAILED("B001", "사업자 정보 검증에 실패했습니다.", HttpStatus.BAD_REQUEST),
+    BUSINESS_API_COMMUNICATION_ERROR( "B002", "외부 API와 통신하는 중 오류가 발생했습니다.",HttpStatus.INTERNAL_SERVER_ERROR),
+    BUSINESS_API_INVALID_RESPONSE("B003", "외부 API로부터 유효하지 않은 응답을 받았습니다.",HttpStatus.INTERNAL_SERVER_ERROR),
+    BUSINESS_NUM_INVALID("B004","사업자 번호 인증에 실패했습니다.",HttpStatus.BAD_REQUEST),;
 
     private final String code;
     private final String message;

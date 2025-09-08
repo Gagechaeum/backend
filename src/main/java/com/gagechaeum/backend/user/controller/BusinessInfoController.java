@@ -51,6 +51,6 @@ public class BusinessInfoController {
     @GetMapping("/verifyBisNum")
     public CustomResponse<Boolean> verifyBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long bisNum, @RequestParam LocalDate startDate) {
         Boolean Validation=service.verifyBusinessInfo(userDetails.getTrueName(), bisNum, startDate);
-        return CustomResponse.success(ResponseCode.SUCCESS, Validation);
+        return CustomResponse.success(ResponseCode.BISNUM_VERIFY_SUCCESS, Validation);
     }
 }

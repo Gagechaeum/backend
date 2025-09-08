@@ -100,5 +100,4 @@ public class AuthController {
         throw new IllegalStateException("이 엔드포인트는 Swagger 문서화를 위한 것이며, 직접 호출할 수 없습니다.");
     }
 
-
 }
