@@ -5,6 +5,7 @@ import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import com.gagechaeum.backend.user.dto.BusinessInfoDTO;
 import com.gagechaeum.backend.user.dto.BusinessInfoRequestDTO;
+import com.gagechaeum.backend.user.dto.VerifyBisReqDTO;
 import com.gagechaeum.backend.user.mapper.BusinessInfoMapper;
 import com.gagechaeum.backend.user.service.BusinessInfoService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Slf4j
 @RestController
@@ -46,8 +49,8 @@ public class BusinessInfoController {
     }
 
     @GetMapping("/verifyBisNum")
-    public CustomResponse<Object> saveBisInfo(BusinessInfoDTO reqDto) {
-
-        return CustomResponse.success(ResponseCode.SUCCESS, response);
+    public CustomResponse<Boolean> verifyBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long bisNum, @RequestParam LocalDate startDate) {
+        Boolean Validation=service.verifyBusinessInfo(userDetails.getTrueName(), bisNum, startDate);
+        return CustomResponse.success(ResponseCode.SUCCESS, Validation);
     }
 }

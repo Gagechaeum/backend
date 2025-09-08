@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class BusinessInfoServiceImpl implements BusinessInfoService {
     final private BusinessInfoMapper businessInfoMapper;
     final private RestTemplate restTemplate;
+
     @Value("${api.odcloud.service-key}")
     private String serviceKey;
 
@@ -52,60 +53,53 @@ public class BusinessInfoServiceImpl implements BusinessInfoService {
     }
 
     @Override
-    public Boolean verifyBusinessInfo(Long businessNum, String name, LocalDate date) {
+    public Boolean verifyBusinessInfo(String name, Long businessNum, LocalDate date) {
         String API_URL = "https://api.odcloud.kr/api/nts-businessman/v1/validate";
         String SUCCESS_CODE = "01";
 
+        // 요청 URL 설정
         String validationUrl = API_URL + "?serviceKey=" + serviceKey;
-        String bNoStr = String.valueOf(businessNum);
 
-        // 날짜를 YYYYMMDD 문자열로 변환
-        String startDateStr = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-        VerifyBisReqDTO businessInfo = new VerifyBisReqDTO(bNoStr, startDateStr, name);
-
-        // 2. 위에서 정의한 DTO를 사용해 요청 본문(payload) 객체를 생성합니다.
-        VerifyBisArrayReqDTO requestPayload = new VerifyBisArrayReqDTO(
-                Collections.singletonList(businessInfo)
-        );
-
-        // 3. HTTP 헤더를 설정합니다. (JSON 데이터를 보내고, JSON 응답을 기대)
+        // 요청 header 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        // 4. HTTP 요청 객체(HttpEntity)를 생성합니다. (헤더 + 본문)
+        // 요청 body설정
+        String bNoStr = String.valueOf(businessNum);
+        String startDateStr = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        VerifyBisReqDTO businessInfo = new VerifyBisReqDTO(bNoStr, startDateStr, name);
+        VerifyBisArrayReqDTO requestPayload = new VerifyBisArrayReqDTO(
+                Collections.singletonList(businessInfo)
+        );
+
+        // 요청완성
         HttpEntity<VerifyBisArrayReqDTO> entity = new HttpEntity<>(requestPayload, headers);
 
+
+        // 진위여부검증 API 호출
         try {
-            // 5. RestTemplate을 사용하여 API에 POST 요청을 보냅니다.
             ResponseEntity<VerifyBisResDTO> response = restTemplate.postForEntity(
-                    validationUrl,         // 요청 URL
-                    entity,                // 요청 데이터 (헤더, 본문)
-                    VerifyBisResDTO.class // 응답을 받을 DTO 클래스
+                    validationUrl,
+                    entity,
+                    VerifyBisResDTO.class
             );
 
-            // 6. API 응답을 처리합니다.
-            // HTTP 상태 코드가 200 (OK)이고, 응답 본문이 존재할 경우
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
 
                 VerifyBisResDTO body = response.getBody();
 
-                // 응답 데이터(data)가 비어있지 않은지 확인합니다.
                 if (body.getData() != null && !body.getData().isEmpty()) {
-                    // 첫 번째 검증 결과의 'valid' 코드를 가져옵니다.
                     String validCode = body.getData().get(0).getValid();
-                    // 'valid' 코드가 성공 코드("01")와 일치하는지 여부를 반환합니다.
                     return SUCCESS_CODE.equals(validCode);
                 }
             }
         } catch (RestClientException e) {
-            // API 통신 중 네트워크 오류 등이 발생하면 콘솔에 에러를 출력하고 false를 반환합니다.
             System.err.println("사업자 정보 검증 API 호출 중 오류 발생: " + e.getMessage());
             return false;
         }
 
-        // 그 외 모든 경우 (예: 응답 코드가 200이 아니거나, 응답 본문이 비정상적인 경우)에는 false를 반환합니다.
+        // 그 외 모든 경우 false
         return false;
     }
 }
