@@ -18,7 +18,7 @@
             l.max_limit,
             l.basic_rate,
             <include refid="rateRangeSelect"/>,
-            COALESCE(lbc.bookmark_count, 0)
+            COALESCE(lbc.bookmark_count, 0) AS bookmarkCount
         FROM loans l
             LEFT JOIN rates r ON l.loan_id = r.loan_id
             LEFT JOIN loan_bookmark_counts lbc ON l.loan_id = lbc.loan_id
@@ -30,6 +30,8 @@
         </where>
         GROUP BY
             l.loan_id,
+            l.industry_id,
+            l.region_id,
             l.company_name,
             l.product_name,
             l.begin_date,
