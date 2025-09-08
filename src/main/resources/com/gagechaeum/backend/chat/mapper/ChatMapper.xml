@@ -123,7 +123,7 @@
         <where>
             cm.room_id = #{roomId}
             <if test="requestDto.since != null">
-                AND cm.created_at &gt; #{requestDto.since}
+                AND cm.created_at &gt;= #{requestDto.since}
             </if>
         </where>
         ORDER BY cm.created_at ASC
