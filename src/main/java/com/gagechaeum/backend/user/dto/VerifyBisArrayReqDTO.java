@@ -5,14 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class verifyBisInfoRequest {
-    private String businessNumbers;
+public class VerifyBisArrayReqDTO {
 
-    private String startDates;
+    private List<VerifyBisReqDTO> businesses;
 
-    private String ownerNames;
+
 }
