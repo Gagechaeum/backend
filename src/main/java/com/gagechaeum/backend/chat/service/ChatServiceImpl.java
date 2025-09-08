@@ -2,6 +2,8 @@ package com.gagechaeum.backend.chat.service;
 
 import com.gagechaeum.backend.chat.dto.ChatRoomListResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
+import com.gagechaeum.backend.chat.dto.UserChatRoomListResponseDto;
+import com.gagechaeum.backend.chat.dto.UserChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.mapper.ChatMapper;
 import com.gagechaeum.backend.common.redis.RedisService;
 import java.util.List;
@@ -27,6 +29,18 @@ public class ChatServiceImpl implements ChatService {
 		});
 		
 		return new ChatRoomListResponseDto(chatRooms);
+	}
+	
+	public UserChatRoomListResponseDto getUserChatRooms(String type, Long userId) {
+		List<UserChatRoomSummaryDto> chatRooms = chatMapper.getUserChatRooms(type, userId);
+		
+		chatRooms.forEach(room -> {
+			room.setParticipantCount(
+				redisService.getChatRoomParticipantCount(room.getRoomId())
+			);
+		});
+		
+		return new UserChatRoomListResponseDto(chatRooms);
 	}
 	
 	public ChatRoomSummaryDto getPolicyChatRoomDetails(String policyId) {
