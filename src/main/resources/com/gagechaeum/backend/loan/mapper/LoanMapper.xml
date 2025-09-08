@@ -2,6 +2,77 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gagechaeum.backend.loan.mapper.LoanMapper">
 
+    <select
+      id="getLoanList"
+      parameterType="LoanListRequestDto"
+      resultType="LoanSummaryDto">
+        SELECT
+            l.loan_id,
+            l.industry_id,
+            l.region_id,
+            l.company_name,
+            l.product_name,
+            l.begin_date,
+            l.end_date,
+            l.min_limit,
+            l.max_limit,
+            l.basic_rate,
+            <include refid="rateRangeSelect"/>,
+            COALESCE(lbc.bookmark_count, 0)
+        FROM loans l
+            LEFT JOIN rates r ON l.loan_id = r.loan_id
+            LEFT JOIN loan_bookmark_counts lbc ON l.loan_id = lbc.loan_id
+        <where>
+            <if test="requestDto.industryId != null">
+                l.industry_id = #{requestDto.industryId}
+            </if>
+            AND r.rate_type = '대출금리'
+        </where>
+        GROUP BY
+            l.loan_id,
+            l.company_name,
+            l.product_name,
+            l.begin_date,
+            l.end_date,
+            l.min_limit,
+            l.max_limit,
+            l.basic_rate,
+            lbc.bookmark_count
+        ORDER BY l.begin_date DESC
+            LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+    </select>
+
+    <sql id="rateRangeSelect">
+        NULLIF(
+            MIN(
+                LEAST(
+                    COALESCE(r.rate_range1, 999.99),
+                    COALESCE(r.rate_range2, 999.99),
+                    COALESCE(r.rate_range3, 999.99),
+                    COALESCE(r.rate_range4, 999.99),
+                    COALESCE(r.rate_range5, 999.99),
+                    COALESCE(r.rate_range6, 999.99),
+                    COALESCE(r.rate_range7, 999.99),
+                    COALESCE(r.rate_range8, 999.99)
+                )
+            ), 999.99
+         ) AS minRate,
+        NULLIF(
+            MAX(
+                GREATEST(
+                    COALESCE(r.rate_range1, 0),
+                    COALESCE(r.rate_range2, 0),
+                    COALESCE(r.rate_range3, 0),
+                    COALESCE(r.rate_range4, 0),
+                    COALESCE(r.rate_range5, 0),
+                    COALESCE(r.rate_range6, 0),
+                    COALESCE(r.rate_range7, 0),
+                    COALESCE(r.rate_range8, 0)
+                )
+            ), 0
+        ) AS maxRate
+    </sql>
+
     <select id="findRecommendedLoansByUserId" resultType="com.gagechaeum.backend.loan.domain.Loan" parameterType="long">
         SELECT
             l.loan_id AS loanId,
