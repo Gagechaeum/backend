@@ -45,6 +45,9 @@ dependencies {
     implementation "org.springframework:spring-webmvc:${springVersion}"
     implementation 'javax.inject:javax.inject:1'
 
+    // Pageable, Sort, PageRequest 지원
+    implementation "org.springframework.data:spring-data-commons:2.7.18"
+
     // JavaMailSender 지원 (메일 기능)
     implementation "org.springframework:spring-context-support:${springVersion}"
 
@@ -86,8 +89,8 @@ dependencies {
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     // Redis
-    implementation 'org.springframework.data:spring-data-redis:2.7.6'
-    implementation 'redis.clients:jedis:3.8.0'
+//    implementation 'org.springframework.data:spring-data-redis:2.7.6'
+//    implementation 'redis.clients:jedis:3.8.0'
 
     // Test
     testImplementation "org.springframework:spring-test:${springVersion}"

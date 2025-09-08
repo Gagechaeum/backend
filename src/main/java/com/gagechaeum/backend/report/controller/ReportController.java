@@ -8,6 +8,8 @@ import com.gagechaeum.backend.report.dto.response.PolicySearchResponseDTO;
 import com.gagechaeum.backend.report.service.ReportService;
 // import com.gagechaeum.backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +51,16 @@ public class ReportController {
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getHttpStatus())
                 .body(CustomResponse.success(ResponseCode.SUCCESS, dashboardData));
+    }
+
+    @GetMapping("/items")
+    public CustomResponse<DashboardResponseDTO.AllItemsPage> getItems(
+            // @AuthenticationPrincipal UserDetailsImpl userDetails // 주석 해제 후 사용
+            @PageableDefault(size = 5) Pageable pageable) {
+        // Long userId = userDetails.getUser().getId();
+        Long userId = 1L; // 테스트용 임시 사용자 ID
+        DashboardResponseDTO.AllItemsPage items = reportService.getItems(userId, pageable);
+        return CustomResponse.success(ResponseCode.SUCCESS, items);
     }
 
     @GetMapping("/search")

@@ -90,6 +90,7 @@ CREATE TABLE policies (
 	contact	TEXT	NULL,
 	support_detail	TEXT	NOT NULL,
 	support_target	TEXT	NOT NULL,
+    required_documents_raw_text TEXT NULL COMMENT '외부 API에서 받은 원본 구비서류 텍스트',
 	CONSTRAINT fk_policies_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id),
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
@@ -260,7 +261,8 @@ CREATE TABLE documents (
 	document_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	document_name	VARCHAR(255)	NOT NULL,
 	issuing_authority	VARCHAR(255)	NULL,
-	issuing_authority_url	VARCHAR(255)	NULL
+	issuing_authority_url	VARCHAR(255)	NULL,
+    keywords VARCHAR(255) NULL COMMENT '매칭용 키워드, 쉼표(,)로 구분'
 );
 
 CREATE TABLE required_documents (
@@ -396,6 +398,21 @@ INSERT INTO documents (document_name, issuing_authority, issuing_authority_url) 
 	('법인등기사항전부증명서(말소사항 포함)', '인터넷등기소', 'http://www.iros.go.kr'),
 	('4대사회보험 가입자 가입내역 확인서', '정부24, 국민연금공단 4대사회보험 정보연계센터', 'https://www.gov.kr, https://www.4insure.or.kr'),
 	('기타', NULL, NULL);
+
+-- 서류 데이터 키워드 추가
+UPDATE documents SET keywords = '지방세,지방세납세' WHERE document_name = '지방세 납세증명서';
+UPDATE documents SET keywords = '납세증명,국세완납,세금완납,완납증명' WHERE document_name = '납세증명서';
+UPDATE documents SET keywords = '부가가치세,부가세,과세표준' WHERE document_name = '부가가치세과세표준증명';
+UPDATE documents SET keywords = '면세사업자,수입금액증명' WHERE document_name = '부가가치세면세사업자수입금액증명';
+UPDATE documents SET keywords = '사업자등록,사업자,개인사업자,법인사업자' WHERE document_name = '사업자등록증명';
+UPDATE documents SET keywords = '소득금액,소득증명,소득확인' WHERE document_name = '소득금액증명';
+UPDATE documents SET keywords = '폐업사실,폐업' WHERE document_name = '폐업사실증명';
+UPDATE documents SET keywords = '재무제표,재무상태표,손익계산서' WHERE document_name = '표준재무제표증명';
+UPDATE documents SET keywords = '휴업사실,휴업' WHERE document_name = '휴업사실증명';
+UPDATE documents SET keywords = '금융거래' WHERE document_name = '금융거래확인서';
+UPDATE documents SET keywords = '중소기업,벤처기업,중소기업확인' WHERE document_name = '중소기업확인서';
+UPDATE documents SET keywords = '법인등기,등기부등본,등기사항전부' WHERE document_name = '법인등기사항전부증명서(말소사항 포함)';
+UPDATE documents SET keywords = '4대보험,4대 사회보험,가입내역,자격득실' WHERE document_name = '4대사회보험 가입자 가입내역 확인서';
 
 -- 지역 데이터
 -- 1. 전국
