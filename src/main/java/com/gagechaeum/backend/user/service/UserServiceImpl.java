@@ -2,10 +2,10 @@ package com.gagechaeum.backend.user.service;
 
 import com.gagechaeum.backend.common.mail.MailService;
 import com.gagechaeum.backend.common.redis.RedisService;
+import com.gagechaeum.backend.common.util.S3ClientUtil;
 import com.gagechaeum.backend.global.exception.BusinessException;
 import com.gagechaeum.backend.global.exception.ErrorCode;
 import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
-import com.gagechaeum.backend.security.account.dto.UserInfoDTO;
 import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
 import com.gagechaeum.backend.security.util.JwtUtil;
 import com.gagechaeum.backend.user.domain.User;
@@ -24,7 +24,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final RedisService redisService;
     private final PasswordEncoder encoder;
     private final MailService mailService;
+    private final S3ClientUtil s3ClientUtil;
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -316,11 +320,56 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserInfoResponseDTO getUserInfo(CustomUserDetails user) {
+        String profileImageKey = userMapper.findProfileImageKeyById(user.getUserId());
+        String  profileImageUrl= null;
+
+        if (profileImageKey != null && !profileImageKey.isEmpty()) {
+            // S3 키를 사용해 임시 접근 URL을 생성합니다.
+            profileImageUrl = s3ClientUtil.getFileUrl(profileImageKey);
+        }
+
         return UserInfoResponseDTO.builder()
                 .userId(user.getUserId())
                 .phone(user.getPhone())
                 .email(user.getUsername())
                 .nickname(user.getNickname())
+                .profileImageKey(profileImageUrl)
                 .build();
+    }
+
+    @Override
+    public void updateProfileImage(Long userId, MultipartFile profileImage) {
+        // 기존 이미지 키 조회
+        String oldImageKey = userMapper.findProfileImageKeyById(userId);
+
+        // 확장자 추출 후, 새 이미지 키 생성
+        String extension = getFileExtension(profileImage.getOriginalFilename());
+        String newImageKey = "userProfileImage/" + userId + "_" + UUID.randomUUID().toString() + extension;
+
+        try {
+            // S3에 새 이미지 업로드
+            s3ClientUtil.uploadFile(profileImage, newImageKey);
+        } catch (IOException e) {
+            log.error("S3 파일 업로드 실패: {}", e.getMessage());
+            throw new BusinessException(ErrorCode.FILE_UPLOAD_FAILED);
+        }
+
+        // DB에 새 이미지 키 업데이트
+        userMapper.updateProfileImageKey(userId, newImageKey);
+        log.info("사용자 {} 프로필 이미지 키 업데이트 완료: {}", userId, newImageKey);
+
+        // 기존 이미지가 있었다면 S3에서 삭제
+        if (StringUtils.hasText(oldImageKey)) { // null 또는 "" 체크를 한번에
+            s3ClientUtil.deleteFile(oldImageKey);
+            log.info("기존 프로필 이미지 삭제 완료: {}", oldImageKey);
+        }
+    }
+
+    // 확장자 추출 메소드
+    private String getFileExtension(String filename) {
+        if (StringUtils.hasText(filename) && filename.contains(".")) {
+            return filename.substring(filename.lastIndexOf("."));
+        }
+        return "";
     }
 }

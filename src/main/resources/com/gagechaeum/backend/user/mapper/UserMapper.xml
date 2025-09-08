@@ -101,11 +101,23 @@
         )
     </select>
 
-    <!-- UserMapper.xml -->
     <select id="findBySocialId" resultType="com.gagechaeum.backend.user.domain.User">
         SELECT *
         FROM users
         WHERE social = #{social} AND social_id = #{socialId}
     </select>
 
+
+    <!-- profile image -->
+        <select id="findProfileImageKeyById" parameterType="long" resultType="java.lang.String">
+            SELECT profile_image_key
+            FROM users
+            WHERE user_id = #{id}
+        </select>
+
+        <update id="updateProfileImageKey">
+            UPDATE users
+            SET profile_image_key = #{profileImageKey}
+            WHERE user_id = #{userId}
+        </update>
 </mapper>

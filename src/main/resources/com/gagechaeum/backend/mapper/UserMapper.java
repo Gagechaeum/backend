@@ -4,7 +4,6 @@ import com.gagechaeum.backend.user.domain.User;
 import com.gagechaeum.backend.user.dto.UpdateUserDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Mapper
@@ -19,11 +18,11 @@ public interface UserMapper {
     Boolean findIsNickname(String nickname);
     void updateNotification(@Param("id") Long id, @Param("notification") Boolean notification); //알림설정상태 업데이트
     void updateUser(@Param("id") Long id, @Param("req")UpdateUserDTO req);
-
-    // 프로필 이미지
+    // 프로필 이미지 키 조회 메서드 추가
     String findProfileImageKeyById(@Param("id") Long id);
-    void updateProfileImageKey(@Param("userId") Long userId, @Param("profileImageKey") String profileImageKey);
 
+    // 프로필 이미지 키 업데이트 메서드 추가
+    void updateProfileImageKey(@Param("userId") Long userId, @Param("profileImageKey") String profileImageKey);
     // 이메일 인증
     void updateIsVerifiedByEmail(@Param("email") String email, @Param("isVerified") boolean isVerified);
     Boolean selectIsVerifiedByEmail(@Param("email") String email);

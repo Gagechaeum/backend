@@ -3,6 +3,7 @@ package com.gagechaeum.backend.user.service;
 import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import com.gagechaeum.backend.security.account.dto.UserLoginRequestDTO;
 import com.gagechaeum.backend.user.dto.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -25,4 +26,6 @@ public interface UserService {
     void requestEmailVerification(String email);
     void confirmEmailVerification(String email, String code);
     boolean isEmailVerifiedNow(String email);
+
+    void updateProfileImage(Long userId, MultipartFile profileImage);
 }
