@@ -91,5 +91,44 @@
             ON cr.loan_id = l.loan_id
     WHERE cr.loan_id = #{loanId}
   </select>
+    
+    <resultMap id="chatMessageResultMap" type="ChatMessageDto">
+        <id property="messageId" column="message_id"/>
+        <result property="profileImageKey" column="profile_image_key"/>
+        <result property="nickname" column="nickname"/>
+        <result property="message" column="content"/>
+        <result property="sentAt" column="created_at"/>
+        <collection property="files" ofType="ChatAttachmentDto">
+            <result property="key" column="file_key"/>
+            <result property="extension" column="file_extension"/>
+            <result property="name" column="file_name"/>
+            <result property="size" column="file_size"/>
+        </collection>
+    </resultMap>
+
+    <select id="getChatRoomHistoryByRoomId" resultMap="chatMessageResultMap">
+        SELECT
+            cm.message_id,
+            u.profile_image_key,
+            u.nickname,
+            cm.content,
+            cm.created_at,
+            ca.file_key,
+            ca.file_name,
+            ca.file_extension,
+            ca.file_size
+        FROM chat_messages cm
+        LEFT JOIN users u ON cm.user_id = u.user_id
+        LEFT JOIN chat_attachments ca ON cm.message_id = ca.message_id
+        <where>
+            cm.room_id = #{roomId}
+            <if test="requestDto.since != null">
+                AND cm.created_at &gt; #{requestDto.since}
+            </if>
+        </where>
+        ORDER BY cm.created_at ASC
+
+        LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+    </select>
 
 </mapper>
