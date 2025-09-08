@@ -4,7 +4,6 @@ import com.gagechaeum.backend.user.domain.User;
 import com.gagechaeum.backend.user.dto.UpdateUserDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Mapper

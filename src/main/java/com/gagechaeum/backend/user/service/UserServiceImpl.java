@@ -360,7 +360,7 @@ public class UserServiceImpl implements UserService {
         log.info("사용자 {} 프로필 이미지 키 업데이트 완료: {}", userId, newImageKey);
 
         // 기존 이미지가 있었다면 S3에서 삭제
-        if (StringUtils.hasText(oldImageKey)) { // null 또는 "" 체크를 한번에
+        if (StringUtils.hasText(oldImageKey) && !oldImageKey.equals("userProfileImage/default.png")) {
             s3ClientUtil.deleteFile(oldImageKey);
             log.info("기존 프로필 이미지 삭제 완료: {}", oldImageKey);
         }
