@@ -1,6 +1,6 @@
 package com.gagechaeum.backend.chat.mapper;
 
-import com.gagechaeum.backend.chat.dto.ChatMessageDto;
+import com.gagechaeum.backend.chat.dto.ChatHistoryMessageDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomSummaryDto;
@@ -25,7 +25,7 @@ public interface ChatMapper {
 		@Param("loanId") Long loanId
 	);
 	
-	List<ChatMessageDto> getChatRoomHistoryByRoomId(
+	List<ChatHistoryMessageDto> getChatRoomHistoryByRoomId(
 		@Param("requestDto") ChatRoomHistoryRequestDto requestDto,
 		@Param("roomId") Long roomId
 	);
