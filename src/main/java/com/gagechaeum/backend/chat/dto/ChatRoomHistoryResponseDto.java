@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ChatRoomHistoryResponseDto {
-	List<ChatMessageDto> messages;
+	List<ChatHistoryMessageDto> messages;
 }

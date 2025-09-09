@@ -30,6 +30,7 @@ public enum ErrorCode {
     USER_ALREADY_EXISTS("U002", "이미 존재하는 사용자입니다.", HttpStatus.CONFLICT),
     INVALID_PASSWORD("U003", "비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
     NICKNAME_ALREADY_EXISTS("U004", "이미 사용 중인 닉네임입니다.", HttpStatus.CONFLICT),
+    FILE_UPLOAD_FAILED("U005", "파일 업로드에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
     // External API
     EXTERNAL_API_ERROR("E001", "외부 API 호출 중 오류가 발생했습니다.", HttpStatus.SERVICE_UNAVAILABLE),

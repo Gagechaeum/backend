@@ -92,7 +92,7 @@
     WHERE cr.loan_id = #{loanId}
   </select>
     
-    <resultMap id="chatMessageResultMap" type="ChatMessageDto">
+    <resultMap id="chatMessageResultMap" type="ChatHistoryMessageDto">
         <id property="messageId" column="message_id"/>
         <result property="profileImageKey" column="profile_image_key"/>
         <result property="nickname" column="nickname"/>

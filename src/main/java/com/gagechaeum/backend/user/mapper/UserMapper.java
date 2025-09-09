@@ -19,6 +19,10 @@ public interface UserMapper {
     void updateNotification(@Param("id") Long id, @Param("notification") Boolean notification); //알림설정상태 업데이트
     void updateUser(@Param("id") Long id, @Param("req")UpdateUserDTO req);
 
+    // 프로필 이미지
+    String findProfileImageKeyById(@Param("id") Long id);
+    void updateProfileImageKey(@Param("userId") Long userId, @Param("profileImageKey") String profileImageKey);
+
     // 이메일 인증
     void updateIsVerifiedByEmail(@Param("email") String email, @Param("isVerified") boolean isVerified);
     Boolean selectIsVerifiedByEmail(@Param("email") String email);
