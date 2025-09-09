@@ -90,7 +90,6 @@ CREATE TABLE policies (
 	contact	TEXT	NULL,
 	support_detail	TEXT	NOT NULL,
 	support_target	TEXT	NOT NULL,
-    required_documents_raw_text TEXT NULL COMMENT '외부 API에서 받은 원본 구비서류 텍스트',
 	CONSTRAINT fk_policies_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id),
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
