@@ -6,11 +6,14 @@ import com.gagechaeum.backend.document.mapper.DocumentMapper;
 import com.gagechaeum.backend.document.mapper.RequiredDocumentMapper;
 import com.gagechaeum.backend.policy.client.Gov24ApiClient;
 import com.gagechaeum.backend.policy.dto.external.Gov24ApiDetailResponseDto;
+import com.gagechaeum.backend.policy.dto.request.PolicyListRequestDto;
 import com.gagechaeum.backend.policy.dto.response.PolicyDetailResponseDto;
 import com.gagechaeum.backend.policy.domain.Policy;
 import com.gagechaeum.backend.policy.dto.response.PolicyInfoDTO;
+import com.gagechaeum.backend.policy.dto.response.PolicyListResponseDto;
 import com.gagechaeum.backend.policy.dto.response.PolicyRecommendationResponseDTO;
 import com.gagechaeum.backend.policy.mapper.PolicyMapper;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +34,11 @@ public class PolicyServiceImpl implements PolicyService {
     private final RequiredDocumentMapper requiredDocumentMapper;
 
     @Override
+    public PolicyListResponseDto getPolicyList(PolicyListRequestDto requestDto) {
+        return new PolicyListResponseDto(policyMapper.getPolicyList(requestDto));
+    }
+    
+    @Override
     @Transactional(readOnly = true)
     public PolicyRecommendationResponseDTO getRecommendedPolicies(Long userId) {
         List<Policy> policies = policyMapper.findRecommendedPoliciesByUserId(userId);
@@ -46,7 +54,7 @@ public class PolicyServiceImpl implements PolicyService {
     public PolicyDetailResponseDto getPolicyDetails(String policyId) {
         Policy policy = policyMapper.getPolicyById(policyId);
         if (policy == null) {
-            throw new IllegalArgumentException("정책이 존재하지 않습니다.");
+            throw new NoSuchElementException("정책이 존재하지 않습니다.");
         }
         policy.parseAndSetRequiredDocuments();
         return PolicyDetailResponseDto.fromVo(policy);

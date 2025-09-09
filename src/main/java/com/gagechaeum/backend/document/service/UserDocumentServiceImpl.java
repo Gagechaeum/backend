@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -112,7 +113,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         if (userDocument != null) {
             return s3ClientUtil.getFileUrl(userDocument.getFileKey());
         }
-        throw new IllegalArgumentException("존재하지 않는 파일입니다.");
+        throw new NoSuchElementException("존재하지 않는 파일입니다.");
     }
     
     private byte[] downloadMultiFiles(Long userId, List<Long> ids) {

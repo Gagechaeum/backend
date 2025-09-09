@@ -8,6 +8,32 @@
         <result property="issuingUrl" column="issuingUrl"/>
     </resultMap>
 
+  <select
+    id="getPolicyList"
+    parameterType="PolicyListRequestDto"
+    resultType="PolicySummaryDto">
+      SELECT
+        p.policy_id,
+        p.industry_id,
+        p.region_id,
+        p.policy_name,
+        p.supervising_organization_name,
+        p.notice_date,
+        p.modification_date,
+        p.begin_date,
+        p.end_date,
+        COALESCE(pbc.bookmark_count, 0) AS bookmarkCount
+    FROM policies p
+    LEFT JOIN policy_bookmark_counts pbc ON p.policy_id = pbc.policy_id
+    <where>
+      <if test="requestDto.industryId != null">
+        p.industry_id = #{requestDto.industryId}
+      </if>
+    </where>
+    ORDER BY p.begin_date DESC
+      LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+  </select>
+
     <select id="findRecommendedPoliciesByUserId" resultType="com.gagechaeum.backend.policy.domain.Policy">
         SELECT
             p.*,

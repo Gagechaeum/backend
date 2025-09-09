@@ -2,7 +2,9 @@ package com.gagechaeum.backend.policy.mapper;
 
 import com.gagechaeum.backend.policy.domain.Policy;
 import com.gagechaeum.backend.policy.dto.DocumentKeywordDTO;
+import com.gagechaeum.backend.policy.dto.request.PolicyListRequestDto;
 import com.gagechaeum.backend.policy.dto.response.PolicyDocumentsResponseDTO;
+import com.gagechaeum.backend.policy.dto.response.PolicySummaryDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Mapper
 public interface PolicyMapper {
+    List<PolicySummaryDto> getPolicyList(@Param("requestDto") PolicyListRequestDto requestDto);
+    
     List<Policy> findRecommendedPoliciesByUserId(@Param("userId") Long userId);
 
     void saveOrUpdatePolicy(Policy policy);
