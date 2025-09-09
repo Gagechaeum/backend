@@ -56,10 +56,10 @@
     <insert id="saveOrUpdatePolicy" parameterType="com.gagechaeum.backend.policy.domain.Policy">
         INSERT INTO policies (
             policy_id, user_type, policy_field, policy_name, policy_summary, department_name, supervising_organization_name,
-            announcement_url, support_detail, selection_criteria, application_period, begin_date, end_date, notice_date, modification_date, application_method, contact, support_target, required_documents_raw_text
+            announcement_url, support_detail, selection_criteria, application_period, begin_date, end_date, notice_date, modification_date, application_method, contact, support_target
         ) VALUES (
                      #{policyId}, #{userType}, #{policyField}, #{policyName}, #{policySummary}, #{departmentName}, #{supervisingOrganizationName},
-                     #{announcementUrl}, #{supportDetail}, #{selectionCriteria}, #{applicationPeriod}, #{beginDate}, #{endDate}, #{noticeDate}, #{modificationDate}, #{applicationMethod}, #{contact}, #{supportTarget}, #{requiredDocumentsRawText}
+                     #{announcementUrl}, #{supportDetail}, #{selectionCriteria}, #{applicationPeriod}, #{beginDate}, #{endDate}, #{noticeDate}, #{modificationDate}, #{applicationMethod}, #{contact}, #{supportTarget}
                  )
             ON DUPLICATE KEY UPDATE
                                  user_type = VALUES(user_type),
@@ -77,8 +77,7 @@
                                  modification_date = VALUES(modification_date),
                                  application_method = VALUES(application_method),
                                  contact = VALUES(contact),
-                                 support_target = VALUES(support_target),
-                                 required_documents_raw_text = VALUES(required_documents_raw_text)
+                                 support_target = VALUES(support_target)
     </insert>
 
     <select id="findBookmarkCountsByPolicyIds" resultType="map">
@@ -150,8 +149,6 @@
     <update id="updatePoliciesFromTempTable">
         UPDATE policies p
             JOIN policy_details_temp t ON p.policy_id = t.policy_id
-            SET p.required_documents_raw_text = t.raw_text
-        WHERE p.required_documents_raw_text IS NULL OR p.required_documents_raw_text != t.raw_text;
     </update>
 
     <insert id="saveOrUpdateTempPolicyDetail">
