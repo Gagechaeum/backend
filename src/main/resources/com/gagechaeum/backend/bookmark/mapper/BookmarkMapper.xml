@@ -140,7 +140,7 @@
     <select id="findBookmarkDocumentsByUserId" parameterType="long" resultMap="DocumentInfoResultMap">
         SELECT
             d.document_name AS documentName,
-            COUNT(d.document_id) AS productCount,
+            COUNT(DISTINCT all_required_docs.product_identifier) AS productCount,
             d.issuing_authority_url AS issuingUrl,
             CASE
                 WHEN EXISTS (
@@ -151,12 +151,12 @@
                 END AS possessionStatus
         FROM documents d
                  JOIN (
-            SELECT rd.document_id
+            SELECT rd.document_id, upb.policy_id AS product_identifier
             FROM required_documents rd
                      JOIN user_policy_bookmarks upb ON rd.policy_id = upb.policy_id
             WHERE upb.user_id = #{userId}
             UNION ALL
-            SELECT rd.document_id
+            SELECT rd.document_id, CONCAT('loan_', ulb.loan_id) AS product_identifier
             FROM required_documents rd
                      JOIN user_loan_bookmarks ulb ON rd.loan_id = ulb.loan_id
             WHERE ulb.user_id = #{userId}
