@@ -129,9 +129,11 @@
     </update>
 
     <insert id="saveOrUpdateTempPolicyDetail">
-        INSERT INTO policy_details_temp (policy_id, raw_text)
-        VALUES (#{policyId}, #{rawText})
-            ON DUPLICATE KEY UPDATE raw_text = VALUES(raw_text);
+        INSERT INTO policy_details_temp (policy_id, raw_text, updated_at)
+        VALUES (#{policyId}, #{rawText}, #{updatedAt})
+            ON DUPLICATE KEY UPDATE
+                                 raw_text = VALUES(raw_text),
+                                 updated_at = VALUES(updated_at)
     </insert>
 
 </mapper>
