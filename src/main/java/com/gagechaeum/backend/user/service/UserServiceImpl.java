@@ -374,4 +374,12 @@ public class UserServiceImpl implements UserService {
         }
         return "";
     }
+
+    public Boolean passwordVerify(CustomUserDetails userDetails, String password) {
+        if (userDetails == null) {
+            throw new UserNotFoundException();
+        }
+
+        return encoder.matches(password, userDetails.getPassword());
+    }
 }

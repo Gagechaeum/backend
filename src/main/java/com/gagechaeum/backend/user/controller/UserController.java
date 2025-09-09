@@ -161,5 +161,12 @@ public class UserController {
                 .body(CustomResponse.success(ResponseCode.UPDATE_USER_SUCCESS));
     }
 
+    @PostMapping("/password-Verify")
+    public ResponseEntity<CustomResponse<Boolean>> passwordVerify(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody String curPassword) {
+        Boolean verify=userService.passwordVerify(userDetails, curPassword);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS.getHttpStatus())
+                .body(CustomResponse.success(ResponseCode.SUCCESS, verify));
+    }
 
 }
