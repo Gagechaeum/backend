@@ -30,17 +30,6 @@
         p.industry_id = #{requestDto.industryId}
       </if>
     </where>
-    GROUP BY
-      p.policy_id,
-      p.industry_id,
-      p.region_id,
-      p.policy_name,
-      p.supervising_organization_name,
-      p.notice_date,
-      p.modification_date,
-      p.begin_date,
-      p.end_date,
-      pbc.bookmark_count
     ORDER BY p.begin_date DESC
       LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
   </select>

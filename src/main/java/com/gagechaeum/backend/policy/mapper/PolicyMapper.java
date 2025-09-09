@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.security.core.parameters.P;
 
 @Mapper
 public interface PolicyMapper {
