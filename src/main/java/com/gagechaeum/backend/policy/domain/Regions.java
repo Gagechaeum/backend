@@ -5,7 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class Region {
+public class Regions {
     private Long regionId;
+    private Long superId;
+    private int depth;
+    private String name;
     private String fullName;
 }

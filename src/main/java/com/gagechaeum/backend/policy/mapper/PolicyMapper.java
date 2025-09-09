@@ -15,6 +15,8 @@ public interface PolicyMapper {
 
     Policy getPolicyById(@Param("policyId") String policyId);
 
+    List<Policy> findPoliciesForMatching();
+
     List<DocumentKeywordDTO> findAllDocumentsWithKeywords();
 
     void deleteRequiredDocumentsByPolicyId(String policyId);
@@ -30,4 +32,6 @@ public interface PolicyMapper {
     int updatePoliciesFromTempTable();
 
     void saveOrUpdateTempPolicyDetail(@Param("policyId") String policyId, @Param("rawText") String rawText);
+
+    void updatePolicyCategories(@Param("policyId") String policyId, @Param("regionId") Long regionId, @Param("industryId") Long industryId);
 }

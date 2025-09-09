@@ -5,9 +5,7 @@ import com.gagechaeum.backend.policy.client.Gov24ApiClient;
 import com.gagechaeum.backend.policy.domain.Policy;
 import com.gagechaeum.backend.policy.dto.external.Gov24ApiResponseDto;
 import com.gagechaeum.backend.policy.dto.external.Gov24ApiServiceDto;
-import com.gagechaeum.backend.policy.mapper.IndustryMapper;
 import com.gagechaeum.backend.policy.mapper.PolicyMapper;
-import com.gagechaeum.backend.policy.mapper.RegionMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -31,16 +29,20 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     private final Gov24ApiClient gov24ApiClient;
     private final PolicyMapper policyMapper;
     private final PolicyUpdateService policyUpdateService;
+    private final PolicyMatchingService policyMatchingService;
+
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
-    private final PythonMatcherService pythonMatcherService;
-    private final RegionMapper regionMapper;
-    private final IndustryMapper industryMapper;
-
     @Override
+    @Transactional
     public void syncPolicies() {
-        log.info("정책 기본 정보 동기화 호출됨");
+        log.info("정책 기본 정보 동기화를 시작합니다.");
         syncPoliciesFromGov24Api();
+        log.info("정책 기본 정보 동기화가 완료되었습니다.");
+
+        log.info("새로 추가된 정책들에 대해 Java 기반 카테고리 매칭을 시작합니다.");
+        // 카테고리 매칭하는 policyMatchingService 호출
+        policyMatchingService.matchAndSaveCategories();
     }
 
     @Override
@@ -64,8 +66,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
         int perPage = 30;
         int totalPages = 1;
 
-        List<Policy> existingPolicies = policyMapper.findAllPolicyIdsWithModificationDate();
-        Map<String, LocalDateTime> existingMap = existingPolicies.stream()
+        Map<String, LocalDateTime> existingMap = policyMapper.findAllPolicyIdsWithModificationDate().stream()
                 .filter(p -> p.getPolicyId() != null)
                 .collect(Collectors.toMap(Policy::getPolicyId, Policy::getModificationDate));
 
@@ -84,9 +85,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
             for (Gov24ApiServiceDto dto : apiResponse.getData()) {
                 Policy policy = mapDtoToDomain(dto);
                 LocalDateTime existingDate = existingMap.get(policy.getPolicyId());
-                boolean needsUpdate = (existingDate == null) ||
-                        (policy.getModificationDate() != null && existingDate != null &&
-                                policy.getModificationDate().isAfter(existingDate));
+                boolean needsUpdate = existingDate == null || (policy.getModificationDate() != null && policy.getModificationDate().isAfter(existingDate));
 
                 if (needsUpdate) {
                     policyMapper.saveOrUpdatePolicy(policy);
@@ -95,7 +94,6 @@ public class PolicySyncServiceImpl implements PolicySyncService {
             }
             page++;
         } while (page <= totalPages);
-        log.info("정책 기본 정보 동기화가 완료되었습니다.");
     }
 
     private void syncPolicyDetailsToTempTable() {
@@ -105,7 +103,6 @@ public class PolicySyncServiceImpl implements PolicySyncService {
             log.warn("상세 정보를 동기화할 정책이 DB에 없습니다.");
             return;
         }
-        log.info("DB에서 {}개의 정책을 조회했습니다.", allPolicies.size());
 
         final int batchSize = 100;
         List<List<Policy>> batches = new ArrayList<>();

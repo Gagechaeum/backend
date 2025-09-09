@@ -13,7 +13,7 @@ VALUES (
            NULL,
            NULL,
            true,
-           NULL
+           'userProfileImage/default.png'
        );
 
 -- 사업자
