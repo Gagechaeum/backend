@@ -1,6 +1,5 @@
 package com.gagechaeum.backend.user.service;
 
-import com.gagechaeum.backend.user.domain.BusinessInfoVO;
 import com.gagechaeum.backend.user.dto.BusinessInfoDTO;
 import com.gagechaeum.backend.user.dto.BusinessInfoRequestDTO;
 
@@ -8,8 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BusinessInfoService {
-    void save(Long userId,BusinessInfoRequestDTO reqDto);
-    void update(BusinessInfoDTO reqDto);
+    void save(Long userId,List<BusinessInfoRequestDTO> reqDto);
+    void update(List<BusinessInfoDTO> reqDto);
     void delete(Long businessInfoId);
     List<BusinessInfoDTO> selectBisAll(Long userId);
 

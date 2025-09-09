@@ -36,16 +36,21 @@ public class BusinessInfoServiceImpl implements BusinessInfoService {
     private String serviceKey;
 
     @Override
-    public void save(Long userId, BusinessInfoRequestDTO reqDto) {
-        BusinessInfoDTO dto = reqDto.toBusinessInfoDTO(userId);
-        BusinessInfoVO vo = dto.toVO();
-        businessInfoMapper.save(vo);
+    public void save(Long userId, List<BusinessInfoRequestDTO> reqDto) {
+        for(BusinessInfoRequestDTO dto : reqDto) {
+            BusinessInfoDTO businessInfodto = dto.toBusinessInfoDTO(userId);
+            BusinessInfoVO vo = businessInfodto.toVO();
+            businessInfoMapper.save(vo);
+        }
     }
 
     @Override
-    public void update(BusinessInfoDTO reqDto) {
-        BusinessInfoVO vo = reqDto.toVO();
-        businessInfoMapper.update(vo);
+    public void update(List<BusinessInfoDTO> reqDto) {
+        for(BusinessInfoDTO dto : reqDto){
+            BusinessInfoVO vo = dto.toVO();
+            businessInfoMapper.update(vo);
+        }
+
     }
 
     @Override

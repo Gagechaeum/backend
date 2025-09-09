@@ -26,16 +26,16 @@ public class BusinessInfoController {
     private final BusinessInfoService service;
 
     @PostMapping("/save")
-    public CustomResponse<Object> saveBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BusinessInfoRequestDTO reqDto) {
+    public CustomResponse<Object> saveBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody List<BusinessInfoRequestDTO> reqDto) {
         service.save(userDetails.getUserId(),reqDto);
         return CustomResponse.success(ResponseCode.SUCCESS, reqDto);
     }
 
-    @PutMapping("/update")
-    public CustomResponse<BusinessInfoDTO> updateBisInfo(@RequestBody BusinessInfoDTO reqDto) {
-        service.update(reqDto);
-        return CustomResponse.success(ResponseCode.SUCCESS, reqDto);
-    }
+//    @PutMapping("/update")
+//    public CustomResponse<Void> updateBisInfo(@RequestBody List<BusinessInfoDTO> reqDto) {
+//        service.update(reqDto);
+//        return CustomResponse.success(ResponseCode.SUCCESS);
+//    }
 
     @GetMapping("/select")
     public CustomResponse<List<BusinessInfoDTO>> selectBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
