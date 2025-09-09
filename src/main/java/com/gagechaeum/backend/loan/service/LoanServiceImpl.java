@@ -8,6 +8,7 @@ import com.gagechaeum.backend.loan.dto.response.LoanListResponseDto;
 import com.gagechaeum.backend.loan.dto.response.LoanRecommendationResponseDTO;
 import com.gagechaeum.backend.loan.dto.response.LoanSummaryDto;
 import com.gagechaeum.backend.loan.mapper.LoanMapper;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class LoanServiceImpl implements LoanService {
     public LoanDetailResponseDto getLoanDetails(Long loanId) {
         LoanDetailResponseDto responseDto = loanMapper.getLoanById(loanId);
         if (responseDto == null) {
-            throw new IllegalArgumentException("대출 상품이 존재하지 않습니다.");
+            throw new NoSuchElementException("대출 상품이 존재하지 않습니다.");
         }
         
         responseDto.setRateByCredit(loanMapper.getRatesByLoanId(loanId));

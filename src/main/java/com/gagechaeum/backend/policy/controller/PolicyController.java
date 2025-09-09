@@ -2,7 +2,9 @@ package com.gagechaeum.backend.policy.controller;
 
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
+import com.gagechaeum.backend.policy.dto.request.PolicyListRequestDto;
 import com.gagechaeum.backend.policy.dto.response.PolicyDocumentsResponseDTO;
+import com.gagechaeum.backend.policy.dto.response.PolicyListResponseDto;
 import com.gagechaeum.backend.policy.dto.response.PolicyRecommendationResponseDTO;
 import com.gagechaeum.backend.policy.service.PolicyService;
 import com.gagechaeum.backend.policy.service.PolicySyncService;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +28,14 @@ public class PolicyController {
     private final PolicyService policyService;
     private final PolicySyncService policySyncService;
 
+    @GetMapping("")
+    public CustomResponse<Object> getPolicyList(
+        @ModelAttribute PolicyListRequestDto requestDto
+    ) {
+        Object response = policyService.getPolicyList(requestDto);
+        return CustomResponse.success(ResponseCode.SUCCESS, response);
+    }
+    
     @GetMapping("/recommendation")
     public CustomResponse<PolicyRecommendationResponseDTO> recommendPolicies(
             @RequestParam(required = false) Long userId
