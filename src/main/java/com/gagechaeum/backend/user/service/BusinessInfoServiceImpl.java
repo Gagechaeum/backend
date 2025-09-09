@@ -54,7 +54,7 @@ public class BusinessInfoServiceImpl implements BusinessInfoService {
     }
 
     @Override
-    public List<BusinessInfoDTO> selectAll(Long userId) {
+    public List<BusinessInfoDTO> selectBisAll(Long userId) {
         List<BusinessInfoVO> bisVOs=businessInfoMapper.selectByUserId(userId);
 
         return bisVOs.stream()

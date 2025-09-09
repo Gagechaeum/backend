@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -37,9 +38,9 @@ public class BusinessInfoController {
     }
 
     @GetMapping("/select")
-    public CustomResponse<CustomUserDetails> selectBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        service.selectAll(userDetails.getUserId());
-        return CustomResponse.success(ResponseCode.SUCCESS, userDetails);
+    public CustomResponse<List<BusinessInfoDTO>> selectBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<BusinessInfoDTO> bisList= service.selectBisAll(userDetails.getUserId());
+        return CustomResponse.success(ResponseCode.SUCCESS, bisList);
     }
 
     @GetMapping("/delete")
