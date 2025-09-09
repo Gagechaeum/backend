@@ -10,7 +10,19 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ChatMapper {
-	List<ChatRoomSummaryDto> getChatRooms(@Param("type") String type);
+	int insert(
+		@Param("userId") Long userId,
+		@Param("roomId") Long roomId
+	);
+	
+	boolean existByUserIdAndRoomId(
+		@Param("userId") Long userId,
+		@Param("roomId") Long roomId
+	);
+	
+	List<ChatRoomSummaryDto> getChatRooms(
+		@Param("type") String type
+	);
 	
 	List<UserChatRoomSummaryDto> getUserChatRooms(
 		@Param("type") String type,
@@ -27,6 +39,16 @@ public interface ChatMapper {
 	
 	List<ChatHistoryMessageDto> getChatRoomHistoryByRoomId(
 		@Param("requestDto") ChatRoomHistoryRequestDto requestDto,
+		@Param("roomId") Long roomId
+	);
+	
+	int updateLastLeftAt(
+		@Param("userId") Long userId,
+		@Param("roomId") Long roomId
+	);
+	
+	int deleteByRoomIdAndUserId(
+		@Param("userId") Long userId,
 		@Param("roomId") Long roomId
 	);
 }
