@@ -10,7 +10,12 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ChatMapper {
-	int insertIfNotExists(
+	int insert(
+		@Param("userId") Long userId,
+		@Param("roomId") Long roomId
+	);
+	
+	boolean existByUserIdAndRoomId(
 		@Param("userId") Long userId,
 		@Param("roomId") Long roomId
 	);

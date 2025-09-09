@@ -5,12 +5,18 @@
 
 <mapper namespace="com.gagechaeum.backend.chat.mapper.ChatMapper">
 
-    <insert id="insertIfNotExists">
-        INSERT INTO user_chatrooms (user_id, room_id)
+    <insert id="insert">
+        INSERT INTO user_chat_rooms (user_id, room_id)
         VALUES (#{userId}, #{roomId})
         ON DUPLICATE KEY UPDATE
         user_id = user_id;
     </insert>
+
+  <select id="existByUserIdAndRoomId" resultType="boolean">
+    SELECT COUNT(*)
+    FROM user_chat_rooms
+    WHERE user_id = #{userId} AND room_id = #{roomId}
+  </select>
 
   <select id="getChatRooms" resultType="ChatRoomSummaryDto">
     SELECT
@@ -139,13 +145,13 @@
     </select>
 
     <update id="updateLastLeftAt">
-        UPDATE user_chatrooms
+        UPDATE user_chat_rooms
         SET last_left_at = NOW()
         WHERE user_id = #{userId} AND room_id = #{roomId};
     </update>
 
     <delete id="deleteByRoomIdAndUserId">
-        DELETE FROM user_chatrooms
+        DELETE FROM user_chat_rooms
         WHERE user_id = #{userId} AND room_id = #{roomId};
     </delete>
 

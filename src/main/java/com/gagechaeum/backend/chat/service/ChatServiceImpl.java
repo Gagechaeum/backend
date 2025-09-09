@@ -81,14 +81,16 @@ public class ChatServiceImpl implements ChatService {
 	
 	@Transactional
 	public void enterRoom(Long userId, Long roomId) {
-		chatMapper.insertIfNotExists(userId, roomId);
-		redisChatService.addChatRoomParticipant(userId, roomId);
+		if (!chatMapper.existByUserIdAndRoomId(userId, roomId)) {
+			chatMapper.insert(userId, roomId);
+		}
+		redisChatService.subscribeRoom(userId, roomId);
 	}
 	
 	@Transactional
 	public void leaveRoom(Long userId, Long roomId) {
 		chatMapper.deleteByRoomIdAndUserId(userId, roomId);
-		redisChatService.removeChatRoomParticipant(userId, roomId);
+		redisChatService.unsubscribeRoom(userId, roomId);
 	}
 	
 	public void leavePage(Long userId, Long roomId) {

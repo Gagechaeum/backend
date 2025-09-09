@@ -2,12 +2,31 @@ package com.gagechaeum.backend.common.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class RedisChatService {
 	private final StringRedisTemplate redis;
+	private final RedisMessageListenerContainer container;
+	private final MessageListenerAdapter listenerAdapter;
+	
+	// ===== 채팅방 입/퇴장 (enter/leave) =====
+	
+	public void subscribeRoom(Long userId, Long roomId) {
+		ChannelTopic topic = new ChannelTopic("chat:room:" + roomId);
+		container.addMessageListener(listenerAdapter, topic);
+		addChatRoomParticipant(userId, roomId);
+	}
+	
+	public void unsubscribeRoom(Long userId, Long roomId) {
+		ChannelTopic topic = new ChannelTopic("chat:room:" + roomId);
+		container.removeMessageListener(listenerAdapter, topic);
+		removeChatRoomParticipant(userId, roomId);
+	}
 	
 	// ===== 채팅 참여자 수 관리 (Set operations) =====
 	

@@ -69,8 +69,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     // Jackson - Json 처리
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.10'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.5'
 
     // DB
     implementation 'com.mysql:mysql-connector-j:8.1.0'
@@ -143,9 +143,7 @@ dependencies {
     // WebSocket
     implementation "org.springframework:spring-websocket:${springVersion}"
     implementation "org.springframework:spring-messaging:${springVersion}"
-    implementation "org.springframework:spring-context:${springVersion}"
     implementation "org.springframework:spring-webmvc:${springVersion}"
-    implementation 'io.projectreactor.netty:reactor-netty:1.1.4'
 
     // 기타
     implementation 'xerces:xercesImpl:2.12.2'
