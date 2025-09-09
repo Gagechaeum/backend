@@ -331,6 +331,7 @@ public class UserServiceImpl implements UserService {
 
         return UserInfoResponseDTO.builder()
                 .userId(user.getUserId())
+                .name(user.getTrueName())
                 .phone(user.getPhone())
                 .email(user.getUsername())
                 .nickname(user.getNickname())
