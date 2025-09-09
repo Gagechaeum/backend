@@ -5,6 +5,8 @@ import com.gagechaeum.backend.policy.dto.DocumentKeywordDTO;
 import com.gagechaeum.backend.policy.dto.response.PolicyDocumentsResponseDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -29,5 +31,5 @@ public interface PolicyMapper {
 
     int updatePoliciesFromTempTable();
 
-    void saveOrUpdateTempPolicyDetail(@Param("policyId") String policyId, @Param("rawText") String rawText);
+    void saveOrUpdateTempPolicyDetail(@Param("policyId") String policyId, @Param("rawText") String rawText, @Param("updatedAt") LocalDateTime updatedAt);
 }

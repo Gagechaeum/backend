@@ -1,4 +1,4 @@
-package com.gagechaeum.backend.policy.dto;
+package com.gagechaeum.backend.policy.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NewPolicyDetailDto {
+public class Gov24ApiDetailDto {
 
     @JsonProperty("서비스ID")
     private String serviceId;

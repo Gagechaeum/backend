@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class NewDocument {
+public class Document {
     private Long documentId;
     private String documentName;
     private String keywords;

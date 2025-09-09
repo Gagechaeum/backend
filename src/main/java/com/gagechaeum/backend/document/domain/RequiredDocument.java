@@ -4,13 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class NewRequiredDocument {
+public class RequiredDocument {
     private Long requiredDocumentId;
     private Long documentId;
     private String policyId;
 
     @Builder
-    public NewRequiredDocument(Long documentId, String policyId) {
+    public RequiredDocument(Long documentId, String policyId) {
         this.documentId = documentId;
         this.policyId = policyId;
     }
