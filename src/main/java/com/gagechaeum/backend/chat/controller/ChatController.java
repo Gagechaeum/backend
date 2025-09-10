@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
 	private final ChatService chatService;
 	
-	@PostMapping("/attachments")
+	@PostMapping(value = "/attachments", consumes = "multipart/form-data")
 	public CustomResponse<Object> uploadAttachments(
 		@ModelAttribute UploadAttachmentRequestDto requestDto,
 		@AuthenticationPrincipal CustomUserDetails user

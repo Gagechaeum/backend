@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.chat.service;
 
+import com.gagechaeum.backend.chat.dto.ChatHistoryMessageDto;
 import com.gagechaeum.backend.chat.dto.SendMessageRequestDto;
 import com.gagechaeum.backend.chat.dto.UploadAttachmentRequestDto;
 import com.gagechaeum.backend.chat.dto.ChatMessageDto;
@@ -8,6 +9,7 @@ import com.gagechaeum.backend.chat.dto.ChatRoomHistoryResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomListResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.dto.UploadAttachmentResponseDto;
+import com.gagechaeum.backend.chat.dto.UploadedAttachmentDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomListResponseDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.mapper.ChatMapper;
@@ -18,11 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -84,9 +88,25 @@ public class ChatServiceImpl implements ChatService {
 		ChatRoomHistoryRequestDto requestDto,
 		Long roomId
 	) {
-		return new ChatRoomHistoryResponseDto(
-			chatMapper.getChatRoomHistoryByRoomId(requestDto, roomId)
-		);
+		List<ChatHistoryMessageDto> messages =
+			chatMapper.getChatRoomHistoryByRoomId(requestDto, roomId);
+		
+		for (ChatHistoryMessageDto message : messages) {
+			if (message.getProfileImageKey() != null) {
+				message.setProfileImageKey(s3ClientUtil.getProfileUrl(message.getProfileImageKey()));
+			}
+			
+			if (message.getFiles() != null &&  !message.getFiles().isEmpty()) {
+				List<String> files = new ArrayList<>();
+				
+				for (String key : message.getFiles()) {
+					files.add(s3ClientUtil.getInlineFileUrl(key));
+				}
+				message.setFiles(files);
+			}
+		}
+		
+		return new ChatRoomHistoryResponseDto(messages);
 	}
 	
 	@Transactional
@@ -118,13 +138,20 @@ public class ChatServiceImpl implements ChatService {
 	}
 	
 	@Transactional
-	public UploadAttachmentResponseDto uploadAttachments(UploadAttachmentRequestDto requestDto, Long userId) {
+	public UploadAttachmentResponseDto uploadAttachments(
+		UploadAttachmentRequestDto requestDto,
+		Long userId
+	) {
+		if (requestDto.getFiles() == null || requestDto.getFiles().isEmpty()) {
+			return null;
+		}
+		
 		List<String> uploadedKeys = new ArrayList<>();
 		
 		for (MultipartFile attachment : requestDto.getFiles()) {
 			String key = "chatAttachments/" +
 				userId + "_" + requestDto.getRoomId() +
-				"_" + UUID.randomUUID();
+				"_" + UUID.randomUUID() + getFileExtension(attachment.getOriginalFilename());
 			
 			try {
 				s3ClientUtil.uploadFile(attachment, key);
@@ -134,5 +161,12 @@ public class ChatServiceImpl implements ChatService {
 			}
 		}
 		return new UploadAttachmentResponseDto(uploadedKeys);
+	}
+	
+	private String getFileExtension(String filename) {
+		if (StringUtils.hasText(filename) && filename.contains(".")) {
+			return filename.substring(filename.lastIndexOf("."));
+		}
+		return "";
 	}
 }

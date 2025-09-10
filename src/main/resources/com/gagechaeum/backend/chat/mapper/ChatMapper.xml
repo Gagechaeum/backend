@@ -150,7 +150,7 @@
             u.nickname,
             cm.content,
             cm.created_at,
-            ca.file_key,
+            ca.file_key
         FROM chat_messages cm
         LEFT JOIN users u ON cm.user_id = u.user_id
         LEFT JOIN chat_attachments ca ON cm.message_id = ca.message_id
