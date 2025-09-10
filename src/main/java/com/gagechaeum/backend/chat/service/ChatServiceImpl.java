@@ -1,21 +1,28 @@
 package com.gagechaeum.backend.chat.service;
 
+import com.gagechaeum.backend.chat.dto.UploadAttachmentRequestDto;
 import com.gagechaeum.backend.chat.dto.ChatMessageDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomListResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
+import com.gagechaeum.backend.chat.dto.UploadAttachmentResponseDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomListResponseDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomSummaryDto;
 import com.gagechaeum.backend.chat.mapper.ChatMapper;
 import com.gagechaeum.backend.common.redis.RedisChatService;
-import com.gagechaeum.backend.common.redis.RedisService;
+import com.gagechaeum.backend.common.util.S3ClientUtil;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -23,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatServiceImpl implements ChatService {
 	private final ChatMapper chatMapper;
 	private final RedisChatService redisChatService;
+	private final RedisTemplate<String, Object> redisTemplate;
+	private final S3ClientUtil s3ClientUtil;
 	
 	public ChatRoomListResponseDto getChatRooms(String type) {
 		List<ChatRoomSummaryDto> chatRooms = chatMapper.getChatRooms(type);
@@ -95,5 +104,36 @@ public class ChatServiceImpl implements ChatService {
 	
 	public void leavePage(Long userId, Long roomId) {
 		chatMapper.updateLastLeftAt(userId, roomId);
+	}
+	
+	@Transactional
+	public void sendMessage(Long userId, Long roomId, ChatMessageDto messageDto) {
+//		messageDto.setUserId(userId);
+//		messageDto.setSentAt(LocalDateTime.now());
+//		messageDto.setRoomId(roomId);
+//
+//		// redis 채널 경로
+//		redisTemplate.convertAndSend("chat:room:" + roomId, messageDto);
+//		chatMapper.insertMessage(messageDto);
+//		uploadAttachments(userId, roomId, messageDto.getFiles());
+	}
+	
+	@Transactional
+	public UploadAttachmentResponseDto uploadAttachments(UploadAttachmentRequestDto requestDto, Long userId) {
+		List<String> uploadedKeys = new ArrayList<>();
+		
+		for (MultipartFile attachment : requestDto.getFiles()) {
+			String key = "chatAttachments/" +
+				userId + "_" + requestDto.getRoomId() +
+				"_" + UUID.randomUUID();
+			
+			try {
+				s3ClientUtil.uploadFile(attachment, key);
+				uploadedKeys.add(key);
+			} catch (IOException e) {
+				throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.");
+			}
+		}
+		return new UploadAttachmentResponseDto(uploadedKeys);
 	}
 }

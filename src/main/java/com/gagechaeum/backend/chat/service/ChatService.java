@@ -1,12 +1,19 @@
 package com.gagechaeum.backend.chat.service;
 
+import com.gagechaeum.backend.chat.dto.ChatMessageDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomListResponseDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
+import com.gagechaeum.backend.chat.dto.UploadAttachmentRequestDto;
+import com.gagechaeum.backend.chat.dto.UploadAttachmentResponseDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomListResponseDto;
 
 public interface ChatService {
+	UploadAttachmentResponseDto uploadAttachments(
+		UploadAttachmentRequestDto requestDto,
+		Long userId
+	);
 	
 	ChatRoomListResponseDto getChatRooms(String type);
 	
@@ -26,4 +33,6 @@ public interface ChatService {
 	void leaveRoom(Long userId, Long roomId);
 
 	void leavePage(Long userId, Long roomId);
+	
+	void sendMessage(Long userId, Long roomId, ChatMessageDto messageDto);
 }
