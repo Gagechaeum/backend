@@ -49,4 +49,56 @@
         WHERE rd.loan_id = #{loanId}
     </select>
 
+    <resultMap id="itemsByDocumentPolicyMap" type="com.gagechaeum.backend.document.dto.response.ItemsByDocumentResponseDto">
+        <constructor>
+            <arg column="name" javaType="java.lang.String"/>
+            <arg column="type" javaType="java.lang.String"/>
+            <arg column="organization" javaType="java.lang.String"/>
+            <arg column="dDay" javaType="java.lang.Long"/>
+            <arg column="prepared" javaType="long"/>
+            <arg column="required" javaType="long"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="itemsByDocumentLoanMap" type="com.gagechaeum.backend.document.dto.response.ItemsByDocumentResponseDto">
+        <constructor>
+            <arg column="name" javaType="java.lang.String"/>
+            <arg column="type" javaType="java.lang.String"/>
+            <arg column="organization" javaType="java.lang.String"/>
+            <arg column="prepared" javaType="long"/>
+            <arg column="required" javaType="long"/>
+        </constructor>
+    </resultMap>
+
+    <select id="findPoliciesByDocumentId" resultMap="itemsByDocumentPolicyMap">
+        SELECT
+            p.policy_name AS name,
+            'POLICY' AS type,
+            p.supervising_organization_name AS organization,
+            DATEDIFF(p.end_date, CURDATE()) AS dDay,
+            (SELECT COUNT(DISTINCT rd.document_id)
+             FROM required_documents rd
+                      JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = #{userId}
+             WHERE rd.policy_id = p.policy_id) AS prepared,
+            (SELECT COUNT(*) FROM required_documents WHERE policy_id = p.policy_id) AS required
+        FROM policies p
+        JOIN required_documents rd ON p.policy_id = rd.policy_id
+        WHERE rd.document_id = #{documentId}
+    </select>
+
+    <select id="findLoansByDocumentId" resultMap="itemsByDocumentLoanMap">
+        SELECT
+            l.product_name AS name,
+            'LOAN' AS type,
+            l.company_name AS organization,
+            (SELECT COUNT(DISTINCT rd.document_id)
+             FROM required_documents rd
+                      JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = #{userId}
+             WHERE rd.loan_id = l.loan_id) AS prepared,
+            (SELECT COUNT(*) FROM required_documents WHERE loan_id = l.loan_id) AS required
+        FROM loans l
+        JOIN required_documents rd ON l.loan_id = rd.loan_id
+        WHERE rd.document_id = #{documentId}
+    </select>
+
 </mapper>
