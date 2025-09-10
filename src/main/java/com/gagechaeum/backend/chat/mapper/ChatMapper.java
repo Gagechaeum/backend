@@ -16,6 +16,9 @@ public interface ChatMapper {
 		@Param("userId") Long userId,
 		@Param("roomId") Long roomId
 	);
+
+	int createPolicyChatRoom(@Param("policyId") String policyId);
+
 	
 	int insertMessage(
 		@Param("messageDto") ChatMessageDto messageDto

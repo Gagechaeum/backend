@@ -12,6 +12,11 @@
           user_id = user_id;
     </insert>
 
+    <insert id="createPolicyChatRoom">
+        INSERT INTO chat_rooms (room_type, policy_id)
+        VALUES ('policy', #{policyId})
+    </insert>
+
   <insert
     id="insertMessage"
     parameterType="ChatMessageDto"
