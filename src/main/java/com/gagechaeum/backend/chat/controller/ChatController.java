@@ -1,13 +1,17 @@
 package com.gagechaeum.backend.chat.controller;
 
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
+import com.gagechaeum.backend.chat.dto.UploadAttachmentRequestDto;
 import com.gagechaeum.backend.chat.service.ChatService;
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ChatController {
 	private final ChatService chatService;
+	
+	@PostMapping(value = "/attachments", consumes = "multipart/form-data")
+	public CustomResponse<Object> uploadAttachments(
+		@ModelAttribute UploadAttachmentRequestDto requestDto,
+		@AuthenticationPrincipal CustomUserDetails user
+	) {
+		Object response = chatService.uploadAttachments(requestDto, user.getUserId());
+		return CustomResponse.success(ResponseCode.SUCCESS, response);
+	}
 	
 	@GetMapping("")
 	public CustomResponse<Object> getChatRooms(

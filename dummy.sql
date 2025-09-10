@@ -1984,7 +1984,8 @@ VALUES
 -- 사용자 서류
 INSERT INTO user_documents (user_document_id, user_id, document_id, document_name, issued_at, file_key)
 VALUES
-	(1, 1, 5, '사업자등록증명', '2025-05-10', 'userDocuments/1:5:사업자등록증명.pdf');
+	(1, 1, 5, '사업자등록증명', '2025-05-10', 'userDocuments/1-5-사업자등록증명.pdf'),
+	(2, 1, 2, '납세증명서', '2025-09-05', 'userDocuments/1-5-사업자등록증명.pdf');
 
 -- 사용자 채팅방
 -- 우리 프랜차이즈론

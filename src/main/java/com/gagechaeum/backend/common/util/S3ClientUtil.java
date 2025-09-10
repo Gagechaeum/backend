@@ -25,6 +25,7 @@ public class S3ClientUtil {
 	public void uploadFile(MultipartFile file, String key) throws IOException {
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(file.getSize());
+		metadata.setContentType(file.getContentType());
 		
 		s3Client.putObject(bucketName, key, file.getInputStream(), metadata);
 	}
@@ -65,6 +66,20 @@ public class S3ClientUtil {
 		ResponseHeaderOverrides headerOverrides = new ResponseHeaderOverrides();
 
 		// 파일이 브라우저에서 바로 열리도록 Content-Disposition을 "inline"으로 설정
+		headerOverrides.setContentDisposition("inline");
+
+		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, key)
+				.withMethod(HttpMethod.GET)
+				.withExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))
+				.withResponseHeaders(headerOverrides);
+
+		URL url = s3Client.generatePresignedUrl(request);
+		return url.toString();
+	}
+
+	// 인라인 파일 조회
+	public String getInlineFileUrl(String key) {
+		ResponseHeaderOverrides headerOverrides = new ResponseHeaderOverrides();
 		headerOverrides.setContentDisposition("inline");
 
 		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, key)

@@ -1,8 +1,10 @@
 package com.gagechaeum.backend.chat.mapper;
 
 import com.gagechaeum.backend.chat.dto.ChatHistoryMessageDto;
+import com.gagechaeum.backend.chat.dto.ChatMessageDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomSummaryDto;
+import com.gagechaeum.backend.chat.dto.UploadedAttachmentDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomSummaryDto;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,6 +17,15 @@ public interface ChatMapper {
 		@Param("roomId") Long roomId
 	);
 	
+	int insertMessage(
+		@Param("messageDto") ChatMessageDto messageDto
+	);
+	
+	int insertAttachments(
+		@Param("messageId") Long messageId,
+		@Param("attachments") List<UploadedAttachmentDto> attachments
+	);
+
 	boolean existByUserIdAndRoomId(
 		@Param("userId") Long userId,
 		@Param("roomId") Long roomId
