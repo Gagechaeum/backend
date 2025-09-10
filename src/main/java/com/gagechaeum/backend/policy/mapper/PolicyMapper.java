@@ -14,12 +14,14 @@ import java.util.List;
 @Mapper
 public interface PolicyMapper {
     List<PolicySummaryDto> getPolicyList(@Param("requestDto") PolicyListRequestDto requestDto);
-    
+
     List<Policy> findRecommendedPoliciesByUserId(@Param("userId") Long userId);
 
     void saveOrUpdatePolicy(Policy policy);
 
     Policy getPolicyById(@Param("policyId") String policyId);
+
+    List<Policy> findPoliciesForMatching();
 
     List<DocumentKeywordDTO> findAllDocumentsWithKeywords();
 
@@ -36,4 +38,6 @@ public interface PolicyMapper {
     int updatePoliciesFromTempTable();
 
     void saveOrUpdateTempPolicyDetail(@Param("policyId") String policyId, @Param("rawText") String rawText, @Param("updatedAt") LocalDateTime updatedAt);
+
+    void updatePolicyCategories(@Param("policyId") String policyId, @Param("regionId") Long regionId, @Param("industryId") Long industryId);
 }
