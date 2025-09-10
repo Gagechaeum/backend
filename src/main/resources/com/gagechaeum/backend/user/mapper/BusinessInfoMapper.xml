@@ -6,8 +6,8 @@
 <mapper namespace="com.gagechaeum.backend.user.mapper.BusinessInfoMapper">
 
     <insert id="save">
-        INSERT INTO business_info(user_id, region_id, industry_id, business_num, sales_scope, company_name, estd_date) VALUES
-            VALUES ( #{userId}, #{regionId},#{industryId},#{businessNum},#{salesSope},#{companyName},#{estd_date} )
+        INSERT INTO business_info(user_id, region_id, industry_id, business_num, sales_scope, company_name, estb_date)
+            VALUES ( #{userId}, #{regionId},#{industryId},#{businessNum},#{salesScope},#{companyName},#{estbDate} )
     </insert>
 
     <select id="selectByUserId" resultType="com.gagechaeum.backend.user.domain.BusinessInfoVO">

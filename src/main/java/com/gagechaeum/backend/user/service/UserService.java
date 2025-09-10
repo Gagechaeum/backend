@@ -21,6 +21,7 @@ public interface UserService {
     void updateNotification(Long id, Boolean notification);
     void updateUser(Long id, UpdateUserDTO req);
     UserInfoResponseDTO getUserInfo(CustomUserDetails user);
+    Boolean passwordVerify(CustomUserDetails user, String password);
 
     // 이메일 인증
     void requestEmailVerification(String email);

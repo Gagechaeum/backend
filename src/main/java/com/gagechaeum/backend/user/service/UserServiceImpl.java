@@ -331,6 +331,7 @@ public class UserServiceImpl implements UserService {
 
         return UserInfoResponseDTO.builder()
                 .userId(user.getUserId())
+                .name(user.getTrueName())
                 .phone(user.getPhone())
                 .email(user.getUsername())
                 .nickname(user.getNickname())
@@ -372,5 +373,13 @@ public class UserServiceImpl implements UserService {
             return filename.substring(filename.lastIndexOf("."));
         }
         return "";
+    }
+
+    public Boolean passwordVerify(CustomUserDetails userDetails, String password) {
+        if (userDetails == null) {
+            throw new UserNotFoundException();
+        }
+
+        return encoder.matches(password, userDetails.getPassword());
     }
 }

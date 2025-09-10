@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -25,21 +26,21 @@ public class BusinessInfoController {
     private final BusinessInfoService service;
 
     @PostMapping("/save")
-    public CustomResponse<Object> saveBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BusinessInfoRequestDTO reqDto) {
+    public CustomResponse<Object> saveBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody List<BusinessInfoRequestDTO> reqDto) {
         service.save(userDetails.getUserId(),reqDto);
         return CustomResponse.success(ResponseCode.SUCCESS, reqDto);
     }
 
-    @PutMapping("/update")
-    public CustomResponse<BusinessInfoDTO> updateBisInfo(@RequestBody BusinessInfoDTO reqDto) {
-        service.update(reqDto);
-        return CustomResponse.success(ResponseCode.SUCCESS, reqDto);
-    }
+//    @PutMapping("/update")
+//    public CustomResponse<Void> updateBisInfo(@RequestBody List<BusinessInfoDTO> reqDto) {
+//        service.update(reqDto);
+//        return CustomResponse.success(ResponseCode.SUCCESS);
+//    }
 
     @GetMapping("/select")
-    public CustomResponse<CustomUserDetails> selectBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        service.selectAll(userDetails.getUserId());
-        return CustomResponse.success(ResponseCode.SUCCESS, userDetails);
+    public CustomResponse<List<BusinessInfoDTO>> selectBisInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<BusinessInfoDTO> bisList= service.selectBisAll(userDetails.getUserId());
+        return CustomResponse.success(ResponseCode.SUCCESS, bisList);
     }
 
     @GetMapping("/delete")
