@@ -1,8 +1,7 @@
-
 USE gagechaeum_db;
--- --------------------------------------------------------
+
+-- 대출 상품
 -- 1. 국민은행 - KB 동반성장협약 상생대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -16,10 +15,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 1.04
          );
 
-
--- --------------------------------------------------------
 -- 2. 농협은행주식회사 - 채움 상생론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -33,10 +29,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 0.62, 0.62);
 
-
--- --------------------------------------------------------
 -- 3. 주식회사 케이뱅크 - 사장님 부동산담보대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -50,10 +43,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.20
          );
 
-
--- --------------------------------------------------------
 -- 4. 우리은행 - 우리CUBE론-X(우리자산신탁)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -67,10 +57,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.22
          );
 
-
--- --------------------------------------------------------
 -- 5. 우리은행 - 우리CUBE론-X(BIZ프라임)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -84,10 +71,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.30
          );
 
-
--- --------------------------------------------------------
 -- 6. 농협은행주식회사 - 이노메인비즈대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -101,10 +85,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 0.81, 0.81);
 
-
--- --------------------------------------------------------
 -- 7. 국민은행 - KB 우량산업단지기업 우대대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -118,10 +99,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.43
          );
 
-
--- --------------------------------------------------------
 -- 8. 한국스탠다드차타드은행 - 비즈니스모기지(Mortgage)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -135,10 +113,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.44
          );
 
-
--- --------------------------------------------------------
 -- 9. 국민은행 - KB 더드림(The Dream) 소호대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -152,10 +127,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.57
          );
 
-
--- --------------------------------------------------------
 -- 10. 국민은행 - KB 유망분야 성장기업 우대대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -169,10 +141,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.53, 2.51),
     (LAST_INSERT_ID(), '가산금리', NULL, 1.63, 2.57);
 
-
--- --------------------------------------------------------
 -- 11. 아이엠뱅크 - 무브온(Move-On) 특별대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -186,10 +155,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.51),
     (LAST_INSERT_ID(), '가산금리', 2.44, 2.40, 4.39);
 
-
--- --------------------------------------------------------
 -- 12. 신한은행 - 신한SOHO명품대출III(시설자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -203,10 +169,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.62
          );
 
-
--- --------------------------------------------------------
 -- 13. 국민은행 - KB 일사천리소호대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -220,10 +183,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.65
          );
 
-
--- --------------------------------------------------------
 -- 14. 신한은행 - 신한SOHO명품대출(시설자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -237,10 +197,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.28, 1.28);
 
-
--- --------------------------------------------------------
 -- 15. 국민은행 - 기업일반시설자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -254,10 +211,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.50, 2.50),
     (LAST_INSERT_ID(), '가산금리', 2.22, 1.68);
 
-
--- --------------------------------------------------------
 -- 16. 농협은행주식회사 - 채움 성공비즈니스대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -271,10 +225,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.55, 2.51, 2.51, 2.68),
     (LAST_INSERT_ID(), '가산금리', 1.12, 1.18, 1.82, 0.86);
 
-
--- --------------------------------------------------------
 -- 17. 아이엠뱅크 - 착한 건물주 특별대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -288,10 +239,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.67
          );
 
-
--- --------------------------------------------------------
 -- 18. 수협은행 - Sh특별출연협약보증대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -305,10 +253,7 @@ INSERT INTO rates (
              LAST_INSERT_ID(), '대출금리', 3.72
          );
 
-
--- --------------------------------------------------------
 -- 19. 우리은행 - 우리CUBE론-X(일반,산업단지)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -322,10 +267,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.54, 2.55, 2.52, 2.55),
     (LAST_INSERT_ID(), '가산금리', 1.59, 1.40, 1.75, 2.09);
 
-
--- --------------------------------------------------------
 -- 20. 농협은행주식회사 - 중소기업보증료지원대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -339,10 +281,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.50, 2.53),
     (LAST_INSERT_ID(), '가산금리', 1.27, 1.35, 0.92);
 
-
--- --------------------------------------------------------
 -- 21. 제주은행 - 전문직우대론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -356,10 +295,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.84, 2.81, 2.82, 4.03),
     (LAST_INSERT_ID(), '가산금리', 0.93, 0.88, 1.24, 0.00);
 
-
--- --------------------------------------------------------
 -- 22. 농협은행주식회사 - NH기업성장론_착한임대인우대(임대사업자 전용)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -373,10 +309,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.59, 2.59, 2.60, 2.65, 2.71),
     (LAST_INSERT_ID(), '가산금리', 1.20, 1.19, 1.20, 1.46, 1.45);
 
-
--- --------------------------------------------------------
 -- 23. 신한은행 - 신한SOHO명품대출(분할상환)(시설자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -387,10 +320,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.81);
 
-
--- --------------------------------------------------------
 -- 24. 농협은행주식회사 - NH기술평가우수기업대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -404,10 +334,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.54, 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.31, 1.25, 1.61, 1.42, 1.44);
 
-
--- --------------------------------------------------------
 -- 25. 아이엠뱅크 - 기업시설자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -421,10 +348,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 2.30, 2.30);
 
-
--- --------------------------------------------------------
 -- 26. 국민은행 - KB 투게더론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -438,10 +362,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.53),
     (LAST_INSERT_ID(), '가산금리', NULL, 2.31, 1.21);
 
-
--- --------------------------------------------------------
 -- 27. 경남은행 - 3D프린팅 연관기업 특례보증 대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -452,10 +373,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.87);
 
-
--- --------------------------------------------------------
 -- 28. 국민은행 - KB 모아드림론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -469,10 +387,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.50),
     (LAST_INSERT_ID(), '가산금리', 1.72, 1.88, 1.87);
 
-
--- --------------------------------------------------------
 -- 29. 국민은행 - 기업일반운전자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -486,10 +401,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.51, 2.50, 2.50),
     (LAST_INSERT_ID(), '가산금리', 2.35, 1.98, 2.30, 3.91, 3.26);
 
-
--- --------------------------------------------------------
 -- 30. 아이엠뱅크 - 기업운전자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -503,10 +415,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.52, 2.51, 2.51, 2.57, 2.55),
     (LAST_INSERT_ID(), '가산금리', 3.13, 2.62, 3.47, 4.86, 10.43, 10.45);
 
-
--- --------------------------------------------------------
 -- 31. 경남은행 - 무역금융
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -520,10 +429,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.55, 2.55),
     (LAST_INSERT_ID(), '가산금리', 2.31, 2.31);
 
-
--- --------------------------------------------------------
 -- 32. 국민은행 - KB 커머셜모기지론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -534,10 +440,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.93);
 
-
--- --------------------------------------------------------
 -- 33. 신한은행 - 신한 프랜차이즈론(분할상환)(시설자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -548,10 +451,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.93);
 
-
--- --------------------------------------------------------
 -- 34. 경남은행 - 하이테크자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -562,10 +462,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.94);
 
-
--- --------------------------------------------------------
 -- 35. 경남은행 - 위더스론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -576,10 +473,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.97);
 
-
--- --------------------------------------------------------
 -- 36. 국민은행 - ONE KB 기업 우대대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -590,10 +484,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.97);
 
-
--- --------------------------------------------------------
 -- 37. 아이엠뱅크 - Tech biz(테크비즈)론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -607,10 +498,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.51, 2.56),
     (LAST_INSERT_ID(), '가산금리', 2.65, 2.64, 2.67);
 
-
--- --------------------------------------------------------
 -- 38. 광주은행 - KJB SOLAR-LOAN
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -621,10 +509,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 3.98);
 
-
--- --------------------------------------------------------
 -- 39. 주식회사 하나은행 - 파워메디론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -638,10 +523,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.47, 1.47, 1.59);
 
-
--- --------------------------------------------------------
 -- 40. 신한은행 - 신한SOHO명품대출(운전자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -652,10 +534,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 4.00);
 
-
--- --------------------------------------------------------
 -- 41. 경남은행 - 중소기업 신용보증서 우대대출 업무매뉴얼
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -666,10 +545,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 4.01);
 
-
--- --------------------------------------------------------
 -- 42. 신한은행 - 신용보증재단 특례보증대출(재창업 소상공인지원)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -680,10 +556,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 4.01);
 
-
--- --------------------------------------------------------
 -- 43. 신한은행 - 신한 의(醫)사랑대출(운전자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -697,10 +570,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.57, 2.58, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.58, 1.53, 1.82);
 
-
--- --------------------------------------------------------
 -- 44. 우리은행 - 단기수요자금융
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -714,10 +584,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.50, 1.50);
 
-
--- --------------------------------------------------------
 -- 45. 주식회사 하나은행 - HANA 전문직 소호대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -731,10 +598,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.55, 2.55, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.47, 1.45, 1.78);
 
-
--- --------------------------------------------------------
 -- 46. 경남은행 - 토지분양자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -745,10 +609,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 4.03);
 
-
--- --------------------------------------------------------
 -- 47. 주식회사 하나은행 - 닥터클럽대출-플래티늄
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -762,10 +623,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.52, 1.52, 1.59);
 
-
--- --------------------------------------------------------
 -- 48. 농협은행주식회사 - NH농식품기업우대론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -779,10 +637,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.53, 2.52, 2.51, 2.52, 2.53, 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.52, 1.45, 1.64, 1.44, 2.38, 2.76, 2.74, 2.44);
 
-
--- --------------------------------------------------------
 -- 49. 농협은행주식회사 - NH기업성장론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -796,10 +651,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.55, 2.55, 2.54, 2.53, 2.53, 2.53, 2.51, 2.51, 2.57),
     (LAST_INSERT_ID(), '가산금리', 1.50, 1.42, 1.64, 1.84, 2.16, 1.94, 2.57, 2.37, 2.71);
 
-
--- --------------------------------------------------------
 -- 50. 국민은행 - KB 메디칼론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -813,10 +665,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51, 2.50, 2.51, 2.52),
     (LAST_INSERT_ID(), '가산금리', NULL, 1.55, 2.20, 1.90, 2.10);
 
-
--- --------------------------------------------------------
 -- 51. 한국투자저축은행 - 수입육담보대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -827,10 +676,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type)
 VALUES (LAST_INSERT_ID(), '대출금리');
 
-
--- --------------------------------------------------------
 -- 52. 신한은행 - 신한 동물병원대출(종합통장대출)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -841,10 +687,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type)
 VALUES (LAST_INSERT_ID(), '대출금리');
 
-
--- --------------------------------------------------------
 -- 53. 수협은행 - 고시원사업자대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -858,10 +701,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.43, 2.43),
     (LAST_INSERT_ID(), '가산금리', 1.67, 1.67);
 
-
--- --------------------------------------------------------
 -- 54. 수협은행 - 냉동수산물담보대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -872,10 +712,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type)
 VALUES (LAST_INSERT_ID(), '대출금리');
 
-
--- --------------------------------------------------------
 -- 55. 농협은행주식회사 - NH농식품그린성장론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -889,10 +726,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.52, 2.52, 2.53, 2.53, 2.51),
     (LAST_INSERT_ID(), '가산금리', 1.67, 1.64, 1.67, 2.02, 1.55, 1.99, 3.13);
 
-
--- --------------------------------------------------------
 -- 56. 수협은행 - MY편의점대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -902,10 +736,7 @@ INSERT INTO loans (
          );
 INSERT INTO rates (loan_id, rate_type)
 VALUES (LAST_INSERT_ID(), '대출금리');
-
--- --------------------------------------------------------
 -- 57. 우리은행 - 우리 프랜차이즈론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -916,10 +747,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.06);
 
-
--- --------------------------------------------------------
 -- 58. 제주은행 - 병원약국우대대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -933,10 +761,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.75, 2.74, 2.89),
     (LAST_INSERT_ID(), '가산금리', 2.31, 2.29, 2.51);
 
-
--- --------------------------------------------------------
 -- 59. 국민은행 - 상업어음할인
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -950,10 +775,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', NULL, 2.15);
 
-
--- --------------------------------------------------------
 -- 60. 국민은행 - KB메가셀러론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -967,10 +789,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.53, 2.51, 2.52),
     (LAST_INSERT_ID(), '가산금리', 2.63, 2.48, 2.67, 3.07, 3.14);
 
-
--- --------------------------------------------------------
 -- 61. 신한은행 - TOPS전문직우대론(종합통장대출)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -984,10 +803,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.54, 2.55, 2.51),
     (LAST_INSERT_ID(), '가산금리', 2.70, 2.81, 2.08);
 
-
--- --------------------------------------------------------
 -- 62. 아이엠뱅크 - 상업어음할인
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1001,10 +817,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.53, 2.50),
     (LAST_INSERT_ID(), '가산금리', 2.71, 2.42, 3.21);
 
-
--- --------------------------------------------------------
 -- 63. 현대커머셜㈜ - 현대자동차 신차 할부
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1015,10 +828,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.32);
 
-
--- --------------------------------------------------------
 -- 64. 수협은행 - 집단주택자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1029,10 +839,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.38);
 
-
--- --------------------------------------------------------
 -- 65. 하나캐피탈㈜ - 정상오토론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1043,10 +850,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.38);
 
-
--- --------------------------------------------------------
 -- 66. 아이엠뱅크 - 기업통장대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1060,10 +864,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51, 2.51, 2.51, 2.51, 2.52),
     (LAST_INSERT_ID(), '가산금리', 4.15, 3.67, 5.25, 9.42, 10.48, 10.48);
 
-
--- --------------------------------------------------------
 -- 67. 주식회사 카카오뱅크 - 개인사업자 신용대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1077,10 +878,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.52, 2.52, 2.51),
     (LAST_INSERT_ID(), '가산금리', 2.89, 2.72, 3.75, 4.09, 2.64);
 
-
--- --------------------------------------------------------
 -- 68. 엔에이치농협캐피탈㈜ - 할부수입상용1
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1091,10 +889,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.47);
 
-
--- --------------------------------------------------------
 -- 69. 현대커머셜㈜ - 현대자동차 신차 특장차 할부
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1105,10 +900,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.47);
 
-
--- --------------------------------------------------------
 -- 70. 대백저축은행 - 자영업자주택담보대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1119,10 +911,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.50);
 
-
--- --------------------------------------------------------
 -- 71. 흥국화재해상보험주식회사 - 2502흥국SOHO아파트대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1133,10 +922,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.50);
 
-
--- --------------------------------------------------------
 -- 72. 농협은행주식회사 - 기업구매자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1150,10 +936,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.53, 2.53),
     (LAST_INSERT_ID(), '가산금리', 2.46, 2.46);
 
-
--- --------------------------------------------------------
 -- 73. 엔에이치농협캐피탈㈜ - 사료구매자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1164,10 +947,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.53);
 
-
--- --------------------------------------------------------
 -- 74. ㈜아이엠캐피탈 - 장비대출_신차버스(일반)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1181,10 +961,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', NULL, NULL),
     (LAST_INSERT_ID(), '가산금리', NULL, NULL);
 
-
--- --------------------------------------------------------
 -- 75. 우리은행 - 세이프e-구매자금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1198,10 +975,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 3.03, 3.03);
 
-
--- --------------------------------------------------------
 -- 76. 신한은행 - 신한 프랜차이즈론(운전자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1215,10 +989,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.51, 2.57),
     (LAST_INSERT_ID(), '가산금리', 4.37, 4.40, 4.20);
 
-
--- --------------------------------------------------------
 -- 77. 엔에이치농협캐피탈㈜ - 수입상용론1
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1229,10 +1000,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.58);
 
-
--- --------------------------------------------------------
 -- 78. 산은캐피탈㈜ - 신차승용 오토론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1243,10 +1011,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.60);
 
-
--- --------------------------------------------------------
 -- 79. 우리은행 - 협력기업 상생대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1260,10 +1025,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.52),
     (LAST_INSERT_ID(), '가산금리', 3.08, 2.83, 3.79);
 
-
--- --------------------------------------------------------
 -- 80. 우리은행 - 파워브랜드 가맹점 창업대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1277,10 +1039,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 3.15, 3.15, 3.15);
 
-
--- --------------------------------------------------------
 -- 81. 엔에이치농협캐피탈㈜ - 할부수입상용2
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1291,10 +1050,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.67);
 
-
--- --------------------------------------------------------
 -- 82. 현대커머셜㈜ - 부동산PF
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1305,10 +1061,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.68);
 
-
--- --------------------------------------------------------
 -- 83. 엔에이치농협캐피탈㈜ - 수입상용론2
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1319,10 +1072,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.70);
 
-
--- --------------------------------------------------------
 -- 84. 청주저축은행 - 중도금대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1333,10 +1083,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.70);
 
-
--- --------------------------------------------------------
 -- 85. 엔에이치농협캐피탈㈜ - 국내상용론2
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1347,10 +1094,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.74);
 
-
--- --------------------------------------------------------
 -- 86. 우리은행 - 우리카드 가맹점 우대 대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1364,10 +1108,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.52, 2.52, 2.53),
     (LAST_INSERT_ID(), '가산금리', 3.25, 3.25, 3.20, 3.59);
 
-
--- --------------------------------------------------------
 -- 87. 롯데캐피탈㈜ - 운영자금/오토론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1381,10 +1122,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', NULL, NULL),
     (LAST_INSERT_ID(), '가산금리', NULL, NULL);
 
-
--- --------------------------------------------------------
 -- 88. 신한은행 - 신한 프랜차이즈론(분할상환)(운전자금)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1398,10 +1136,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.52, 2.51, 2.52, 2.52),
     (LAST_INSERT_ID(), '가산금리', 3.28, 4.18, 2.45, 4.20);
 
-
--- --------------------------------------------------------
 -- 89. 엔에이치농협캐피탈㈜ - 국내상용론1
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1412,10 +1147,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.80);
 
-
--- --------------------------------------------------------
 -- 90. 신한은행 - 신한 가맹점 사업자대출(분할상환)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1429,10 +1161,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.50, 2.50, 2.51),
     (LAST_INSERT_ID(), '가산금리', 3.31, 3.70, 2.91);
 
-
--- --------------------------------------------------------
 -- 91. 엔에이치농협캐피탈㈜ - 할부특장
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1443,10 +1172,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.83);
 
-
--- --------------------------------------------------------
 -- 92. ㈜아이엠캐피탈 - 장비대출_신차화물(중소형)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1457,10 +1183,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.85);
 
-
--- --------------------------------------------------------
 -- 93. 엔에이치농협캐피탈㈜ - 할부국내상용2
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1471,10 +1194,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.86);
 
-
--- --------------------------------------------------------
 -- 94. 농협은행주식회사 - NH e사장님 바로대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1488,10 +1208,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.53, 2.52, 2.52, 2.56, 2.56),
     (LAST_INSERT_ID(), '가산금리', 3.34, 3.24, 3.89, 3.32, 3.54);
 
-
--- --------------------------------------------------------
 -- 95. 토스뱅크 주식회사 - 사장님신용대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1505,10 +1222,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.51, 2.51, 2.51, 2.51),
     (LAST_INSERT_ID(), '가산금리', 3.36, 3.19, 3.92, 7.67);
 
-
--- --------------------------------------------------------
 -- 96. 현대커머셜㈜ - HD현대건설기계 신차 건설기계 어태치포함형 할부
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1519,10 +1233,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.88);
 
-
--- --------------------------------------------------------
 -- 97. 현대커머셜㈜ - HD현대건설기계 신차 건설기계 할부
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1533,10 +1244,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.88);
 
-
--- --------------------------------------------------------
 -- 98. 비엠더블유파이낸셜서비스코리아㈜ - 재고금융 B
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1547,10 +1255,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.90);
 
-
--- --------------------------------------------------------
 -- 99. 하나캐피탈㈜ - 중고차론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1561,10 +1266,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.90);
 
-
--- --------------------------------------------------------
 -- 100. 현대커머셜㈜ - HD현대건설기계 신차 건설기계 변동금리형 할부
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1575,10 +1277,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.90);
 
-
--- --------------------------------------------------------
 -- 101. SBI저축은행 - SBI주택대출(사업자)
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1589,10 +1288,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.90);
 
-
--- --------------------------------------------------------
 -- 102. 엔에이치농협캐피탈㈜ - 특장론2
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1603,10 +1299,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.91);
 
-
--- --------------------------------------------------------
 -- 103. 엔에이치농협캐피탈㈜ - 건설기계론
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1617,10 +1310,7 @@ INSERT INTO loans (
 INSERT INTO rates (loan_id, rate_type, average_rate)
 VALUES (LAST_INSERT_ID(), '대출금리', 5.94);
 
-
--- --------------------------------------------------------
 -- 104. 경남은행 - 가맹점우대대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1634,10 +1324,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', 2.54, 2.53, 2.54, 2.54),
     (LAST_INSERT_ID(), '가산금리', 3.42, 2.86, 4.46, 3.24);
 
-
--- --------------------------------------------------------
 -- 105. 케이비캐피탈㈜ - 수입신차
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1651,10 +1338,7 @@ VALUES
     (LAST_INSERT_ID(), '기준금리', NULL, 5.75, 2.17),
     (LAST_INSERT_ID(), '가산금리', NULL, NULL, NULL);
 
-
--- --------------------------------------------------------
 -- 106. 신한은행 - 신한 가맹점 사업자대출
--- --------------------------------------------------------
 INSERT INTO loans (
     industry_id, region_id, company_name, product_name, join_way, begin_date,
     end_date, product_page_url, min_limit, max_limit, basic_rate
@@ -1671,112 +1355,7 @@ VALUES
 
 -- 대출 더미데이터에 해당하는 채팅방 생성
 INSERT INTO chat_rooms (loan_id, room_type) VALUES
-	(1, 'loan'),
-	(2, 'loan'),
-	(3, 'loan'),
-	(4, 'loan'),
-	(5, 'loan'),
-	(6, 'loan'),
-	(7, 'loan'),
-	(8, 'loan'),
-	(9, 'loan'),
-	(10, 'loan'),
-	(11, 'loan'),
-	(12, 'loan'),
-	(13, 'loan'),
-	(14, 'loan'),
-	(15, 'loan'),
-	(16, 'loan'),
-	(17, 'loan'),
-	(18, 'loan'),
-	(19, 'loan'),
-	(20, 'loan'),
-	(21, 'loan'),
-	(22, 'loan'),
-	(23, 'loan'),
-	(24, 'loan'),
-	(25, 'loan'),
-	(26, 'loan'),
-	(27, 'loan'),
-	(28, 'loan'),
-	(29, 'loan'),
-	(30, 'loan'),
-	(31, 'loan'),
-	(32, 'loan'),
-	(33, 'loan'),
-	(34, 'loan'),
-	(35, 'loan'),
-	(36, 'loan'),
-	(37, 'loan'),
-	(38, 'loan'),
-	(39, 'loan'),
-	(40, 'loan'),
-	(41, 'loan'),
-	(42, 'loan'),
-	(43, 'loan'),
-	(44, 'loan'),
-	(45, 'loan'),
-	(46, 'loan'),
-	(47, 'loan'),
-	(48, 'loan'),
-	(49, 'loan'),
-	(50, 'loan'),
-	(51, 'loan'),
-	(52, 'loan'),
-	(53, 'loan'),
-	(54, 'loan'),
-	(55, 'loan'),
-	(56, 'loan'),
-	(57, 'loan'),
-	(58, 'loan'),
-	(59, 'loan'),
-	(60, 'loan'),
-	(61, 'loan'),
-	(62, 'loan'),
-	(63, 'loan'),
-	(64, 'loan'),
-	(65, 'loan'),
-	(66, 'loan'),
-	(67, 'loan'),
-	(68, 'loan'),
-	(69, 'loan'),
-	(70, 'loan'),
-	(71, 'loan'),
-	(72, 'loan'),
-	(73, 'loan'),
-	(74, 'loan'),
-	(75, 'loan'),
-	(76, 'loan'),
-	(77, 'loan'),
-	(78, 'loan'),
-	(79, 'loan'),
-	(80, 'loan'),
-	(81, 'loan'),
-	(82, 'loan'),
-	(83, 'loan'),
-	(84, 'loan'),
-	(85, 'loan'),
-	(86, 'loan'),
-	(87, 'loan'),
-	(88, 'loan'),
-	(89, 'loan'),
-	(90, 'loan'),
-	(91, 'loan'),
-	(92, 'loan'),
-	(93, 'loan'),
-	(94, 'loan'),
-	(95, 'loan'),
-	(96, 'loan'),
-	(97, 'loan'),
-	(98, 'loan'),
-	(99, 'loan'),
-	(100, 'loan'),
-	(101, 'loan'),
-	(102, 'loan'),
-	(103, 'loan'),
-	(104, 'loan'),
-	(105, 'loan'),
-	(106, 'loan');
+	(1, 'loan'), (2, 'loan'), (3, 'loan'), (4, 'loan'), (5, 'loan'), (6, 'loan'), (7, 'loan'), (8, 'loan'), (9, 'loan'), (10, 'loan'), (11, 'loan'), (12, 'loan'), (13, 'loan'), (14, 'loan'), (15, 'loan'), (16, 'loan'), (17, 'loan'), (18, 'loan'), (19, 'loan'), (20, 'loan'), (21, 'loan'), (22, 'loan'), (23, 'loan'), (24, 'loan'), (25, 'loan'), (26, 'loan'), (27, 'loan'), (28, 'loan'), (29, 'loan'), (30, 'loan'), (31, 'loan'), (32, 'loan'), (33, 'loan'), (34, 'loan'), (35, 'loan'), (36, 'loan'), (37, 'loan'), (38, 'loan'), (39, 'loan'), (40, 'loan'), (41, 'loan'), (42, 'loan'), (43, 'loan'), (44, 'loan'), (45, 'loan'), (46, 'loan'), (47, 'loan'), (48, 'loan'), (49, 'loan'), (50, 'loan'), (51, 'loan'), (52, 'loan'), (53, 'loan'), (54, 'loan'), (55, 'loan'), (56, 'loan'), (57, 'loan'), (58, 'loan'), (59, 'loan'), (60, 'loan'), (61, 'loan'), (62, 'loan'), (63, 'loan'), (64, 'loan'), (65, 'loan'), (66, 'loan'), (67, 'loan'), (68, 'loan'), (69, 'loan'), (70, 'loan'), (71, 'loan'), (72, 'loan'), (73, 'loan'), (74, 'loan'), (75, 'loan'), (76, 'loan'), (77, 'loan'), (78, 'loan'), (79, 'loan'), (80, 'loan'), (81, 'loan'), (82, 'loan'), (83, 'loan'), (84, 'loan'), (85, 'loan'), (86, 'loan'), (87, 'loan'), (88, 'loan'), (89, 'loan'), (90, 'loan'), (91, 'loan'), (92, 'loan'), (93, 'loan'), (94, 'loan'), (95, 'loan'), (96, 'loan'), (97, 'loan'), (98, 'loan'), (99, 'loan'), (100, 'loan'), (101, 'loan'), (102, 'loan'), (103, 'loan'), (104, 'loan'), (105, 'loan'), (106, 'loan');
 
 -- 대출 상품 필요 서류 더미 데이터
 
