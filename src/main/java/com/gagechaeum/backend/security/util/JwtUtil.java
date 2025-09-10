@@ -17,7 +17,7 @@ public class JwtUtil {
 
     private SecretKey secretKey;
 
-    private final long accessExp = 1000L * 60 * 60 * 24; // 1일
+    private final long accessExp = 1000L * 60 * 60 * 24 * 7; // 7일
     private final long refreshExp = 1000L * 60 * 60 * 24 * 7; // 7일
 
     private SecretKey getSecretKey() {

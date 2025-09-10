@@ -1,6 +1,6 @@
 package com.gagechaeum.backend.global.config;
 
-
+import com.gagechaeum.backend.chat.config.WebSocketConfig;
 import com.gagechaeum.backend.common.util.Constants;
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
@@ -13,17 +13,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-
 @Configuration
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { AppConfig.class, SecurityConfig.class, RedisConfig.class, MailConfig.class};
+        return new Class[] {
+            AppConfig.class,
+            SecurityConfig.class,
+            RedisConfig.class,
+            MailConfig.class
+        };
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { ServletConfig.class, SwaggerConfig.class };
+        return new Class[] { ServletConfig.class, SwaggerConfig.class, WebSocketConfig.class };
     }
 
     @Override

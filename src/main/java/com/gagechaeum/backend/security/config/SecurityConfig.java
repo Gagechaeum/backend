@@ -150,6 +150,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/chatrooms").permitAll()
                 .antMatchers("/api/me/email/verify/**").permitAll()
+                .antMatchers("/ws-stomp/**").permitAll() // JwtHandshakeInterceptor에서 보안 검사
 
                 // 그 외는 기본 차단(로그인 필요)
                 .anyRequest().authenticated()

@@ -35,16 +35,18 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 				if (jwtUtil.validateToken(token)) {
 					Long userId = jwtUtil.getIdFromToken(token);
 					attributes.put("userId", userId);
+					log.error("WS - Handshake에 성공했습니다. userID: {}", userId);
 					return true;
 				}
 			}
 		}
 		return false;
 	}
+	
 	@Override public void afterHandshake(
-		ServerHttpRequest r,
-		ServerHttpResponse s,
-		WebSocketHandler h,
-		Exception ex
+		ServerHttpRequest request,
+		ServerHttpResponse response,
+		WebSocketHandler wsHandler,
+		Exception exception
 	) {}
 }

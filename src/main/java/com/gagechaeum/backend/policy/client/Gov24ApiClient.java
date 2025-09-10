@@ -6,14 +6,12 @@ import com.gagechaeum.backend.policy.dto.external.Gov24ApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
@@ -22,13 +20,15 @@ public class Gov24ApiClient {
 
     private final RestTemplate restTemplate;
 
+    // 정책 목록 조회를 위한 URL
     @Value("${external.gov24.api.url}")
     private String apiUrl;
 
-    // 구비서류 API
+    // 정책 상세 정보 조회를 위한 URL
     @Value("${external.gov24.api.detailUrl}")
     private String detailApiUrl;
 
+    // 공통으로 사용되는 서비스 키
     @Value("${external.gov24.api.serviceKey}")
     private String serviceKey;
 
@@ -42,34 +42,25 @@ public class Gov24ApiClient {
                 .toUri();
 
         try {
+            log.info("Requesting Gov24 Policy List API: {}", uri);
             return restTemplate.getForObject(uri, Gov24ApiResponseDto.class);
         } catch (RestClientException e) {
+            log.error("Failed to fetch policies from Gov24 API", e);
             throw new ExternalApiException("Failed to fetch policies from Gov24 API", e);
         }
     }
 
-    @Async("taskExecutor")
-    public CompletableFuture<Gov24ApiDetailResponseDto> fetchPolicyDetails(String policyId) {
-        try {
-            Thread.sleep(1000);
+    public Gov24ApiDetailResponseDto fetchPolicyDetailsSync(String serviceId, int page, int perPage) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(detailApiUrl)
+                .queryParam("page", page)
+                .queryParam("perPage", perPage)
+                .queryParam("serviceKey", serviceKey)
+                .queryParam("serviceId", serviceId)
+                .build()
+                .encode()
+                .toUri();
 
-            RestTemplate localRestTemplate = new RestTemplate();
-
-            URI uri = UriComponentsBuilder
-                    .fromUriString(detailApiUrl)
-                    .queryParam("serviceKey", serviceKey)
-                    .queryParam("serviceId", policyId)
-                    .build(true)
-                    .toUri();
-
-            // 생성한 localRestTemplate을 사용하여 API를 호출합니다.
-            Gov24ApiDetailResponseDto result = localRestTemplate.getForObject(uri, Gov24ApiDetailResponseDto.class);
-
-            return CompletableFuture.completedFuture(result);
-
-        } catch (Exception e) {
-            log.error("!!! Gov24 API 호출 또는 처리 중 심각한 오류 발생 (policyId: {}): {}", policyId, e.getMessage(), e);
-            return CompletableFuture.failedFuture(e);
-        }
+        log.info("Requesting Gov24 Policy Detail API: {}", uri);
+        return restTemplate.getForObject(uri, Gov24ApiDetailResponseDto.class);
     }
 }

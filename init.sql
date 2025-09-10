@@ -90,7 +90,6 @@ CREATE TABLE policies (
 	contact	TEXT	NULL,
 	support_detail	TEXT	NOT NULL,
 	support_target	TEXT	NOT NULL,
-    required_documents_raw_text TEXT NULL COMMENT '외부 API에서 받은 원본 구비서류 텍스트',
 	CONSTRAINT fk_policies_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id),
 	CONSTRAINT fk_policies_region_id FOREIGN KEY (region_id)
@@ -787,3 +786,19 @@ INSERT INTO chat_rooms (industry_id, region_id, room_type) VALUES
 	(NULL, 47, 'region'),
 	(NULL, 48, 'region'),
 	(NULL, 50, 'region');
+
+-- 사용자
+INSERT INTO users (user_id, email, password, nickname, name, phone, created_at, social, social_id, notification, profile_image_key)
+VALUES (
+		   1,
+		   'test@example.com',
+		   '$2a$10$4DKsqy/vPc05zfqNSyy6Fe43KNk3Q6GeDatsjesWKjKyzsdUvt87i',
+		   'angela4',
+		   '사윤민',
+		   '010-1234-5678',
+		   NOW(),
+		   NULL,
+		   NULL,
+		   true,
+		   NULL
+	   );

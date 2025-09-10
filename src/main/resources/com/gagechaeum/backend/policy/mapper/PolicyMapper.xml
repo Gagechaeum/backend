@@ -8,6 +8,32 @@
         <result property="issuingUrl" column="issuingUrl"/>
     </resultMap>
 
+  <select
+    id="getPolicyList"
+    parameterType="PolicyListRequestDto"
+    resultType="PolicySummaryDto">
+      SELECT
+        p.policy_id,
+        p.industry_id,
+        p.region_id,
+        p.policy_name,
+        p.supervising_organization_name,
+        p.notice_date,
+        p.modification_date,
+        p.begin_date,
+        p.end_date,
+        COALESCE(pbc.bookmark_count, 0) AS bookmarkCount
+    FROM policies p
+    LEFT JOIN policy_bookmark_counts pbc ON p.policy_id = pbc.policy_id
+    <where>
+      <if test="requestDto.industryId != null">
+        p.industry_id = #{requestDto.industryId}
+      </if>
+    </where>
+    ORDER BY p.begin_date DESC
+      LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
+  </select>
+
     <select id="findRecommendedPoliciesByUserId" resultType="com.gagechaeum.backend.policy.domain.Policy">
         SELECT
             p.*,
@@ -30,10 +56,10 @@
     <insert id="saveOrUpdatePolicy" parameterType="com.gagechaeum.backend.policy.domain.Policy">
         INSERT INTO policies (
             policy_id, user_type, policy_field, policy_name, policy_summary, department_name, supervising_organization_name,
-            announcement_url, support_detail, selection_criteria, application_period, begin_date, end_date, notice_date, modification_date, application_method, contact, support_target, required_documents_raw_text
+            announcement_url, support_detail, selection_criteria, application_period, begin_date, end_date, notice_date, modification_date, application_method, contact, support_target
         ) VALUES (
                      #{policyId}, #{userType}, #{policyField}, #{policyName}, #{policySummary}, #{departmentName}, #{supervisingOrganizationName},
-                     #{announcementUrl}, #{supportDetail}, #{selectionCriteria}, #{applicationPeriod}, #{beginDate}, #{endDate}, #{noticeDate}, #{modificationDate}, #{applicationMethod}, #{contact}, #{supportTarget}, #{requiredDocumentsRawText}
+                     #{announcementUrl}, #{supportDetail}, #{selectionCriteria}, #{applicationPeriod}, #{beginDate}, #{endDate}, #{noticeDate}, #{modificationDate}, #{applicationMethod}, #{contact}, #{supportTarget}
                  )
             ON DUPLICATE KEY UPDATE
                                  user_type = VALUES(user_type),
@@ -51,8 +77,7 @@
                                  modification_date = VALUES(modification_date),
                                  application_method = VALUES(application_method),
                                  contact = VALUES(contact),
-                                 support_target = VALUES(support_target),
-                                 required_documents_raw_text = VALUES(required_documents_raw_text)
+                                 support_target = VALUES(support_target)
     </insert>
 
     <select id="findBookmarkCountsByPolicyIds" resultType="map">
@@ -136,14 +161,14 @@
     <update id="updatePoliciesFromTempTable">
         UPDATE policies p
             JOIN policy_details_temp t ON p.policy_id = t.policy_id
-            SET p.required_documents_raw_text = t.raw_text
-        WHERE p.required_documents_raw_text IS NULL OR p.required_documents_raw_text != t.raw_text;
     </update>
 
     <insert id="saveOrUpdateTempPolicyDetail">
-        INSERT INTO policy_details_temp (policy_id, raw_text)
-        VALUES (#{policyId}, #{rawText})
-            ON DUPLICATE KEY UPDATE raw_text = VALUES(raw_text);
+        INSERT INTO policy_details_temp (policy_id, raw_text, updated_at)
+        VALUES (#{policyId}, #{rawText}, #{updatedAt})
+            ON DUPLICATE KEY UPDATE
+                                 raw_text = VALUES(raw_text),
+                                 updated_at = VALUES(updated_at)
     </insert>
 
     <update id="updatePolicyCategories">
