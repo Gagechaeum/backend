@@ -72,13 +72,13 @@
         '대출' AS productType,
         l.product_name AS productName,
         l.company_name AS providerName,
-        NULL as policyId,
-        ulb.loan_id as loanId,
         (SELECT COUNT(DISTINCT rd.document_id)
         FROM required_documents rd
         JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = ulb.user_id
         WHERE rd.loan_id = ulb.loan_id) AS completedDocsCount,
-        (SELECT COUNT(*) FROM required_documents WHERE loan_id = ulb.loan_id) AS totalDocsCount
+        (SELECT COUNT(*) FROM required_documents WHERE loan_id = ulb.loan_id) AS totalDocsCount,
+        NULL as policyId,
+        ulb.loan_id as loanId
         FROM user_loan_bookmarks ulb
         JOIN loans l ON ulb.loan_id = l.loan_id
         WHERE ulb.user_id = #{userId}

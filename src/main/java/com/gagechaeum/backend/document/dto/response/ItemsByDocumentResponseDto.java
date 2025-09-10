@@ -22,12 +22,4 @@ public class ItemsByDocumentResponseDto {
         this.dDay = dDay;
         this.documentStatus = (prepared != null ? prepared : 0) + "/" + (required != null ? required : 0);
     }
-
-    public ItemsByDocumentResponseDto(String name, String type, String organization, Long prepared, Long required) {
-        this.name = name;
-        this.type = type;
-        this.organization = organization;
-        this.dDay = null;
-        this.documentStatus = (prepared != null ? prepared : 0) + "/" + (required != null ? required : 0);
-    }
 }
