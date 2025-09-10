@@ -286,7 +286,11 @@ CREATE TABLE required_documents (
 		ON DELETE CASCADE,
 	CONSTRAINT fk_required_documents_loan_id FOREIGN KEY (loan_id)
 		REFERENCES loans (loan_id)
-		ON DELETE CASCADE
+		ON DELETE CASCADE,
+
+    -- 중복 방지를 위한 UNIQUE 제약 조건
+    CONSTRAINT uc_document_policy UNIQUE (document_id, policy_id),
+    CONSTRAINT uc_document_loan UNIQUE (document_id, loan_id)
 );
 
 CREATE TABLE user_documents (

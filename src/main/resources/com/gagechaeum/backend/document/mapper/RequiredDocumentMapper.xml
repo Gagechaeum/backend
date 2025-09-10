@@ -4,7 +4,12 @@
 
     <insert id="save" parameterType="com.gagechaeum.backend.document.domain.RequiredDocument">
         INSERT INTO required_documents (document_id, policy_id)
-        VALUES (#{documentId}, #{policyId})
+        SELECT #{documentId}, #{policyId}
+            WHERE NOT EXISTS (
+        SELECT 1
+        FROM required_documents
+        WHERE document_id = #{documentId} AND policy_id = #{policyId}
+                )
     </insert>
 
 </mapper>
