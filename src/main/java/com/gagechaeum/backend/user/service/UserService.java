@@ -19,7 +19,7 @@ public interface UserService {
     void logout(String token);
     void withdrawal(String token);
     void updateNotification(Long id, Boolean notification);
-    void updateUser(Long id, UpdateUserDTO req);
+    void updateUser(CustomUserDetails userDetails, UpdateUserDTO req);
     UserInfoResponseDTO getUserInfo(CustomUserDetails user);
     Boolean passwordVerify(CustomUserDetails user, String password);
 
