@@ -12,10 +12,8 @@ VALUES (
            NOW(),
            NULL,
            NULL,
-           true,
-           'userProfileImage/default.png'
-       );
-
+           true
+        )
 -- 사업자
 INSERT INTO business_info (user_id, region_id, industry_id, business_num, sales_scope, company_name, estb_date)
 VALUES (
