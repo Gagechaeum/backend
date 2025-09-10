@@ -103,7 +103,6 @@ CREATE TABLE policy_details_temp
     raw_text   text                                null,
     updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
 )
-    comment '정책 상세 정보 임시 저장 테이블';
 
 
 CREATE TABLE policy_bookmark_counts (
@@ -287,7 +286,11 @@ CREATE TABLE required_documents (
 		ON DELETE CASCADE,
 	CONSTRAINT fk_required_documents_loan_id FOREIGN KEY (loan_id)
 		REFERENCES loans (loan_id)
-		ON DELETE CASCADE
+		ON DELETE CASCADE,
+
+    -- 중복 방지를 위한 UNIQUE 제약 조건
+    CONSTRAINT uc_document_policy UNIQUE (document_id, policy_id),
+    CONSTRAINT uc_document_loan UNIQUE (document_id, loan_id)
 );
 
 CREATE TABLE user_documents (
