@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.policy.service;
 
+import com.gagechaeum.backend.chat.service.ChatService;
 import com.gagechaeum.backend.common.util.DateParserUtil;
 import com.gagechaeum.backend.policy.client.Gov24ApiClient;
 import com.gagechaeum.backend.policy.domain.Policy;
@@ -27,6 +28,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     private final Gov24ApiClient gov24ApiClient;
     private final PolicyMapper policyMapper;
     private final PolicyMatchingService policyMatchingService;
+    private final ChatService chatService;
     private static final String TARGET_USER_TYPE = "소상공인";
     private static final String TARGET_SUPPORT_TYPE = "현금";
 
@@ -41,7 +43,6 @@ public class PolicySyncServiceImpl implements PolicySyncService {
         log.error("정책 기본 정보 동기화가 완료되었습니다.");
 
         log.error("새로 추가된 정책들에 대해 Java 기반 카테고리 매칭을 시작합니다.");
-        // 카테고리 매칭하는 policyMatchingService 호출
         policyMatchingService.matchAndSaveCategories();
     }
 
@@ -69,19 +70,30 @@ public class PolicySyncServiceImpl implements PolicySyncService {
                 if (!isSmallBusinessCashSupportPolicy(dto)) {
                     log.trace("소상공인 대상 현금 지원 정책이 아니므로 건너<binary data, 2 bytes>니다 (policyName: {}, userType: {}, supportType: {})",
                             dto.getServiceName(), dto.getUserType(), dto.getSupportContent());
-                    continue; // 조건에 맞지 않으면 다음 정책으로 넘어감
+                    continue;
                 }
 
 
                 Policy policy = mapDtoToDomain(dto);
                 LocalDateTime existingDate = existingMap.get(policy.getPolicyId());
-                boolean needsUpdate = (existingDate == null) ||
-                        (policy.getModificationDate() != null && existingDate != null &&
+                boolean isNewPolicy = (existingDate == null); // 신규 정책 여부 확인
+                boolean needsUpdate = isNewPolicy ||
+                        (policy.getModificationDate() != null &&
                                 policy.getModificationDate().isAfter(existingDate));
 
                 if (needsUpdate) {
                     policyMapper.saveOrUpdatePolicy(policy);
                     log.debug("소상공인 지원금 정책 정보 저장 완료 (policyId: {})", policy.getPolicyId());
+
+
+                    if (isNewPolicy) {
+                        try {
+                            chatService.createChatRoomForPolicy(policy);
+                            log.debug("신규 정책에 대한 채팅방 생성을 요청했습니다. (policyId: {})", policy.getPolicyId());
+                        } catch (Exception e) {
+                            log.error("정책 ID '{}'의 채팅방 생성 중 오류 발생", policy.getPolicyId(), e);
+                        }
+                    }
                 }
             }
             page++;
@@ -92,7 +104,6 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     private boolean isSmallBusinessCashSupportPolicy(Gov24ApiServiceDto dto) {
         boolean isTargetUser = dto.getUserType() != null && dto.getUserType().contains(TARGET_USER_TYPE);
         boolean isTargetSupport = TARGET_SUPPORT_TYPE.equals(dto.getSupportType());
-        // '소상공인'이면서 '현금' 지원 정책이어야 함 (AND 조건)
         return isTargetUser && isTargetSupport;
     }
 
