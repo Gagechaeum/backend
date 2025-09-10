@@ -4,8 +4,10 @@ import com.gagechaeum.backend.report.domain.PolicySearchResult;
 import com.gagechaeum.backend.report.domain.Repayment;
 import com.gagechaeum.backend.report.domain.UserLoan;
 import com.gagechaeum.backend.report.domain.UserPolicy;
+import com.gagechaeum.backend.report.dto.ReportAllItemResult;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -24,4 +26,13 @@ public interface ReportMapper {
     List<PolicySearchResult> searchPoliciesByName(@Param("keyword") String keyword);
 
     void insertUserPolicy(UserPolicy userPolicy);
+
+    // 사용자의 정책(Policy)과 대출(Loan) 정보를 합쳐서 페이징 조회
+    List<ReportAllItemResult> findCombinedItemsByUserId(
+            @Param("userId") Long userId,
+            @Param("pageable") Pageable pageable
+    );
+
+    // 사용자의 전체 정책(Policy)과 대출(Loan) 정보의 총 개수 조회
+    long countCombinedItemsByUserId(@Param("userId") Long userId);
 }

@@ -43,6 +43,20 @@
         <result property="policyName" column="policy_name"/>
     </resultMap>
 
+    <resultMap id="allItemResultMap" type="com.gagechaeum.backend.report.dto.ReportAllItemResult">
+        <result property="type" column="type"/>
+        <result property="itemId" column="item_id"/>
+        <result property="name" column="name"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="amount" column="amount"/>
+        <result property="amountLabel" column="amount_label"/>
+        <result property="repaymentMethod" column="repayment_method"/>
+        <result property="interestRate" column="interest_rate"/>
+        <result property="paymentDay" column="payment_day"/>
+        <result property="totalBenefitAmount" column="total_benefit_amount"/>
+    </resultMap>
+
 
     <!-- findUserPoliciesByUserId 쿼리 -->
     <select id="findUserPoliciesByUserId" parameterType="long" resultMap="userPolicyResultMap">
@@ -115,5 +129,58 @@
          INSERT INTO user_policies (user_id, policy_id, start_date, end_date, first_payment_date, monthly_amount, total_amount)
         VALUES (#{userId}, #{policyId}, #{startDate}, #{endDate}, #{firstPaymentDate}, #{monthlyAmount}, #{totalAmount})
     </insert>
+
+    <select id="findCombinedItemsByUserId" resultMap="allItemResultMap">
+        (SELECT
+             'POLICY' AS type,
+             up.user_policy_id AS item_id,
+             p.policy_name AS name,
+             up.start_date AS start_date,
+             up.end_date AS end_date,
+             up.monthly_amount AS amount,
+             '월' AS amount_label,
+             NULL AS repayment_method,
+             NULL AS interest_rate,
+             DAY(up.first_payment_date) AS payment_day,
+             up.total_amount AS total_benefit_amount
+         FROM
+             user_policies up
+             LEFT JOIN
+             policies p ON up.policy_id = p.policy_id
+         WHERE
+             up.user_id = #{userId})
+
+        UNION ALL
+
+        (SELECT
+             'LOAN' AS type,
+             ul.user_loan_id AS item_id,
+             ul.product_name AS name,
+             ul.issue_date AS start_date,
+             ul.expiry_date AS end_date,
+             ul.balance_amount AS amount,
+             '잔액' AS amount_label,
+             ul.repay_method AS repayment_method,
+             ul.last_offered_rate AS interest_rate,
+             NULL AS payment_day,
+             NULL AS total_benefit_amount
+         FROM
+             user_loans ul
+         WHERE
+             ul.user_id = #{userId})
+
+        ORDER BY
+            start_date DESC
+            LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
+    </select>
+
+    <select id="countCombinedItemsByUserId" resultType="long">
+        SELECT SUM(total_count)
+        FROM (
+                 (SELECT COUNT(*) as total_count FROM user_policies WHERE user_id = #{userId})
+                 UNION ALL
+                 (SELECT COUNT(*) as total_count FROM user_loans WHERE user_id = #{userId})
+             ) AS combined_counts
+    </select>
 
 </mapper>
