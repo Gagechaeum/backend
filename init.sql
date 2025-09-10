@@ -96,6 +96,15 @@ CREATE TABLE policies (
 		REFERENCES regions (region_id)
 );
 
+CREATE TABLE policy_details_temp
+(
+    policy_id  varchar(255)                        not null
+        primary key,
+    raw_text   text                                null,
+    updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
+)
+    comment '정책 상세 정보 임시 저장 테이블';
+
 CREATE TABLE policy_bookmark_counts (
 	policy_bookmark_count_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	policy_id	VARCHAR(255)	NOT NULL	COMMENT '공고의 서비스ID',
