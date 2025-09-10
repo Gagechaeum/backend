@@ -3,6 +3,7 @@ package com.gagechaeum.backend.bookmark.controller;
 import com.gagechaeum.backend.bookmark.dto.BookmarkListRequestDto;
 import com.gagechaeum.backend.bookmark.dto.request.BookmarkStatusUpdateRequestDTO;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO;
+import com.gagechaeum.backend.bookmark.dto.response.BookmarkProductResponseDto;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO;
 import com.gagechaeum.backend.bookmark.service.BookmarkService;
 import com.gagechaeum.backend.common.response.CustomResponse;
@@ -66,5 +67,14 @@ public class BookmarkController {
     ) {
         bookmarkService.updateBookmarkStatus(user.getUserId(), "loan", id, request.getStatus());
         return CustomResponse.success(ResponseCode.SUCCESS, null);
+    }
+
+    @GetMapping("/bookmarks/products")
+    public CustomResponse<List<BookmarkProductResponseDto>> getBookmarkedProducts(
+            @AuthenticationPrincipal CustomUserDetails user) {
+
+        Long userId = user.getUserId();
+        List<BookmarkProductResponseDto> data = bookmarkService.getBookmarkedProducts(userId);
+        return CustomResponse.success(ResponseCode.SUCCESS, data);
     }
 }

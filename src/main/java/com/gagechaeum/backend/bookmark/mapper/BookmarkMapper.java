@@ -4,6 +4,7 @@ import com.gagechaeum.backend.bookmark.dto.BookmarkItemDto;
 import com.gagechaeum.backend.bookmark.dto.BookmarkListRequestDto;
 import java.util.List;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO;
+import com.gagechaeum.backend.bookmark.dto.response.BookmarkProductResponseDto;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -42,4 +43,6 @@ public interface BookmarkMapper {
 
     // 대출 신청 상태 업데이트
     int updateUserLoanStatus(@Param("userId") Long userId, @Param("id") Long id, @Param("status") String status);
+
+	List<BookmarkProductResponseDto> findBookmarkedProducts(@Param("userId") Long userId);
 }
