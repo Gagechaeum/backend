@@ -2001,17 +2001,17 @@ VALUES (1, 9, '2025-09-05 14:30:00');
 
 -- 나머지 더미 유저 id 2~10
 INSERT INTO users (
-	user_id, email, password, nickname, name, created_at, notification, is_verified
+	user_id, email, password, nickname, name, created_at, notification, is_verified,profile_image_key
 ) VALUES
-	  (2, 'user2@example.com', 'dummy_password', '성공창업가', '김민준', NOW(), TRUE, TRUE),
-	  (3, 'user3@example.com', 'dummy_password', '대박사장님', '박서연', NOW(), TRUE, TRUE),
-	  (4, 'user4@example.com', 'dummy_password', '오늘도야근', '이도윤', NOW(), TRUE, TRUE),
-	  (5, 'user5@example.com', 'dummy_password', '돈세는날', '정하준', NOW(), TRUE, TRUE),
-	  (6, 'user6@example.com', 'dummy_password', '사업1년차', '최지호', NOW(), TRUE, TRUE),
-	  (7, 'user7@example.com', 'dummy_password', '스마트경영', '김시우', NOW(), TRUE, TRUE),
-	  (8, 'user8@example.com', 'dummy_password', '성장하는가게', '한예준', NOW(), TRUE, TRUE),
-	  (9, 'user9@example.com', 'dummy_password', '월매출천만', '강서준', NOW(), TRUE, TRUE),
-	  (10, 'user10@example.com', 'dummy_password', '폐업은안돼', '윤지환', NOW(), TRUE, TRUE);
+	  (2, 'user2@example.com', 'dummy_password', '성공창업가', '김민준', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (3, 'user3@example.com', 'dummy_password', '대박사장님', '박서연', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (4, 'user4@example.com', 'dummy_password', '오늘도야근', '이도윤', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (5, 'user5@example.com', 'dummy_password', '돈세는날', '정하준', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (6, 'user6@example.com', 'dummy_password', '사업1년차', '최지호', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (7, 'user7@example.com', 'dummy_password', '스마트경영', '김시우', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (8, 'user8@example.com', 'dummy_password', '성장하는가게', '한예준', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (9, 'user9@example.com', 'dummy_password', '월매출천만', '강서준', NOW(), TRUE, TRUE,'userProfileImage/default.png'),
+	  (10, 'user10@example.com', 'dummy_password', '폐업은안돼', '윤지환', NOW(), TRUE, TRUE,'userProfileImage/default.png');
 
 -- 우리 프랜차이즈론 메시지
 INSERT INTO chat_messages (room_id, user_id, content, created_at)

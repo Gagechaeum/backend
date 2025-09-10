@@ -18,7 +18,7 @@ CREATE TABLE users (
 	social_id	VARCHAR(255)	NULL	COMMENT '소셜 계정',
 	deleted_at	DATETIME	NULL,
 	notification	BOOLEAN	NOT NULL	DEFAULT true,
-	profile_image_key	VARCHAR(255)	NOT NULL ,
+	profile_image_key	VARCHAR(255)	NOT NULL,
   is_verified BOOLEAN NOT NULL DEFAULT false
 );
 
