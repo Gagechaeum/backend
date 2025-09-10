@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -44,9 +45,13 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         Long userId = user.getUserId();
         
         String key = "userDocuments/" +
-            userId + "-" +
-            requestDto.getDocumentId() + "-" +
+            userId + "_" +
+            requestDto.getDocumentId() + "_" +
             requestDto.getDocumentName() + ".pdf";
+        
+//        String key = "userDocuments/" +
+//            userId + "_" +
+//            UUID.randomUUID() + ".pdf";
         
         try {
             s3ClientUtil.uploadFile(requestDto.getFile(), key);
