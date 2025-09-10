@@ -44,8 +44,8 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         Long userId = user.getUserId();
         
         String key = "userDocuments/" +
-            userId + ":" +
-            requestDto.getDocumentId() + ":" +
+            userId + "-" +
+            requestDto.getDocumentId() + "-" +
             requestDto.getDocumentName() + ".pdf";
         
         try {
