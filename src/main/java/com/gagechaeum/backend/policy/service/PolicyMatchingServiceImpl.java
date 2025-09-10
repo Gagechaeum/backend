@@ -69,6 +69,7 @@ public class PolicyMatchingServiceImpl implements PolicyMatchingService {
         }
 
         List<Policy> policiesToMatch = policyMapper.findPoliciesForMatching();
+
         if (policiesToMatch.isEmpty()) {
             log.info("새롭게 매칭할 정책이 없습니다. 프로세스를 종료합니다.");
             return;
@@ -76,10 +77,9 @@ public class PolicyMatchingServiceImpl implements PolicyMatchingService {
 
         log.info("총 {}개의 정책에 대해 매칭을 시작합니다.", policiesToMatch.size());
         for (Policy policy : policiesToMatch) {
-            String policyText = buildPolicyTextForMatching(policy);
 
-            Long regionId = findRegionId(policyText);
-            Long industryId = findIndustryId(policyText);
+            Long regionId = findRegionId(policy);
+            Long industryId = findIndustryId(policy);
 
             // 미분류 지역은 전국으로 설정
             if (regionId == null) {
@@ -103,25 +103,38 @@ public class PolicyMatchingServiceImpl implements PolicyMatchingService {
         );
     }
 
-    private Long findRegionId(String policyText) {
+    private Long findRegionId(Policy policy) {
+        String organizationName = policy.getSupervisingOrganizationName();
+        if (organizationName == null || organizationName.isBlank()) {
+            return null;
+        }
+
         return regionCacheForMatching.stream()
-                .filter(region -> policyText.contains(region.getFullName()))
+                .filter(region -> organizationName.contains(region.getFullName()))
                 .map(Regions::getRegionId)
                 .findFirst()
                 .orElse(null);
     }
 
-    private Long findIndustryId(String policyText) {
+    private Long findIndustryId(Policy policy) {
+        // 업종 분석을 위해 더 많은 텍스트 정보를 조합
+        String policyTextForIndustry = String.join(" ",
+                policy.getPolicyName(),
+                policy.getSupportTarget(),
+                policy.getPolicySummary(),
+                policy.getSupportDetail()
+        );
 
         return industryCacheForMatching.stream()
-
                 .filter(industry -> {
-                    boolean nameMatches = policyText.contains(industry.getName());
+                    // 1. 업종 이름이 직접 포함되어 있는지 확인
+                    boolean nameMatches = policyTextForIndustry.contains(industry.getName());
                     if (nameMatches) return true;
 
+                    // 2. 업종 관련 키워드가 포함되어 있는지 확인
                     if (industry.getKeywords() != null && !industry.getKeywords().isBlank()) {
                         return Arrays.stream(industry.getKeywords().split(","))
-                                .anyMatch(keyword -> policyText.contains(keyword.trim()));
+                                .anyMatch(keyword -> policyTextForIndustry.contains(keyword.trim()));
                     }
                     return false;
                 })
