@@ -178,4 +178,51 @@
         WHERE user_id = #{userId} AND bookmark_loan_id = #{id}
     </update>
 
+    <select id="findBookmarkedProducts" resultType="com.gagechaeum.backend.bookmark.dto.response.BookmarkProductResponseDto">
+        SELECT
+            name,
+            type,
+            organization,
+            dDay,
+            prepared,
+            required
+        FROM (
+                 -- 정책 즐겨찾기 부분
+                 SELECT
+                     p.policy_name                   AS name,
+                     'POLICY'                        AS type,
+                     p.supervising_organization_name AS organization,
+                     DATEDIFF(p.end_date, CURDATE()) AS dDay,
+                     (SELECT COUNT(DISTINCT rd.document_id)
+                      FROM required_documents rd
+                               JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = upb.user_id
+                      WHERE rd.policy_id = upb.policy_id) AS prepared,
+                     (SELECT COUNT(*) FROM required_documents WHERE policy_id = upb.policy_id) AS required,
+                     upb.created_at                  AS bookmarked_at -- 정렬을 위한 컬럼
+                 FROM user_policy_bookmarks upb
+                          JOIN policies p ON upb.policy_id = p.policy_id
+                 WHERE upb.user_id = #{userId}
+
+                 UNION ALL
+
+                 -- 대출 즐겨찾기 부분
+                 SELECT
+                     l.product_name AS name,
+                     'LOAN'         AS type,
+                     l.company_name AS organization,
+                     NULL           AS dDay,
+                     (SELECT COUNT(DISTINCT rd.document_id)
+                      FROM required_documents rd
+                               JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = ulb.user_id
+                      WHERE rd.loan_id = ulb.loan_id) AS prepared,
+                     (SELECT COUNT(*) FROM required_documents WHERE loan_id = ulb.loan_id) AS required,
+                     ulb.created_at AS bookmarked_at
+                 FROM user_loan_bookmarks ulb
+                          JOIN loans l ON ulb.loan_id = l.loan_id
+                 WHERE ulb.user_id = #{userId}
+             ) AS combined_results
+
+        ORDER BY combined_results.bookmarked_at DESC
+    </select>
+
 </mapper>
