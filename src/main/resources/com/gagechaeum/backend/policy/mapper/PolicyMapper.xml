@@ -110,6 +110,18 @@
             keywords IS NOT NULL
     </select>
 
+    <select id="findPoliciesForMatching" resultType="com.gagechaeum.backend.policy.domain.Policy">
+        SELECT
+            policy_id,
+            policy_name,
+            supervising_organization_name,
+            support_target
+        FROM
+            policies
+        WHERE
+            region_id IS NULL OR industry_id IS NULL
+    </select>
+
     <delete id="deleteRequiredDocumentsByPolicyId" parameterType="string">
         DELETE FROM required_documents
         WHERE policy_id = #{policyId}
@@ -158,5 +170,14 @@
                                  raw_text = VALUES(raw_text),
                                  updated_at = VALUES(updated_at)
     </insert>
+
+    <update id="updatePolicyCategories">
+        UPDATE policies
+        SET
+            region_id = #{regionId},
+            industry_id = #{industryId}
+        WHERE
+            policy_id = #{policyId}
+    </update>
 
 </mapper>

@@ -8,8 +8,9 @@ import com.gagechaeum.backend.policy.dto.external.Gov24ApiServiceDto;
 import com.gagechaeum.backend.policy.mapper.PolicyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +26,8 @@ public class PolicySyncServiceImpl implements PolicySyncService {
 
     private final Gov24ApiClient gov24ApiClient;
     private final PolicyMapper policyMapper;
+    private final PolicyMatchingService policyMatchingService;
+
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
     @Override
@@ -32,6 +35,11 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     public void syncPolicies() {
         log.info("정책 기본 정보 동기화 호출됨");
         syncPoliciesFromGov24Api();
+        log.info("정책 기본 정보 동기화가 완료되었습니다.");
+
+        log.info("새로 추가된 정책들에 대해 Java 기반 카테고리 매칭을 시작합니다.");
+        // 카테고리 매칭하는 policyMatchingService 호출
+        policyMatchingService.matchAndSaveCategories();
     }
 
     private void syncPoliciesFromGov24Api() {

@@ -4,6 +4,7 @@ import com.gagechaeum.backend.bookmark.dto.BookmarkItemDto;
 import com.gagechaeum.backend.bookmark.dto.BookmarkListRequestDto;
 import com.gagechaeum.backend.bookmark.dto.BookmarkListResponseDto;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkDocumentsResponseDTO;
+import com.gagechaeum.backend.bookmark.dto.response.BookmarkProductResponseDto;
 import com.gagechaeum.backend.bookmark.dto.response.BookmarkResponseDTO;
 import com.gagechaeum.backend.bookmark.mapper.BookmarkMapper;
 import lombok.RequiredArgsConstructor;
@@ -86,8 +87,6 @@ public class BookmarkServiceImpl implements BookmarkService {
         return allBookmarks.subList(offset, Math.min(offset + limit, totalSize));
     }
 
-    // ✅ 네 코드에서 추가된 기능들
-
     @Override
     public List<BookmarkResponseDTO> findBookmarksByUserId(Long userId) {
         List<BookmarkResponseDTO> bookmarks = bookmarkMapper.findBookmarksByUserId(userId);
@@ -125,5 +124,10 @@ public class BookmarkServiceImpl implements BookmarkService {
         } else {
             throw new IllegalArgumentException("Invalid bookmark type: " + type);
         }
+    }
+
+    @Override
+    public List<BookmarkProductResponseDto> getBookmarkedProducts(Long userId) {
+        return bookmarkMapper.findBookmarkedProducts(userId);
     }
 }
