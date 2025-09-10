@@ -9,6 +9,7 @@ import com.gagechaeum.backend.policy.mapper.PolicyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,18 +34,19 @@ public class PolicySyncServiceImpl implements PolicySyncService {
 
     @Override
     @Async("taskExecutor")
+    @Scheduled(cron = "0 0 3 * * *")
     public void syncPolicies() {
-        log.info("정책 기본 정보 동기화 호출됨");
+        log.error("정책 기본 정보 동기화 호출됨");
         syncPoliciesFromGov24Api();
-        log.info("정책 기본 정보 동기화가 완료되었습니다.");
+        log.error("정책 기본 정보 동기화가 완료되었습니다.");
 
-        log.info("새로 추가된 정책들에 대해 Java 기반 카테고리 매칭을 시작합니다.");
+        log.error("새로 추가된 정책들에 대해 Java 기반 카테고리 매칭을 시작합니다.");
         // 카테고리 매칭하는 policyMatchingService 호출
         policyMatchingService.matchAndSaveCategories();
     }
 
     private void syncPoliciesFromGov24Api() {
-        log.info("외부 API 정책 데이터 동기화를 시작합니다.");
+        log.error("외부 API 정책 데이터 동기화를 시작합니다.");
         int page = 1;
         int perPage = 30;
 
@@ -57,11 +59,11 @@ public class PolicySyncServiceImpl implements PolicySyncService {
         do {
             Gov24ApiResponseDto apiResponse = gov24ApiClient.fetchPolicies(page, perPage);
             if (apiResponse == null || apiResponse.getData() == null || apiResponse.getData().isEmpty()) {
-                log.info("페이지 {}에서 더 이상 데이터가 없습니다. 동기화를 종료합니다.", page);
+                log.error("페이지 {}에서 더 이상 데이터가 없습니다. 동기화를 종료합니다.", page);
                 break;
             }
 
-            log.info("{} 페이지에서 {}개의 정책을 처리합니다.", page, apiResponse.getCurrentCount());
+            log.error("{} 페이지에서 {}개의 정책을 처리합니다.", page, apiResponse.getCurrentCount());
 
             for (Gov24ApiServiceDto dto : apiResponse.getData()) {
                 if (!isSmallBusinessCashSupportPolicy(dto)) {
@@ -84,7 +86,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
             }
             page++;
         } while (true);
-        log.info("정책 기본 정보 동기화가 완료되었습니다.");
+        log.error("정책 기본 정보 동기화가 완료되었습니다.");
     }
 
     private boolean isSmallBusinessCashSupportPolicy(Gov24ApiServiceDto dto) {
