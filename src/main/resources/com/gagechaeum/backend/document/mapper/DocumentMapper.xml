@@ -7,4 +7,46 @@
         FROM documents
     </select>
 
+    <resultMap id="productInfoMap" type="com.gagechaeum.backend.document.dto.ProductInfo">
+        <result property="name" column="name"/>
+        <result property="organization" column="organization"/>
+    </resultMap>
+
+    <resultMap id="documentStatusMap" type="com.gagechaeum.backend.document.dto.response.DocumentChecklistResponseDto$DocumentStatusDto">
+        <result property="documentName" column="documentName"/>
+        <result property="completed"    column="completed"/>
+    </resultMap>
+
+    <select id="findPolicyDetailsById" parameterType="java.lang.String" resultMap="productInfoMap">
+        SELECT policy_name as name, supervising_organization_name as organization
+        FROM policies
+        WHERE policy_id = #{policyId}
+    </select>
+
+    <select id="findLoanDetailsById" parameterType="long" resultMap="productInfoMap">
+        SELECT product_name as name, company_name as organization
+        FROM loans
+        WHERE loan_id = #{loanId}
+    </select>
+
+    <select id="findRequiredDocumentsWithStatusByPolicyId" resultMap="documentStatusMap">
+        SELECT
+            d.document_name AS documentName,
+            CASE WHEN ud.user_document_id IS NOT NULL THEN 1 ELSE 0 END AS completed
+        FROM required_documents rd
+                 JOIN documents d ON rd.document_id = d.document_id
+                 LEFT JOIN user_documents ud ON d.document_id = ud.document_id AND ud.user_id = #{userId}
+        WHERE rd.policy_id = #{policyId}
+    </select>
+
+    <select id="findRequiredDocumentsWithStatusByLoanId" resultMap="documentStatusMap">
+        SELECT
+            d.document_name AS documentName,
+            CASE WHEN ud.user_document_id IS NOT NULL THEN 1 ELSE 0 END AS completed
+        FROM required_documents rd
+                 JOIN documents d ON rd.document_id = d.document_id
+                 LEFT JOIN user_documents ud ON d.document_id = ud.document_id AND ud.user_id = #{userId}
+        WHERE rd.loan_id = #{loanId}
+    </select>
+
 </mapper>
