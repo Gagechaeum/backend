@@ -1,5 +1,6 @@
 package com.gagechaeum.backend.chat.service;
 
+import com.gagechaeum.backend.chat.dto.SendMessageRequestDto;
 import com.gagechaeum.backend.chat.dto.UploadAttachmentRequestDto;
 import com.gagechaeum.backend.chat.dto.ChatMessageDto;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
@@ -107,15 +108,13 @@ public class ChatServiceImpl implements ChatService {
 	}
 	
 	@Transactional
-	public void sendMessage(Long userId, Long roomId, ChatMessageDto messageDto) {
-//		messageDto.setUserId(userId);
-//		messageDto.setSentAt(LocalDateTime.now());
-//		messageDto.setRoomId(roomId);
-//
-//		// redis 채널 경로
-//		redisTemplate.convertAndSend("chat:room:" + roomId, messageDto);
-//		chatMapper.insertMessage(messageDto);
-//		uploadAttachments(userId, roomId, messageDto.getFiles());
+	public void sendMessage(SendMessageRequestDto requestDto, Long userId, Long roomId) {
+		ChatMessageDto chatMessageDto = new ChatMessageDto(requestDto, userId, roomId);
+		
+		// redis 채널 경로
+		redisTemplate.convertAndSend("chat:room:" + roomId, chatMessageDto);
+		chatMapper.insertMessage(chatMessageDto);
+		chatMapper.insertAttachments(chatMessageDto.getMessageId(), chatMessageDto.getFiles());
 	}
 	
 	@Transactional

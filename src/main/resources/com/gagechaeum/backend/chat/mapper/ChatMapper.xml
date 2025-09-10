@@ -9,8 +9,35 @@
         INSERT INTO user_chat_rooms (user_id, room_id)
         VALUES (#{userId}, #{roomId})
         ON DUPLICATE KEY UPDATE
-        user_id = user_id;
+          user_id = user_id;
     </insert>
+
+  <insert
+    id="insertMessage"
+    parameterType="ChatMessageDto"
+    useGeneratedKeys="true"
+    keyProperty="messageDto.messageId"
+  >
+    INSERT INTO chat_messages (room_id, user_id, content, created_at)
+    VALUES (
+            #{messageDto.roomId},
+            #{messageDto.userId},
+            #{messageDto.content},
+            #{messageDto.sentAt}
+           )
+  </insert>
+
+  <insert id="insertAttachments" parameterType="java.util.List">
+    INSERT INTO chat_attachments (message_id, file_key, file_name)
+    VALUES
+    <foreach collection="attachments" item="item" separator=",">
+        (
+             #{messageId},
+             #{item.key},
+             #{item.name}
+         )
+    </foreach>
+  </insert>
 
   <select id="existByUserIdAndRoomId" resultType="boolean">
     SELECT COUNT(*)
@@ -111,11 +138,8 @@
         <result property="nickname" column="nickname"/>
         <result property="message" column="content"/>
         <result property="sentAt" column="created_at"/>
-        <collection property="files" ofType="ChatAttachmentDto">
-            <result property="key" column="file_key"/>
-            <result property="extension" column="file_extension"/>
-            <result property="name" column="file_name"/>
-            <result property="size" column="file_size"/>
+        <collection property="files" ofType="String">
+          <result column="file_key"/>
         </collection>
     </resultMap>
 
@@ -127,9 +151,6 @@
             cm.content,
             cm.created_at,
             ca.file_key,
-            ca.file_name,
-            ca.file_extension,
-            ca.file_size
         FROM chat_messages cm
         LEFT JOIN users u ON cm.user_id = u.user_id
         LEFT JOIN chat_attachments ca ON cm.message_id = ca.message_id
