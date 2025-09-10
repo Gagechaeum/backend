@@ -45,43 +45,47 @@
         WHERE upb.user_id = #{userId}
     </select>
 
-    <!-- 정책 + 대출 즐겨찾기 현황 (UNION ALL) -->
+    <!-- 사용자가 즐겨찾기한 정책 및 대출 현황 조회 -->
     <select id="findBookmarksByUserId" parameterType="long" resultMap="BookmarkResultMap">
-        <!-- 사용자가 즐겨찾기한 정책 현황 조회 -->
+        -- 정책 즐겨찾기
         SELECT
-        CONCAT('policy_', upb.bookmark_policy_id) AS bookmarkId,
-        upb.status AS processStage,
-        '정책' AS productType,
-        p.policy_name AS productName,
-        p.supervising_organization_name AS providerName,
-        (SELECT COUNT(DISTINCT rd.document_id)
-        FROM required_documents rd
-        JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = upb.user_id
-        WHERE rd.policy_id = upb.policy_id) AS completedDocsCount,
-        (SELECT COUNT(*) FROM required_documents WHERE policy_id = upb.policy_id) AS totalDocsCount
+            CONCAT('policy_', upb.bookmark_policy_id) AS bookmarkId,
+            upb.status AS processStage,
+            '정책' AS productType,
+            p.policy_name AS productName,
+            p.supervising_organization_name AS providerName,
+            upb.policy_id AS policyId,
+            NULL AS loanId,
+            (SELECT COUNT(DISTINCT rd.document_id)
+             FROM required_documents rd
+                      JOIN user_documents ud ON rd.document_id = ud.document_id
+                 AND ud.user_id = upb.user_id
+             WHERE rd.policy_id = upb.policy_id) AS completedDocsCount,
+            (SELECT COUNT(*) FROM required_documents WHERE policy_id = upb.policy_id) AS totalDocsCount
         FROM user_policy_bookmarks upb
-        JOIN policies p ON upb.policy_id = p.policy_id
+                 JOIN policies p ON upb.policy_id = p.policy_id
         WHERE upb.user_id = #{userId}
 
         UNION ALL
 
-        <!-- 사용자가 즐겨찾기한 대출 현황 조회 -->
+        -- 대출 즐겨찾기
         SELECT
-        CONCAT('loan_', ulb.bookmark_loan_id) AS bookmarkId,
-        ulb.status AS processStage,
-        '대출' AS productType,
-        l.product_name AS productName,
-        l.company_name AS providerName,
-        (SELECT COUNT(DISTINCT rd.document_id)
-        FROM required_documents rd
-        JOIN user_documents ud ON rd.document_id = ud.document_id AND ud.user_id = ulb.user_id
-        WHERE rd.loan_id = ulb.loan_id) AS completedDocsCount,
-        (SELECT COUNT(*) FROM required_documents WHERE loan_id = ulb.loan_id) AS totalDocsCount,
-        NULL as policyId,
-        ulb.loan_id as loanId
+            CONCAT('loan_', ulb.bookmark_loan_id) AS bookmarkId,
+            ulb.status AS processStage,
+            '대출' AS productType,
+            l.product_name AS productName,
+            l.company_name AS providerName,
+            NULL AS policyId,
+            ulb.loan_id AS loanId,
+            (SELECT COUNT(DISTINCT rd.document_id)
+             FROM required_documents rd
+                      JOIN user_documents ud ON rd.document_id = ud.document_id
+                 AND ud.user_id = ulb.user_id
+             WHERE rd.loan_id = ulb.loan_id) AS completedDocsCount,
+            (SELECT COUNT(*) FROM required_documents WHERE loan_id = ulb.loan_id) AS totalDocsCount
         FROM user_loan_bookmarks ulb
-        JOIN loans l ON ulb.loan_id = l.loan_id
-        WHERE ulb.user_id = #{userId}
+                 JOIN loans l ON ulb.loan_id = l.loan_id
+        WHERE ulb.user_id = #{userId};
     </select>
 
     <!-- 정책 즐겨찾기 (페이징) -->
