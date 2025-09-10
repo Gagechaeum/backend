@@ -381,7 +381,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public Boolean passwordVerify(CustomUserDetails userDetails, String password) {
-
         if (userDetails == null) {
             throw new UserNotFoundException();
         }
