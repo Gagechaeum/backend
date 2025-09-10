@@ -8,6 +8,7 @@ import com.gagechaeum.backend.chat.dto.SendMessageRequestDto;
 import com.gagechaeum.backend.chat.dto.UploadAttachmentRequestDto;
 import com.gagechaeum.backend.chat.dto.UploadAttachmentResponseDto;
 import com.gagechaeum.backend.chat.dto.UserChatRoomListResponseDto;
+import com.gagechaeum.backend.policy.domain.Policy;
 
 public interface ChatService {
 	UploadAttachmentResponseDto uploadAttachments(
@@ -29,7 +30,9 @@ public interface ChatService {
 	);
 	
 	void enterRoom(Long userId, Long roomId);
-	
+
+	void createChatRoomForPolicy(Policy policy);
+
 	void leaveRoom(Long userId, Long roomId);
 
 	void leavePage(Long userId, Long roomId);

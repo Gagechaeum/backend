@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import com.gagechaeum.backend.policy.domain.Policy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -48,6 +50,21 @@ public class ChatServiceImpl implements ChatService {
 		});
 		
 		return new ChatRoomListResponseDto(chatRooms);
+	}
+
+	@Override
+	@Transactional
+	public void createChatRoomForPolicy(Policy policy) {
+		// 1. policyId로 이미 채팅방이 있는지 확인
+		ChatRoomSummaryDto existingRoom = chatMapper.getChatRoomDetailsByPolicyId(policy.getPolicyId());
+
+		// 2. 채팅방이 존재하지 않을 경우에만 새로 생성
+		if (existingRoom == null) {
+			chatMapper.createPolicyChatRoom(policy.getPolicyId());
+			log.info("신규 정책 채팅방 생성 완료. Policy ID: {}", policy.getPolicyId());
+		} else {
+			log.info("해당 정책의 채팅방이 이미 존재하여 생성을 건너뜁니다. Policy ID: {}", policy.getPolicyId());
+		}
 	}
 	
 	public UserChatRoomListResponseDto getUserChatRooms(String type, Long userId) {
