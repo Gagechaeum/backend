@@ -2244,3 +2244,16 @@ INSERT INTO loan_bookmark_counts (loan_id, industry_id, bookmark_count) VALUES
 
 INSERT INTO loan_bookmark_counts (loan_id, industry_id, bookmark_count) VALUES
 	(106, 7, 130), (106, 9, 110), (106, 19, 90), (106, 20, 100);
+
+-- policies 테이블의 begin_date와 end_date 업데이트
+UPDATE policies SET begin_date = '2025-03-14', end_date = '2025-04-02' WHERE policy_id = '142100000058';
+UPDATE policies SET begin_date = '2025-05-01', end_date = '2025-05-30' WHERE policy_id = '451000000125';
+UPDATE policies SET begin_date = '2024-06-01' WHERE policy_id = '496000000109';
+UPDATE policies SET begin_date = '2025-05-01', end_date = '2025-11-28' WHERE policy_id = '497000000128';
+UPDATE policies SET begin_date = '2025-05-13' WHERE policy_id = '497000000137';
+UPDATE policies SET begin_date = '2025-01-01', end_date = '2025-12-31' WHERE policy_id = '508000000690';
+UPDATE policies SET begin_date = '2025-02-01' WHERE policy_id = '629000000193';
+UPDATE policies SET begin_date = '2025-01-01', end_date = '2025-12-31' WHERE policy_id = '642000000735';
+UPDATE policies SET begin_date = '2025-02-01' WHERE policy_id = '648000001087';
+UPDATE policies SET begin_date = '2025-02-01', end_date = '2025-03-31' WHERE policy_id = 'B55307700024';
+UPDATE policies SET begin_date = '2025-07-10', end_date = '2025-07-31' WHERE policy_id = 'O00108000004';
