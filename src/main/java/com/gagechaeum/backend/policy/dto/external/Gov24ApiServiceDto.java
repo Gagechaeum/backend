@@ -55,4 +55,7 @@ public class Gov24ApiServiceDto {
 
     @JsonProperty("소관기관명")
     private String organizationName;
+
+    @JsonProperty("지원유형")
+    private String supportType;
 }

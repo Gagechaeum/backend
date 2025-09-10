@@ -19,4 +19,6 @@ public class BookmarkResponseDTO {
     private int progressPercentage;
     private int completedDocsCount;
     private int totalDocsCount;
+    private String policyId;
+    private Long loanId;
 }

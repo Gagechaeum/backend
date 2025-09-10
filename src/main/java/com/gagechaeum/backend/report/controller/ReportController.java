@@ -6,11 +6,12 @@ import com.gagechaeum.backend.report.dto.request.UserPolicyCreateRequestDTO;
 import com.gagechaeum.backend.report.dto.response.DashboardResponseDTO;
 import com.gagechaeum.backend.report.dto.response.PolicySearchResponseDTO;
 import com.gagechaeum.backend.report.service.ReportService;
-// import com.gagechaeum.backend.security.UserDetailsImpl;
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,11 +30,10 @@ public class ReportController {
 
     @PostMapping("/policies")
     public ResponseEntity<CustomResponse<Void>> createUserPolicy(
-            // @AuthenticationPrincipal UserDetailsImpl userDetails, // 주석 해제 후 사용
+            @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody UserPolicyCreateRequestDTO requestDTO
     ) {
-        // Long userId = userDetails.getUser().getId();
-        Long userId = 1L; // 테스트용 임시 사용자 ID
+        Long userId = user.getUserId();
         reportService.createUserPolicy(userId, requestDTO);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getHttpStatus())
@@ -42,10 +42,9 @@ public class ReportController {
 
     @GetMapping("/dashboard")
     public ResponseEntity<CustomResponse<DashboardResponseDTO>> getDashboardData(
-            // @AuthenticationPrincipal UserDetailsImpl userDetails // 주석 해제 후 사용
+            @AuthenticationPrincipal CustomUserDetails user
     ) {
-        // Long userId = userDetails.getUser().getId();
-        Long userId = 1L; // 테스트용 임시 사용자 ID
+        Long userId = user.getUserId();
         DashboardResponseDTO dashboardData = reportService.getDashboardData(userId);
 
         return ResponseEntity
@@ -55,10 +54,9 @@ public class ReportController {
 
     @GetMapping("/items")
     public CustomResponse<DashboardResponseDTO.AllItemsPage> getItems(
-            // @AuthenticationPrincipal UserDetailsImpl userDetails // 주석 해제 후 사용
+            @AuthenticationPrincipal CustomUserDetails user,
             @PageableDefault(size = 5) Pageable pageable) {
-        // Long userId = userDetails.getUser().getId();
-        Long userId = 1L; // 테스트용 임시 사용자 ID
+        Long userId = user.getUserId();
         DashboardResponseDTO.AllItemsPage items = reportService.getItems(userId, pageable);
         return CustomResponse.success(ResponseCode.SUCCESS, items);
     }

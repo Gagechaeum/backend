@@ -313,10 +313,15 @@ public class UserServiceImpl implements UserService {
         log.info("알림여부 변경완료 : {}", notification);
     }
 
-    public void updateUser(Long id, UpdateUserDTO req) {
+    public void updateUser(CustomUserDetails userDetails, UpdateUserDTO req) {
 
-        isNicknameExist(req.getNickname());
-        userMapper.updateUser(id, req);
+        String oldNickname=userDetails.getNickname();
+
+        if (!oldNickname.equals(req.getNickname())) {
+            isNicknameExist(req.getNickname());
+        }
+
+        userMapper.updateUser(userDetails.getUserId(), req);
         log.info("유저정보 변경완료 : {}", req.toString());
     }
 

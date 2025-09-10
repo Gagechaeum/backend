@@ -102,7 +102,7 @@ CREATE TABLE policy_details_temp
         primary key,
     raw_text   text                                null,
     updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
-)
+);
 
 
 CREATE TABLE policy_bookmark_counts (

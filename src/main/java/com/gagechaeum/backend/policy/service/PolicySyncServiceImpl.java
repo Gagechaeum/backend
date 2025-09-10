@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +26,8 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     private final Gov24ApiClient gov24ApiClient;
     private final PolicyMapper policyMapper;
     private final PolicyMatchingService policyMatchingService;
+    private static final String TARGET_USER_TYPE = "소상공인";
+    private static final String TARGET_SUPPORT_TYPE = "현금";
 
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
@@ -47,6 +48,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
         int page = 1;
         int perPage = 30;
 
+
         List<Policy> existingPolicies = policyMapper.findAllPolicyIdsWithModificationDate();
         Map<String, LocalDateTime> existingMap = existingPolicies.stream()
                 .filter(p -> p.getPolicyId() != null)
@@ -62,6 +64,13 @@ public class PolicySyncServiceImpl implements PolicySyncService {
             log.info("{} 페이지에서 {}개의 정책을 처리합니다.", page, apiResponse.getCurrentCount());
 
             for (Gov24ApiServiceDto dto : apiResponse.getData()) {
+                if (!isSmallBusinessCashSupportPolicy(dto)) {
+                    log.trace("소상공인 대상 현금 지원 정책이 아니므로 건너<binary data, 2 bytes>니다 (policyName: {}, userType: {}, supportType: {})",
+                            dto.getServiceName(), dto.getUserType(), dto.getSupportContent());
+                    continue; // 조건에 맞지 않으면 다음 정책으로 넘어감
+                }
+
+
                 Policy policy = mapDtoToDomain(dto);
                 LocalDateTime existingDate = existingMap.get(policy.getPolicyId());
                 boolean needsUpdate = (existingDate == null) ||
@@ -70,12 +79,19 @@ public class PolicySyncServiceImpl implements PolicySyncService {
 
                 if (needsUpdate) {
                     policyMapper.saveOrUpdatePolicy(policy);
-                    log.debug("정책 기본 정보 저장 완료 (policyId: {})", policy.getPolicyId());
+                    log.debug("소상공인 지원금 정책 정보 저장 완료 (policyId: {})", policy.getPolicyId());
                 }
             }
             page++;
         } while (true);
         log.info("정책 기본 정보 동기화가 완료되었습니다.");
+    }
+
+    private boolean isSmallBusinessCashSupportPolicy(Gov24ApiServiceDto dto) {
+        boolean isTargetUser = dto.getUserType() != null && dto.getUserType().contains(TARGET_USER_TYPE);
+        boolean isTargetSupport = TARGET_SUPPORT_TYPE.equals(dto.getSupportType());
+        // '소상공인'이면서 '현금' 지원 정책이어야 함 (AND 조건)
+        return isTargetUser && isTargetSupport;
     }
 
     private Policy mapDtoToDomain(Gov24ApiServiceDto dto) {
