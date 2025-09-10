@@ -134,7 +134,9 @@ public class ChatServiceImpl implements ChatService {
 		// redis 채널 경로
 		redisTemplate.convertAndSend("chat:room:" + roomId, chatMessageDto);
 		chatMapper.insertMessage(chatMessageDto);
-		chatMapper.insertAttachments(chatMessageDto.getMessageId(), chatMessageDto.getFiles());
+		if (chatMessageDto.getFiles() != null) {
+			chatMapper.insertAttachments(chatMessageDto.getMessageId(), chatMessageDto.getFiles());
+		}
 	}
 	
 	@Transactional
