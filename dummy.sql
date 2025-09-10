@@ -2037,7 +2037,7 @@ VALUES
 	(9, 10, '네, 서류 준비를 꼼꼼히 하셔야 해요.', '2025-09-05 14:55:00');
 
 -- 첨부파일 더미
-INSERT INTO chat_attachments (message_id, file_key, file_name, file_extension, file_size)
+INSERT INTO chat_attachments (message_id, file_key, file_name)
 VALUES
-	(4, 'dummy-key-1', 'image1', 'jpg', 102400),
-	(4, 'dummy-key-2', 'document1', 'pdf', 204800);
+	(4, 'dummy-key-1', 'image1'),
+	(4, 'dummy-key-2', 'document1');
