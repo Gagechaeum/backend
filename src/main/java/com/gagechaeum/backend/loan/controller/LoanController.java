@@ -9,12 +9,7 @@ import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -38,16 +33,16 @@ public class LoanController {
         LoanRecommendationResponseDTO response = loanService.getRecommendedLoans(userId);
         return CustomResponse.success(ResponseCode.SUCCESS, response);
     }
-    
+
+    @PostMapping ("/mydata")
+    public CustomResponse<Void> linkLoans(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        loanService.linkLoan(userDetails.getUserId());
+        return CustomResponse.success(ResponseCode.SUCCESS);
+    }
+
     @GetMapping("/{loan_id}")
     public CustomResponse<Object> getLoanDetails(@PathVariable("loan_id") Long loanId) {
         Object response = loanService.getLoanDetails(loanId);
         return CustomResponse.success(ResponseCode.SUCCESS, response);
-    }
-
-    @GetMapping("/mydata")
-    public CustomResponse<Void> linkLoans(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        loanService.linkLoan(userDetails.getUserId());
-        return CustomResponse.success(ResponseCode.SUCCESS);
     }
 }
