@@ -1617,10 +1617,10 @@ VALUES
 	(9, 10, '네, 서류 준비를 꼼꼼히 하셔야 해요.', '2025-09-05 14:55:00');
 
 -- 첨부파일 더미
-INSERT INTO chat_attachments (message_id, file_key, file_name)
+INSERT INTO chat_attachments (message_id, file_key, file_name, file_type)
 VALUES
-	(4, 'dummy-key-1', 'image1'),
-	(4, 'dummy-key-2', 'document1');
+	(4, 'dummy-key-1', 'image1', 'image/png'),
+	(4, 'dummy-key-2', 'document1', 'application/pdf');
 
 -- ------------ loan/policy_bookmark_count 더미 데이터 ------------
 
