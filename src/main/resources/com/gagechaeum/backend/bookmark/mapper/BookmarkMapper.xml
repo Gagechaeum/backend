@@ -233,12 +233,12 @@
 
     <insert id="insertPolicyBookmark">
         INSERT INTO user_policy_bookmarks (user_id, policy_id, status, created_at)
-        VALUES (#{userId}, #{policyId}, 'BOOKMARKED', NOW())
+        VALUES (#{userId}, #{policyId}, '요건확인', NOW())
     </insert>
 
     <insert id="insertLoanBookmark">
         INSERT INTO user_loan_bookmarks (user_id, loan_id, status, created_at)
-        VALUES (#{userId}, #{loanId}, 'BOOKMARKED', NOW())
+        VALUES (#{userId}, #{loanId}, '요건확인', NOW())
     </insert>
 
     <delete id="deletePolicyBookmark">
