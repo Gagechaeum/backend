@@ -40,4 +40,6 @@ public interface PolicyMapper {
     void saveOrUpdateTempPolicyDetail(@Param("policyId") String policyId, @Param("rawText") String rawText, @Param("updatedAt") LocalDateTime updatedAt);
 
     void updatePolicyCategories(@Param("policyId") String policyId, @Param("regionId") Long regionId, @Param("industryId") Long industryId);
+
+    List<Policy> findPoliciesMissingDetails(); // [추가]
 }

@@ -180,4 +180,11 @@
             policy_id = #{policyId}
     </update>
 
+    <select id="findPoliciesMissingDetails" resultType="com.gagechaeum.backend.policy.domain.Policy">
+        SELECT p.policy_id
+        FROM policies p
+                 LEFT JOIN policy_details_temp pdt ON p.policy_id = pdt.policy_id
+        WHERE pdt.policy_id IS NULL
+    </select>
+
 </mapper>

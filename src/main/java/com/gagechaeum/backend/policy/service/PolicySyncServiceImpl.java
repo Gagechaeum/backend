@@ -37,7 +37,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     private final PolicyMapper policyMapper;
     private final PolicyMatchingService policyMatchingService;
     private final ChatService chatService;
-
+    private final PolicyService policyService;
     private final DocumentMapper documentMapper;
     private final RequiredDocumentMapper requiredDocumentMapper;
 
@@ -51,12 +51,15 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     @Scheduled(cron = "0 0 3 * * *")
     @Transactional
     public void syncPolicies() {
-        log.error("정책 기본 정보 동기화 호출됨");
+
+        log.error("정책 기본 정보 동기화 호출됨 {}", LocalDateTime.now());
         syncPoliciesFromGov24Api();
         log.error("정책 기본 정보 동기화가 완료되었습니다.");
 
         log.error("새로 추가된 정책들에 대해 Java 기반 카테고리 매칭을 시작합니다.");
         policyMatchingService.matchAndSaveCategories();
+        log.error("정책 기본 정보 동기화 호출됨 {}", LocalDateTime.now());
+
     }
 
     private void syncPoliciesFromGov24Api() {

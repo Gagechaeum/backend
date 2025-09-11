@@ -48,14 +48,6 @@ CREATE TABLE business_info (
 	region_id	BIGINT	NOT NULL	COMMENT '법정동 코드',
 	industry_id	BIGINT	NOT NULL	COMMENT '업종 코드',
 	business_num	VARCHAR(255)	NOT NULL,
-	sales_scope	ENUM(
-			'SALES_SCOPE1',
-			'SALES_SCOPE2',
-			'SALES_SCOPE3',
-			'SALES_SCOPE4',
-			'SALES_SCOPE5'
-		)	NOT NULL,
-	company_name	VARCHAR(255)	NOT NULL,
     estb_date date not null comment '개업일자',
 	CONSTRAINT fk_business_info_user_id FOREIGN KEY (user_id)
 		REFERENCES users (user_id)
@@ -65,6 +57,8 @@ CREATE TABLE business_info (
 	CONSTRAINT fk_business_info_industry_id FOREIGN KEY (industry_id)
 		REFERENCES industry (industry_id)
 );
+
+
 
 
 -- 정책
