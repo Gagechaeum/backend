@@ -120,23 +120,23 @@
     <insert id="linkLoan">
         INSERT INTO user_loans (user_id, loan_id, collect_data, account_num, product_name, account_type, issue_date, expiry_date, last_offered_rate, repay_date, repay_method, repay_organization, repay_account_num, balance_amount, loan_principal, next_repay_date, loan_organization)
         VALUES (
-                   #{userId},
                    1,
+                   10,
                    NOW(),
-                   '123-456-789012',
-                   'KB 동반성장협약 상생대출',
-                   '신용대출',
-                   '2024-11-01',
-                   '2029-11-01',
-                   3.55,
-                   '2025-01-20',
-                   '원금균등분할상환',
+                   '222-333-101010',
+                   'KB 유망분야 성장기업 우대대출',
+                   '영업점',
+                   '2025-08-18',
+                   '2035-08-18',
+                   2.67,
+                   '2025-09-18',
+                   '원리금균등분할상환',
                    '국민은행',
-                   '987-654-321098',
-                   4800000,
-                   5000000,
-                   '2025-02-20',
-                   '하나은행'
+                   '222-333-101010',
+                   148000000,
+                   150000000,
+                   '2025-09-19',
+                   '국민은행'
                );
     </insert>
 
