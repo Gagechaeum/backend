@@ -10,8 +10,6 @@ public class BusinessInfoRequestDTO {
     Long regionId;
     Long industryId;
     String businessNum;
-    String salesScope;
-    String companyName;
     LocalDate estbDate;
 
     public BusinessInfoDTO toBusinessInfoDTO(Long userId) {
@@ -20,8 +18,6 @@ public class BusinessInfoRequestDTO {
                 .regionId(this.regionId)
                 .industryId(this.industryId)
                 .businessNum(this.businessNum)
-                .salesScope(this.salesScope)
-                .companyName(this.companyName)
                 .estbDate(this.estbDate)
                 .build();
     }

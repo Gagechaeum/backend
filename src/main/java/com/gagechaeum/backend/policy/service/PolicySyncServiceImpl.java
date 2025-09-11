@@ -2,8 +2,13 @@ package com.gagechaeum.backend.policy.service;
 
 import com.gagechaeum.backend.chat.service.ChatService;
 import com.gagechaeum.backend.common.util.DateParserUtil;
+import com.gagechaeum.backend.document.domain.Document;
+import com.gagechaeum.backend.document.domain.RequiredDocument;
+import com.gagechaeum.backend.document.mapper.DocumentMapper;
+import com.gagechaeum.backend.document.mapper.RequiredDocumentMapper;
 import com.gagechaeum.backend.policy.client.Gov24ApiClient;
 import com.gagechaeum.backend.policy.domain.Policy;
+import com.gagechaeum.backend.policy.dto.external.Gov24ApiDetailResponseDto;
 import com.gagechaeum.backend.policy.dto.external.Gov24ApiResponseDto;
 import com.gagechaeum.backend.policy.dto.external.Gov24ApiServiceDto;
 import com.gagechaeum.backend.policy.mapper.PolicyMapper;
@@ -12,10 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +37,10 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     private final PolicyMapper policyMapper;
     private final PolicyMatchingService policyMatchingService;
     private final ChatService chatService;
+    private final PolicyService policyService;
+    private final DocumentMapper documentMapper;
+    private final RequiredDocumentMapper requiredDocumentMapper;
+
     private static final String TARGET_USER_TYPE = "소상공인";
     private static final String TARGET_SUPPORT_TYPE = "현금";
 
@@ -37,13 +49,17 @@ public class PolicySyncServiceImpl implements PolicySyncService {
     @Override
     @Async("taskExecutor")
     @Scheduled(cron = "0 0 3 * * *")
+    @Transactional
     public void syncPolicies() {
-        log.error("정책 기본 정보 동기화 호출됨");
+
+        log.error("정책 기본 정보 동기화 호출됨 {}", LocalDateTime.now());
         syncPoliciesFromGov24Api();
         log.error("정책 기본 정보 동기화가 완료되었습니다.");
 
         log.error("새로 추가된 정책들에 대해 Java 기반 카테고리 매칭을 시작합니다.");
         policyMatchingService.matchAndSaveCategories();
+        log.error("정책 기본 정보 동기화 호출됨 {}", LocalDateTime.now());
+
     }
 
     private void syncPoliciesFromGov24Api() {
@@ -85,6 +101,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
                     policyMapper.saveOrUpdatePolicy(policy);
                     log.debug("소상공인 지원금 정책 정보 저장 완료 (policyId: {})", policy.getPolicyId());
 
+                    fetchAndSavePolicyDocuments(policy.getPolicyId());
 
                     if (isNewPolicy) {
                         try {
@@ -99,6 +116,53 @@ public class PolicySyncServiceImpl implements PolicySyncService {
             page++;
         } while (true);
         log.error("정책 기본 정보 동기화가 완료되었습니다.");
+    }
+
+    private void fetchAndSavePolicyDocuments(String serviceId) {
+        int page = 1;
+        final int perPage = 100;
+
+        List<Document> allDocuments = documentMapper.findAll();
+        Document etcDocument = allDocuments.stream()
+                .filter(doc -> "기타".equals(doc.getDocumentName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("'기타' 서류가 DB에 없습니다."));
+
+        while (true) {
+            Gov24ApiDetailResponseDto response = gov24ApiClient.fetchPolicyDetailsSync(serviceId, page, perPage);
+
+            if (response == null || response.getData() == null || response.getData().isEmpty()) {
+                break;
+            }
+
+            response.getData().forEach(detailDto -> {
+                String rawText = detailDto.getRequiredDocuments();
+                policyMapper.saveOrUpdateTempPolicyDetail(detailDto.getServiceId(), rawText, LocalDateTime.now());
+
+                if (!StringUtils.hasText(rawText) || "해당없음".equals(rawText)) {
+                    return;
+                }
+
+                Arrays.stream(rawText.split(","))
+                        .map(String::trim)
+                        .filter(StringUtils::hasText)
+                        .map(rawDocName -> allDocuments.stream()
+                                .filter(stdDoc -> StringUtils.hasText(stdDoc.getKeywords()) &&
+                                        Arrays.stream(stdDoc.getKeywords().split(","))
+                                                .anyMatch(keyword -> rawDocName.contains(keyword.trim())))
+                                .findFirst()
+                                .orElse(etcDocument))
+                        .distinct()
+                        .forEach(matchedDoc -> {
+                            RequiredDocument requiredDocument = RequiredDocument.builder()
+                                    .policyId(serviceId)
+                                    .documentId(matchedDoc.getDocumentId())
+                                    .build();
+                            requiredDocumentMapper.save(requiredDocument);
+                        });
+            });
+            page++;
+        }
     }
 
     private boolean isSmallBusinessCashSupportPolicy(Gov24ApiServiceDto dto) {

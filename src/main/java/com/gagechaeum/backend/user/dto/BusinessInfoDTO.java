@@ -19,8 +19,6 @@ public class BusinessInfoDTO {
     Long regionId;
     Long industryId;
     String businessNum;
-    String salesScope;
-    String companyName;
     LocalDate estbDate;
 
     public BusinessInfoVO toVO() {
@@ -30,8 +28,6 @@ public class BusinessInfoDTO {
         vo.setRegionId(this.regionId);
         vo.setIndustryId(this.industryId);
         vo.setBusinessNum(this.businessNum);
-        vo.setSalesScope(this.salesScope);
-        vo.setCompanyName(this.companyName);
         vo.setEstbDate(this.estbDate);
         return vo;
     }
@@ -43,8 +39,6 @@ public class BusinessInfoDTO {
                 .regionId(vo.getRegionId())
                 .industryId(vo.getIndustryId())
                 .businessNum(vo.getBusinessNum())
-                .salesScope(vo.getSalesScope())
-                .companyName(vo.getCompanyName())
                 .estbDate(vo.getEstbDate())
                 .build();
     }

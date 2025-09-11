@@ -14,7 +14,5 @@ public class BusinessInfoVO {
     Long regionId;
     Long industryId;
     String businessNum;
-    String salesScope;
-    String companyName;
     LocalDate estbDate;
 }

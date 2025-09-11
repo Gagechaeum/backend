@@ -44,8 +44,8 @@ public class BusinessInfoController {
     }
 
     @GetMapping("/delete")
-    public CustomResponse<Object> deleteBisInfo(BusinessInfoDTO reqDto) {
-        service.delete(reqDto.getBusinessInfoId());
+    public CustomResponse<Object> deleteBisInfo(@RequestParam Long businessInfoId) {
+        service.delete(businessInfoId);
         return CustomResponse.success(ResponseCode.SUCCESS);
     }
 
