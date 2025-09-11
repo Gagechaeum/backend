@@ -149,6 +149,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll()
                 .antMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/chatrooms").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/policies").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/loans").permitAll()
                 .antMatchers("/api/me/email/verify/**").permitAll()
                 .antMatchers("/ws-stomp/**").permitAll() // JwtHandshakeInterceptor에서 보안 검사
 
