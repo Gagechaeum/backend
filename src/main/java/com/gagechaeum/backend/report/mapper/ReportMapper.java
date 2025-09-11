@@ -35,4 +35,6 @@ public interface ReportMapper {
 
     // 사용자의 전체 정책(Policy)과 대출(Loan) 정보의 총 개수 조회
     long countCombinedItemsByUserId(@Param("userId") Long userId);
+
+    int linkRepayment(Long userId);
 }

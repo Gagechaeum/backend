@@ -15,4 +15,6 @@ public interface ReportService {
     List<PolicySearchResponseDTO> searchPolicies(String keyword);
 
     void createUserPolicy(Long userId, UserPolicyCreateRequestDTO requestDTO);
+
+    void linkRepayment(Long userId);
 }

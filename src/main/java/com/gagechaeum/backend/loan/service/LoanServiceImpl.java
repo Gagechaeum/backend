@@ -49,4 +49,9 @@ public class LoanServiceImpl implements LoanService {
         responseDto.setRateByCredit(loanMapper.getRatesByLoanId(loanId));
         return responseDto;
     }
+
+    @Override
+    public void linkLoan(Long userId) {
+        loanMapper.linkLoan(userId);
+    }
 }

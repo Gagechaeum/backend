@@ -68,4 +68,10 @@ public class ReportController {
         List<PolicySearchResponseDTO> response = reportService.searchPolicies(keyword);
         return CustomResponse.success(ResponseCode.SUCCESS, response);
     }
+
+    @GetMapping("/mydata")
+    public CustomResponse<Void> linkRepayment(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        reportService.linkRepayment(userDetails.getUserId());
+        return CustomResponse.success(ResponseCode.SUCCESS);
+    }
 }
