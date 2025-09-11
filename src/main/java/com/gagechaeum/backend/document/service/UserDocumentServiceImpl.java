@@ -54,7 +54,8 @@ public class UserDocumentServiceImpl implements UserDocumentService {
 //            UUID.randomUUID() + ".pdf";
         
         try {
-            s3ClientUtil.uploadFile(requestDto.getFile(), key);
+            
+            s3ClientUtil.uploadDocumentFile(requestDto.getFile(), key);
             
             UserDocument userDocument = UserDocument
                 .builder()

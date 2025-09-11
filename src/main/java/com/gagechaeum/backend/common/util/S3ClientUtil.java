@@ -30,6 +30,13 @@ public class S3ClientUtil {
 		s3Client.putObject(bucketName, key, file.getInputStream(), metadata);
 	}
 	
+	public void uploadDocumentFile(MultipartFile file, String key) throws IOException {
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(file.getSize());
+		
+		s3Client.putObject(bucketName, key, file.getInputStream(), metadata);
+	}
+	
 	// 파일 다운로드 url
 	public String getFileUrl(String key) {
 		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, key)
