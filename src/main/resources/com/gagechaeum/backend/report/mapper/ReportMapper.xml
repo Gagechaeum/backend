@@ -130,6 +130,25 @@
         VALUES (#{userId}, #{policyId}, #{startDate}, #{endDate}, #{firstPaymentDate}, #{monthlyAmount}, #{totalAmount})
     </insert>
 
+    <insert id="linkRepayment">
+        INSERT INTO repayments (user_loan_id, amount, status, paid_date, balance_amount, principal_amount, interest_amount, return_interest_amount, interest_start_date, interest_end_date, interest_rate, applied_interest_amount, interest_type)
+        VALUES (
+                   1,
+                   250000,
+                   '완납',
+                   '2025-01-20',
+                   4750000,
+                   200000,
+                   50000,
+                   0,
+                   '2024-12-21',
+                   '2025-01-20',
+                   3.55,
+                   50000,
+                   '정상이자'
+               );
+    </insert>
+
     <select id="findCombinedItemsByUserId" resultMap="allItemResultMap">
         (SELECT
              'POLICY' AS type,

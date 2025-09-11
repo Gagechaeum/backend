@@ -259,4 +259,9 @@ public class ReportServiceImpl implements ReportService {
                 .sorted(Comparator.comparing(DashboardResponseDTO.AllItem::getItemId))
                 .collect(Collectors.toList());
     }
+
+    @Override
+     public void linkRepayment(Long userId){
+        reportMapper.linkRepayment(userId);
+    };
 }

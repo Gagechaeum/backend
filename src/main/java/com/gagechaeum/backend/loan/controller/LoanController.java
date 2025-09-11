@@ -5,8 +5,10 @@ import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.loan.dto.request.LoanListRequestDto;
 import com.gagechaeum.backend.loan.dto.response.LoanRecommendationResponseDTO;
 import com.gagechaeum.backend.loan.service.LoanService;
+import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,5 +43,11 @@ public class LoanController {
     public CustomResponse<Object> getLoanDetails(@PathVariable("loan_id") Long loanId) {
         Object response = loanService.getLoanDetails(loanId);
         return CustomResponse.success(ResponseCode.SUCCESS, response);
+    }
+
+    @GetMapping("/mydata")
+    public CustomResponse<Void> linkLoans(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        loanService.linkLoan(userDetails.getUserId());
+        return CustomResponse.success(ResponseCode.SUCCESS);
     }
 }
