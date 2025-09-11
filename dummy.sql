@@ -2244,14 +2244,37 @@ INSERT INTO loan_bookmark_counts (loan_id, industry_id, bookmark_count) VALUES
 	(106, 7, 130), (106, 9, 110), (106, 19, 90), (106, 20, 100);
 
 -- policies 테이블의 begin_date와 end_date 업데이트
-UPDATE policies SET begin_date = '2025-03-14', end_date = '2025-04-02' WHERE policy_id = '142100000058';
-UPDATE policies SET begin_date = '2025-05-01', end_date = '2025-05-30' WHERE policy_id = '451000000125';
-UPDATE policies SET begin_date = '2024-06-01' WHERE policy_id = '496000000109';
-UPDATE policies SET begin_date = '2025-05-01', end_date = '2025-11-28' WHERE policy_id = '497000000128';
-UPDATE policies SET begin_date = '2025-05-13' WHERE policy_id = '497000000137';
-UPDATE policies SET begin_date = '2025-01-01', end_date = '2025-12-31' WHERE policy_id = '508000000690';
-UPDATE policies SET begin_date = '2025-02-01' WHERE policy_id = '629000000193';
-UPDATE policies SET begin_date = '2025-01-01', end_date = '2025-12-31' WHERE policy_id = '642000000735';
-UPDATE policies SET begin_date = '2025-02-01' WHERE policy_id = '648000001087';
-UPDATE policies SET begin_date = '2025-02-01', end_date = '2025-03-31' WHERE policy_id = 'B55307700024';
-UPDATE policies SET begin_date = '2025-07-10', end_date = '2025-07-31' WHERE policy_id = 'O00108000004';
+-- 9월 초~중순
+UPDATE policies SET begin_date = '2025-09-01', end_date = '2025-09-10' WHERE policy_id = '142100000058';
+UPDATE policies SET begin_date = '2025-09-03', end_date = '2025-09-12' WHERE policy_id = '451000000125';
+UPDATE policies SET begin_date = '2025-09-05' WHERE policy_id = '496000000109';
+
+-- 9월 중순
+UPDATE policies SET begin_date = '2025-09-07', end_date = '2025-09-20' WHERE policy_id = '497000000128';
+UPDATE policies SET begin_date = '2025-09-10' WHERE policy_id = '497000000137';
+UPDATE policies SET begin_date = '2025-09-11', end_date = '2025-09-25' WHERE policy_id = '508000000690';
+
+-- 9월 중후반
+UPDATE policies SET begin_date = '2025-09-13' WHERE policy_id = '629000000193';
+UPDATE policies SET begin_date = '2025-09-15', end_date = '2025-09-28' WHERE policy_id = '642000000735';
+UPDATE policies SET begin_date = '2025-09-17' WHERE policy_id = '648000001087';
+UPDATE policies SET begin_date = '2025-09-18', end_date = '2025-09-24' WHERE policy_id = 'B55307700024';
+
+-- 9월 말
+UPDATE policies SET begin_date = '2025-09-20', end_date = '2025-09-30' WHERE policy_id = 'O00108000004';
+
+
+INSERT INTO gagechaeum_db.user_policies
+(user_id, policy_id, start_date, end_date, first_payment_date, monthly_amount, total_amount)
+VALUES
+-- 9월 초반 일정
+(1, '142100000058', '2025-09-05', '2025-09-20', '2025-09-10', 100000, 300000),
+(1, '451000000125', '2025-09-07', '2025-09-21', '2025-09-12', 50000, 100000),
+
+-- 9월 중순 일정
+(1, '497000000128', '2025-09-10', '2025-09-25', '2025-09-15', 200000, 800000),
+(1, '497000000137', '2025-09-12', '2025-09-26', '2025-09-17', 150000, 600000),
+
+-- 9월 말까지 이어지는 일정
+(1, '508000000690', '2025-09-15', '2025-09-30', '2025-09-20', 300000, 1200000),
+(1, '642000000735', '2025-09-18', '2025-10-02', '2025-09-23', 70000, 280000);

@@ -18,7 +18,7 @@
             l.max_limit,
             l.basic_rate,
             <include refid="rateRangeSelect"/>,
-            COALESCE(lbc.bookmark_count, 0) AS bookmarkCount
+            SUM(COALESCE(lbc.bookmark_count, 0)) AS bookmarkCount
         FROM loans l
             LEFT JOIN rates r ON l.loan_id = r.loan_id
             LEFT JOIN loan_bookmark_counts lbc ON l.loan_id = lbc.loan_id
@@ -38,8 +38,7 @@
             l.end_date,
             l.min_limit,
             l.max_limit,
-            l.basic_rate,
-            lbc.bookmark_count
+            l.basic_rate
         ORDER BY l.begin_date DESC
             LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
     </select>
