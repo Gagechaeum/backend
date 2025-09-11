@@ -95,4 +95,22 @@ public class BookmarkController {
         bookmarkService.createLoanBookmark(user.getUserId(), loanId);
         return CustomResponse.success(ResponseCode.SUCCESS, null);
     }
+
+    @DeleteMapping("/policies/{policyId}/bookmark")
+    public CustomResponse<Void> deletePolicyBookmark(
+            @PathVariable String policyId,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        bookmarkService.deletePolicyBookmark(user.getUserId(), policyId);
+        return CustomResponse.success(ResponseCode.SUCCESS, null);
+    }
+
+    @DeleteMapping("/loans/{loanId}/bookmark")
+    public CustomResponse<Void> deleteLoanBookmark(
+            @PathVariable Long loanId,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        bookmarkService.deleteLoanBookmark(user.getUserId(), loanId);
+        return CustomResponse.success(ResponseCode.SUCCESS, null);
+    }
 }

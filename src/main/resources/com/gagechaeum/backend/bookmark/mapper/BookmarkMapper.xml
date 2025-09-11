@@ -241,4 +241,14 @@
         VALUES (#{userId}, #{loanId}, 'BOOKMARKED', NOW())
     </insert>
 
+    <delete id="deletePolicyBookmark">
+        DELETE FROM user_policy_bookmarks
+        WHERE user_id = #{userId} AND policy_id = #{policyId}
+    </delete>
+
+    <delete id="deleteLoanBookmark">
+        DELETE FROM user_loan_bookmarks
+        WHERE user_id = #{userId} AND loan_id = #{loanId}
+    </delete>
+
 </mapper>

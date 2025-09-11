@@ -24,4 +24,8 @@ public interface BookmarkService {
     void createPolicyBookmark(Long userId, String policyId);
 
     void createLoanBookmark(Long userId, Long loanId);
+
+    void deletePolicyBookmark(Long userId, String policyId);
+
+    void deleteLoanBookmark(Long userId, Long loanId);
 }

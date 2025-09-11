@@ -142,4 +142,16 @@ public class BookmarkServiceImpl implements BookmarkService {
     public void createLoanBookmark(Long userId, Long loanId) {
         bookmarkMapper.insertLoanBookmark(userId, loanId);
     }
+
+    @Override
+    @Transactional
+    public void deletePolicyBookmark(Long userId, String policyId) {
+        bookmarkMapper.deletePolicyBookmark(userId, policyId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteLoanBookmark(Long userId, Long loanId) {
+        bookmarkMapper.deleteLoanBookmark(userId, loanId);
+    }
 }

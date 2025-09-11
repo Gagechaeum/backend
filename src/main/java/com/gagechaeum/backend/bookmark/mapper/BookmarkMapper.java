@@ -49,4 +49,8 @@ public interface BookmarkMapper {
     void insertPolicyBookmark(@Param("userId") Long userId, @Param("policyId") String policyId);
 
     void insertLoanBookmark(@Param("userId") Long userId, @Param("loanId") Long loanId);
+
+    void deletePolicyBookmark(@Param("userId") Long userId, @Param("policyId") String policyId);
+
+    void deleteLoanBookmark(@Param("userId") Long userId, @Param("loanId") Long loanId);
 }
