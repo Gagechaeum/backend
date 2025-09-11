@@ -155,7 +155,7 @@ public class PolicySyncServiceImpl implements PolicySyncService {
                         .distinct()
                         .forEach(matchedDoc -> {
                             RequiredDocument requiredDocument = RequiredDocument.builder()
-                                    .policyId(serviceId) // [최종 수정] detailDto의 ID 대신 파라미터로 받은 ID 사용
+                                    .policyId(serviceId)
                                     .documentId(matchedDoc.getDocumentId())
                                     .build();
                             requiredDocumentMapper.save(requiredDocument);
