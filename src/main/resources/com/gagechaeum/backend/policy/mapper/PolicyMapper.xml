@@ -22,7 +22,7 @@
         p.modification_date,
         p.begin_date,
         p.end_date,
-        COALESCE(pbc.bookmark_count, 0) AS bookmarkCount
+        SUM(COALESCE(pbc.bookmark_count, 0)) AS bookmarkCount
     FROM policies p
     LEFT JOIN policy_bookmark_counts pbc ON p.policy_id = pbc.policy_id
     <where>
@@ -30,6 +30,7 @@
         p.industry_id = #{requestDto.industryId}
       </if>
     </where>
+    GROUP BY p.policy_id, p.industry_id, p.region_id, p.policy_name, p.supervising_organization_name, p.notice_date, p.modification_date, p.begin_date, p.end_date
     ORDER BY p.begin_date DESC
       LIMIT #{requestDto.size} OFFSET #{requestDto.offset}
   </select>
