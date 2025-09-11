@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
@@ -27,15 +29,17 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 	) {
 		if (request instanceof ServletServerHttpRequest servletRequest) {
 			HttpServletRequest httpServletRequest = servletRequest.getServletRequest();
-			String token = httpServletRequest.getHeader("Authorization");
+			String token = httpServletRequest.getParameter("token");
 			
-			if (token != null && token.startsWith("Bearer ")) {
-				token = token.substring(7);
-				
+			if (token != null) {
 				if (jwtUtil.validateToken(token)) {
 					Long userId = jwtUtil.getIdFromToken(token);
 					attributes.put("userId", userId);
-					log.error("WS - Handshake에 성공했습니다. userID: {}", userId);
+					
+					Authentication authentication = new UsernamePasswordAuthenticationToken(userId, null, null);
+					attributes.put("user", authentication);
+					
+					log.error("WS - 연결 성공. userID: {}", userId);
 					return true;
 				}
 			}
