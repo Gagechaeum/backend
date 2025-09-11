@@ -33,13 +33,14 @@
   </insert>
 
   <insert id="insertAttachments" parameterType="java.util.List">
-    INSERT INTO chat_attachments (message_id, file_key, file_name)
+    INSERT INTO chat_attachments (message_id, file_key, file_name, file_type)
     VALUES
     <foreach collection="attachments" item="item" separator=",">
         (
              #{messageId},
              #{item.key},
-             #{item.name}
+             #{item.name},
+             #{item.type}
          )
     </foreach>
   </insert>
@@ -158,6 +159,7 @@
             cm.content,
             cm.created_at,
             ca.file_key,
+            ca.file_name,
             ca.file_type
         FROM chat_messages cm
         LEFT JOIN users u ON cm.user_id = u.user_id

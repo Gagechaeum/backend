@@ -114,13 +114,11 @@ public class ChatServiceImpl implements ChatService {
 			}
 			
 			if (message.getFiles() != null &&  !message.getFiles().isEmpty()) {
-//				List<UploadedAttachmentDto> files = new ArrayList<>();
 				
 				for (UploadedAttachmentDto file : message.getFiles()) {
 					String key = file.getKey();
 					file.setKey(s3ClientUtil.getInlineFileUrl(key));
 				}
-//				message.setFiles(files);
 			}
 		}
 		
