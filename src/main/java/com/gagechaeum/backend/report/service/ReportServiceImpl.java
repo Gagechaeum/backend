@@ -11,6 +11,7 @@ import com.gagechaeum.backend.report.mapper.ReportMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -217,6 +218,7 @@ public class ReportServiceImpl implements ReportService {
                     return DashboardResponseDTO.AllItem.builder()
                             .type("POLICY")
                             .itemId(p.getUserPolicyId())
+                            .policyId(p.getPolicyId())
                             .name(p.getPolicyName())
                             .period(p.getStartDate().format(formatter) + " ~ " + p.getEndDate().format(formatter))
                             .amount(p.getMonthlyAmount())
