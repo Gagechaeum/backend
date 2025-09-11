@@ -3,10 +3,14 @@ package com.gagechaeum.backend.chat.controller;
 import com.gagechaeum.backend.chat.dto.ChatRoomHistoryRequestDto;
 import com.gagechaeum.backend.chat.dto.UploadAttachmentRequestDto;
 import com.gagechaeum.backend.chat.service.ChatService;
+import com.gagechaeum.backend.common.redis.RedisChatService;
 import com.gagechaeum.backend.common.response.CustomResponse;
 import com.gagechaeum.backend.common.response.ResponseCode;
 import com.gagechaeum.backend.security.account.domain.CustomUserDetails;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.cache.CacheProperties.Redis;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,12 +19,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api/chatrooms")
 @RequiredArgsConstructor
 public class ChatController {
 	private final ChatService chatService;
+	private final RedisChatService redisChatService;
+	
+	@PostMapping("/dummy")
+	public void addDummyParticipants() {
+		
+		Random random = new Random();
+		for (int i = 0; i < 141; i++) {
+			int finalParticipantCount = random.nextInt(100) + 1; // 1부터 100까지의 랜덤 값
+			
+			log.error("채팅방 {}에 더미 참여자 {}명 추가 시작 (랜덤)", i, finalParticipantCount);
+			for (int j = 1; j <= finalParticipantCount; j++) {
+				Long dummyUserId = Long.valueOf(i);
+				redisChatService.addChatRoomParticipant(dummyUserId, random.nextLong());
+			}
+			log.error("채팅방 {}에 더미 참여자 추가 완료", i);
+		}
+	}
 	
 	@PostMapping(value = "/attachments", consumes = "multipart/form-data")
 	public CustomResponse<Object> uploadAttachments(
