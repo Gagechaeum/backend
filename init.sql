@@ -349,6 +349,7 @@ CREATE TABLE chat_attachments (
 	message_id	BIGINT	NOT NULL,
 	file_key	VARCHAR(255)	NOT NULL,
 	file_name	VARCHAR(255)	NOT NULL,
+	file_type	VARCHAR(255)	NOT NULL,
 	CONSTRAINT fk_chat_attachments_message_id FOREIGN KEY (message_id)
 		REFERENCES chat_messages (message_id)
 		ON DELETE CASCADE
