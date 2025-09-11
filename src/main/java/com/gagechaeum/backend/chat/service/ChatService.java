@@ -16,6 +16,8 @@ public interface ChatService {
 		Long userId
 	);
 	
+	String getAttachmentUrl(Long attachmentId);
+	
 	ChatRoomListResponseDto getChatRooms(String type);
 	
 	UserChatRoomListResponseDto getUserChatRooms(String type, Long userId);

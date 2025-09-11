@@ -33,13 +33,14 @@
   </insert>
 
   <insert id="insertAttachments" parameterType="java.util.List">
-    INSERT INTO chat_attachments (message_id, file_key, file_name)
+    INSERT INTO chat_attachments (message_id, file_key, file_name, file_type)
     VALUES
     <foreach collection="attachments" item="item" separator=",">
         (
              #{messageId},
              #{item.key},
-             #{item.name}
+             #{item.name},
+             #{item.type}
          )
     </foreach>
   </insert>
@@ -48,6 +49,12 @@
     SELECT COUNT(*)
     FROM user_chat_rooms
     WHERE user_id = #{userId} AND room_id = #{roomId}
+  </select>
+
+  <select id="getAttachmentUrlById" resultType="String">
+    SELECT file_key
+    FROM chat_attachments
+    WHERE attachment_id = #{attachmentId}
   </select>
 
   <select id="getChatRooms" resultType="ChatRoomSummaryDto">
@@ -143,8 +150,11 @@
         <result property="nickname" column="nickname"/>
         <result property="message" column="content"/>
         <result property="sentAt" column="created_at"/>
-        <collection property="files" ofType="String">
-          <result column="file_key"/>
+        <collection property="files" ofType="UploadedAttachmentDto">
+          <id property="key" column="file_key"/>
+          <result property="attachmentId" column="attachment_id"/>
+          <result property="name" column="file_name"/>
+          <result property="type" column="file_type"/>
         </collection>
     </resultMap>
 
@@ -155,7 +165,10 @@
             u.nickname,
             cm.content,
             cm.created_at,
-            ca.file_key
+            ca.attachment_id,
+            ca.file_key,
+            ca.file_name,
+            ca.file_type
         FROM chat_messages cm
         LEFT JOIN users u ON cm.user_id = u.user_id
         LEFT JOIN chat_attachments ca ON cm.message_id = ca.message_id

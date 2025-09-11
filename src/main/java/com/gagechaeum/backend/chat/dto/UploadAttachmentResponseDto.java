@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UploadAttachmentResponseDto {
-	private List<String> keys;
+	private List<UploadedAttachmentDto> attachments;
 }

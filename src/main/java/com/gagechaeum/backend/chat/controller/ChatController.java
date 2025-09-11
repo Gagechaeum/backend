@@ -31,6 +31,14 @@ public class ChatController {
 		return CustomResponse.success(ResponseCode.SUCCESS, response);
 	}
 	
+	@GetMapping("/attachment/{attachment_id}")
+	public CustomResponse<Object> getAttachmentUrl(
+		@PathVariable("attachment_id") Long attachmentId
+	) {
+		Object response = chatService.getAttachmentUrl(attachmentId);
+		return CustomResponse.success(ResponseCode.SUCCESS, response);
+	}
+	
 	@GetMapping("")
 	public CustomResponse<Object> getChatRooms(
 		@RequestParam(value = "type", defaultValue = "all") String type

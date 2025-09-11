@@ -1477,14 +1477,12 @@ INSERT INTO required_documents (loan_id, document_id) VALUES
 	(72, 5), (72, 8), (72, 10); -- 우리은행 - 세이프e-구매자금대출
 
 -- 사업자(경상북도 경주시, 숙박 및 음식점업)
-INSERT INTO business_info (user_id, region_id, industry_id, business_num, sales_scope, company_name, estb_date)
+INSERT INTO business_info (user_id, region_id, industry_id, business_num, estb_date)
 VALUES (
 		   1,
 		   47210,
 		   9,
 		   '596-18-01709',
-		   'SALES_SCOPE1',
-		   '피자스쿨',
 		   '2021-12-22'
 	   );
 
@@ -1617,10 +1615,10 @@ VALUES
 	(9, 10, '네, 서류 준비를 꼼꼼히 하셔야 해요.', '2025-09-05 14:55:00');
 
 -- 첨부파일 더미
-INSERT INTO chat_attachments (message_id, file_key, file_name)
+INSERT INTO chat_attachments (message_id, file_key, file_name, file_type)
 VALUES
-	(4, 'dummy-key-1', 'image1'),
-	(4, 'dummy-key-2', 'document1');
+	(4, 'dummy-key-1', 'image1', 'image/png'),
+	(4, 'dummy-key-2', 'document1', 'application/pdf');
 
 -- ------------ loan/policy_bookmark_count 더미 데이터 ------------
 

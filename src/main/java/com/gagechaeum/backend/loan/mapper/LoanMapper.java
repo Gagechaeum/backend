@@ -19,4 +19,6 @@ public interface LoanMapper {
     LoanDetailResponseDto getLoanById(@Param("loanId") Long loanId);
     
     List<RateDto> getRatesByLoanId(@Param("loanId") Long loanId);
+
+    int linkLoan(Long userId);
 }

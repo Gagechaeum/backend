@@ -11,4 +11,6 @@ public interface LoanService {
     LoanRecommendationResponseDTO getRecommendedLoans(Long userId);
     
     LoanDetailResponseDto getLoanDetails(Long loanId);
+
+    void linkLoan(Long userId);
 }

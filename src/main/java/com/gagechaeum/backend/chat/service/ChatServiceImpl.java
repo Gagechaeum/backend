@@ -51,7 +51,12 @@ public class ChatServiceImpl implements ChatService {
 		
 		return new ChatRoomListResponseDto(chatRooms);
 	}
-
+	
+	public String getAttachmentUrl(Long attachmentId) {
+		String key = chatMapper.getAttachmentUrlById(attachmentId);
+		return s3ClientUtil.getInlineFileUrl(key);
+	}
+	
 	@Override
 	@Transactional
 	public void createChatRoomForPolicy(Policy policy) {
@@ -114,12 +119,11 @@ public class ChatServiceImpl implements ChatService {
 			}
 			
 			if (message.getFiles() != null &&  !message.getFiles().isEmpty()) {
-				List<String> files = new ArrayList<>();
 				
-				for (String key : message.getFiles()) {
-					files.add(s3ClientUtil.getInlineFileUrl(key));
+				for (UploadedAttachmentDto file : message.getFiles()) {
+					String key = file.getKey();
+					file.setKey(s3ClientUtil.getInlineFileUrl(key));
 				}
-				message.setFiles(files);
 			}
 		}
 		
@@ -165,7 +169,7 @@ public class ChatServiceImpl implements ChatService {
 			return null;
 		}
 		
-		List<String> uploadedKeys = new ArrayList<>();
+		List<UploadedAttachmentDto> uploadedKeys = new ArrayList<>();
 		
 		for (MultipartFile attachment : requestDto.getFiles()) {
 			String key = "chatAttachments/" +
@@ -174,7 +178,12 @@ public class ChatServiceImpl implements ChatService {
 			
 			try {
 				s3ClientUtil.uploadFile(attachment, key);
-				uploadedKeys.add(key);
+				uploadedKeys.add(
+					UploadedAttachmentDto.builder()
+						.key(key)
+						.type(attachment.getContentType())
+						.build()
+				);
 			} catch (IOException e) {
 				throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.");
 			}
