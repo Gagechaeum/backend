@@ -144,7 +144,7 @@
         <result property="message" column="content"/>
         <result property="sentAt" column="created_at"/>
         <collection property="files" ofType="UploadedAttachmentDto">
-          <result property="key" column="file_key"/>
+          <id property="key" column="file_key"/>
           <result property="name" column="file_name"/>
           <result property="type" column="file_type"/>
         </collection>
