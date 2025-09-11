@@ -58,6 +58,7 @@ public class DashboardResponseDTO {
     public static class AllItem {
         private String type; // "LOAN" or "POLICY"
         private Long itemId;
+        private String policyId;
         private String name;
         private String period;
         private long amount;
