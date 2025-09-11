@@ -20,4 +20,12 @@ public interface BookmarkService {
     void updateBookmarkStatus(Long userId, String type, Long id, String status);
 
     List<BookmarkProductResponseDto> getBookmarkedProducts(Long userId);
+
+    void createPolicyBookmark(Long userId, String policyId);
+
+    void createLoanBookmark(Long userId, Long loanId);
+
+    void deletePolicyBookmark(Long userId, String policyId);
+
+    void deleteLoanBookmark(Long userId, Long loanId);
 }

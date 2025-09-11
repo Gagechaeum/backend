@@ -77,4 +77,40 @@ public class BookmarkController {
         List<BookmarkProductResponseDto> data = bookmarkService.getBookmarkedProducts(userId);
         return CustomResponse.success(ResponseCode.SUCCESS, data);
     }
+
+    @PostMapping("/policies/{policyId}/bookmark")
+    public CustomResponse<Void> bookmarkPolicy(
+            @PathVariable String policyId,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        bookmarkService.createPolicyBookmark(user.getUserId(), policyId);
+        return CustomResponse.success(ResponseCode.SUCCESS, null);
+    }
+
+    @PostMapping("/loans/{loanId}/bookmark")
+    public CustomResponse<Void> bookmarkLoan(
+            @PathVariable Long loanId,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        bookmarkService.createLoanBookmark(user.getUserId(), loanId);
+        return CustomResponse.success(ResponseCode.SUCCESS, null);
+    }
+
+    @DeleteMapping("/policies/{policyId}/bookmark")
+    public CustomResponse<Void> deletePolicyBookmark(
+            @PathVariable String policyId,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        bookmarkService.deletePolicyBookmark(user.getUserId(), policyId);
+        return CustomResponse.success(ResponseCode.SUCCESS, null);
+    }
+
+    @DeleteMapping("/loans/{loanId}/bookmark")
+    public CustomResponse<Void> deleteLoanBookmark(
+            @PathVariable Long loanId,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        bookmarkService.deleteLoanBookmark(user.getUserId(), loanId);
+        return CustomResponse.success(ResponseCode.SUCCESS, null);
+    }
 }

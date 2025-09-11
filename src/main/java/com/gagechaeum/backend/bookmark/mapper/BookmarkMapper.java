@@ -45,4 +45,12 @@ public interface BookmarkMapper {
     int updateUserLoanStatus(@Param("userId") Long userId, @Param("id") Long id, @Param("status") String status);
 
 	List<BookmarkProductResponseDto> findBookmarkedProducts(@Param("userId") Long userId);
+
+    void insertPolicyBookmark(@Param("userId") Long userId, @Param("policyId") String policyId);
+
+    void insertLoanBookmark(@Param("userId") Long userId, @Param("loanId") Long loanId);
+
+    void deletePolicyBookmark(@Param("userId") Long userId, @Param("policyId") String policyId);
+
+    void deleteLoanBookmark(@Param("userId") Long userId, @Param("loanId") Long loanId);
 }

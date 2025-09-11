@@ -130,4 +130,28 @@ public class BookmarkServiceImpl implements BookmarkService {
     public List<BookmarkProductResponseDto> getBookmarkedProducts(Long userId) {
         return bookmarkMapper.findBookmarkedProducts(userId);
     }
+
+    @Override
+    @Transactional
+    public void createPolicyBookmark(Long userId, String policyId) {
+        bookmarkMapper.insertPolicyBookmark(userId, policyId);
+    }
+
+    @Override
+    @Transactional
+    public void createLoanBookmark(Long userId, Long loanId) {
+        bookmarkMapper.insertLoanBookmark(userId, loanId);
+    }
+
+    @Override
+    @Transactional
+    public void deletePolicyBookmark(Long userId, String policyId) {
+        bookmarkMapper.deletePolicyBookmark(userId, policyId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteLoanBookmark(Long userId, Long loanId) {
+        bookmarkMapper.deleteLoanBookmark(userId, loanId);
+    }
 }

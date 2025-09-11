@@ -231,4 +231,24 @@
         ORDER BY combined_results.bookmarked_at DESC
     </select>
 
+    <insert id="insertPolicyBookmark">
+        INSERT INTO user_policy_bookmarks (user_id, policy_id, status, created_at)
+        VALUES (#{userId}, #{policyId}, 'BOOKMARKED', NOW())
+    </insert>
+
+    <insert id="insertLoanBookmark">
+        INSERT INTO user_loan_bookmarks (user_id, loan_id, status, created_at)
+        VALUES (#{userId}, #{loanId}, 'BOOKMARKED', NOW())
+    </insert>
+
+    <delete id="deletePolicyBookmark">
+        DELETE FROM user_policy_bookmarks
+        WHERE user_id = #{userId} AND policy_id = #{policyId}
+    </delete>
+
+    <delete id="deleteLoanBookmark">
+        DELETE FROM user_loan_bookmarks
+        WHERE user_id = #{userId} AND loan_id = #{loanId}
+    </delete>
+
 </mapper>
