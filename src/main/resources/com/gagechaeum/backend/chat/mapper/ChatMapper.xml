@@ -51,6 +51,12 @@
     WHERE user_id = #{userId} AND room_id = #{roomId}
   </select>
 
+  <select id="getAttachmentUrlById" resultType="String">
+    SELECT file_key
+    FROM chat_attachments
+    WHERE attachment_id = #{attachmentId}
+  </select>
+
   <select id="getChatRooms" resultType="ChatRoomSummaryDto">
     SELECT
       cr.room_id,
@@ -146,6 +152,7 @@
         <result property="sentAt" column="created_at"/>
         <collection property="files" ofType="UploadedAttachmentDto">
           <id property="key" column="file_key"/>
+          <result property="attachmentId" column="attachment_id"/>
           <result property="name" column="file_name"/>
           <result property="type" column="file_type"/>
         </collection>
@@ -158,6 +165,7 @@
             u.nickname,
             cm.content,
             cm.created_at,
+            ca.attachment_id,
             ca.file_key,
             ca.file_name,
             ca.file_type

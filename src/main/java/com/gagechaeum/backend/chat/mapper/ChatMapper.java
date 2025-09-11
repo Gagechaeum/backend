@@ -18,7 +18,6 @@ public interface ChatMapper {
 	);
 
 	int createPolicyChatRoom(@Param("policyId") String policyId);
-
 	
 	int insertMessage(
 		@Param("messageDto") ChatMessageDto messageDto
@@ -33,6 +32,8 @@ public interface ChatMapper {
 		@Param("userId") Long userId,
 		@Param("roomId") Long roomId
 	);
+	
+	String getAttachmentUrlById(Long attachmentId);
 	
 	List<ChatRoomSummaryDto> getChatRooms(
 		@Param("type") String type

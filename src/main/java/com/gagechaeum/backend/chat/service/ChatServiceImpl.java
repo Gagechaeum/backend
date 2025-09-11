@@ -51,7 +51,12 @@ public class ChatServiceImpl implements ChatService {
 		
 		return new ChatRoomListResponseDto(chatRooms);
 	}
-
+	
+	public String getAttachmentUrl(Long attachmentId) {
+		String key = chatMapper.getAttachmentUrlById(attachmentId);
+		return s3ClientUtil.getInlineFileUrl(key);
+	}
+	
 	@Override
 	@Transactional
 	public void createChatRoomForPolicy(Policy policy) {
